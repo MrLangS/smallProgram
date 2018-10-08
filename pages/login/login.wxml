@@ -1,0 +1,24 @@
+<view class="content">
+    <view  bindtap="bindViewTap" class="userinfo">
+         <label class="login-font">登录</label>
+    </view>
+    <form bindsubmit="formSubmit">
+        <view class="input-area">
+          <view class="input-log">  
+            <image class="userinfo-logIcon" src="{{logIcon}}"></image>  
+            <input id="username" name="username" maxlength='40' type="text" placeholder="手机号" />
+          </view>
+          <view class="input-log">
+            <image class="userinfo-logIcon" src="{{pwdIcon}}"></image>  
+            <input id="password" name="password" maxlength='20' type="password" placeholder="密码" />
+          </view>
+        </view>
+        <view class="btn-area">
+            <button  disabled="{{disabled}}" style="background-color:{{loginBtnBgBgColor}}"   formType="submit"  loading="{{btnLoading}}"> {{loginBtnTxt}} </button>
+            <view class="txt-area">
+                <navigator redirect url="../forgetpwd/index"><text class="forgot-password">忘记密码？</text></navigator>
+                <navigator navigate url="../register/register"><text class="register">注册账号</text></navigator> 
+            </view>
+        </view>
+    </form>
+</view>

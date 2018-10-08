@@ -1,0 +1,39 @@
+<view class='changeInfo'>
+  <view class="userinfo">
+    <image class="userinfo-avatar" src="{{avatarUrl}}" bindtap='preview' background-size="cover"></image>
+    <button class="picBtn" bindtap='onPicBtn'>{{picManage}}</button>
+  </view>
+  <form bindsubmit="formSubmit">
+    <view class="input-area">
+      <label class='title'>姓名</label>
+      <view class='input-log'>
+        <image class="userinfo-logIcon" src="{{logIcon}}"></image>
+        <input placeholder='请输入姓名' bindinput='getNameValue' value='{{name}}'/> 
+      </view>
+      <label class='title'>公司</label>
+      <view class='input-log'>
+        <image class='userinfo-logIcon' src='{{companyIcon}}'></image>
+        <input placeholder='请输入公司名称' bindinput='getCompanyValue' value='{{company}}'/>
+      </view>
+      <label class='title'>手机</label>
+      <view class='input-log'>
+        <image class="userinfo-logIcon"src="{{phoneIcon}}"></image>
+        <input placeholder='请输入手机号' bindinput='getPhoneValue' value='{{phone}}'/> 
+        <button class='codeBtn' open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>自动获取</button>
+      </view>
+      <view class='input-log'>
+        <image class="userinfo-logIcon" src="{{verifiIcon}}"></image>
+        <input placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'/> 
+        <button class='codeBtn' bindtap='getVerificationCode' disabled='{{disabled}}' >{{codename}}</button>
+      </view>
+    </view>
+    <view class="btn-area">
+      <view class="btn">
+        <button form-type='submit' type='primary' size="default">注册</button> 
+        
+      </view>
+        <!-- <button  disabled="{{disabled}}" style="background-color:{{loginBtnBgBgColor}}"   formType="submit"  loading="{{btnLoading}}"> {{loginBtnTxt}} </button> -->
+    </view>
+  </form>
+</view>
+

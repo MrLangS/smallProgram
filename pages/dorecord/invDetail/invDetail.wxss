@@ -1,0 +1,110 @@
+/* pages/dorecord/invDetail/invDetail.wxss */
+.area {
+  background-color: #fff;
+  text-align: left;
+}
+.head-title{
+  width: 150rpx;
+  opacity: 0.5;
+  font-size: 30rpx;
+}
+.head-con{
+  margin-left: 20rpx;
+}
+.head-content{
+  margin-top: 20rpx;
+  font-size: 30rpx;
+  display: flex;
+}
+.reason-title{
+  width: 100%;
+  font-size: 30rpx;
+  text-align: center;
+  opacity: 0.5;
+  margin-top: 30rpx;
+}
+.reason{
+  width: 100%;
+
+}
+.reason-content{
+  width: 70%;
+  margin: auto;
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+.changeInfo{
+  /* display: flex;
+  flex-direction: column; */
+  justify-content: space-between;
+  width: 90%;
+  margin: 50rpx auto;
+}
+.memInfo{
+  /* display: flex;
+  flex-direction: column; */
+  justify-content: space-between;
+  width: 90%;
+  margin: 10rpx auto;
+}
+.devide{
+  display: block;
+  width: 100%;	
+  /* border-bottom:  */
+  /* 2rpx solid #777777;	 */
+  font-size: 30rpx;
+  text-align: center;	
+  line-height: 60rpx;
+  background-color: #b2b2b227;
+  color: rgba(124, 127, 128, 0.863)
+}
+.userinfo-avatar {
+  width: 70rpx;
+  height: 70rpx;
+  left: 0rpx;
+  margin-top: 5rpx;
+  /* margin: auto; */
+  /* border-radius: 50%; */
+}
+.item{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  line-height: 80rpx;
+  background-color: white;
+  height: 80rpx;
+  margin-top: 4rpx;
+  border-bottom: 1rpx solid #77777733;
+}
+.item-content{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  line-height: 80rpx;
+  background-color: #b2b2b227;
+  height: 80rpx;
+}
+.item-name{
+  font-size: 30rpx;
+  line-height: 80rpx;
+  margin-left: 40rpx;
+}
+.item-phone{
+  font-size: 30rpx;
+  line-height: 80rpx;
+  margin-left: 110rpx;
+}
+.item-foot{
+  position: absolute;
+  right: 40rpx;
+  line-height: 80rpx;
+}
+.icon{
+  margin-top:16rpx;
+}
+.btn{
+  position: absolute;
+  margin-top: 10rpx;
+  height: 60rpx;
+  right: 50rpx;
+}

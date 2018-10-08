@@ -1,0 +1,51 @@
+<!-- 邀请函模版 -->
+<view class='changeInfo'>
+  <view class='area'>
+    <view class='head'>邀请函</view>
+    <!-- 事由 -->
+    <view class='reason-title'>邀请事由</view>
+    <view class='reason'>
+      <view class='reason-content'>{{reason}}</view>
+    </view>
+    <view class='head-content'>
+      <label class='head-title'>日期</label> <label class='head-con'>{{year}}年{{month}}月{{day}}日</label>
+    </view>
+    <view class='head-content'>
+      <label class='head-title'>开始时间</label> <label class='head-con'>{{starttime}}</label>
+    </view>
+    <view class='head-content'>
+      <label class='head-title'>结束时间</label> <label class='head-con'>{{endtime}}</label>
+    </view>
+    <view class='head-content'>
+      <label class='head-title'>地址</label> <label class='head-con'>{{address}}</label>
+    </view>
+    <view class='head-content'>
+      <label class='head-title'>人数</label> <label class='head-con'>{{num}}</label>
+    </view>
+  </view>
+</view>
+<!-- 分隔栏 -->
+<view class='devide'>已接受人员</view>
+<view class='memInfo'>
+  <view wx:for="{{memberList}}" wx:key data-index="{{index}}" bindtap='clickItem'>
+    <view class='item' hover-class='click' bindtap='expand'>
+      <image class="userinfo-avatar" src="{{item.head}}"background-size="cover"></image>
+      <view class='item-name'>{{item.name}}</view>
+      <view class='item-foot'><icon class='icon' type="{{item.show==1? 'success':'cancel'}}" size='18' /></view>
+    </view>
+    <block wx:if="{{hidenIndex==index&&hidenTag}}">
+      <view class='item-content'>
+        <view class='item-phone'>所属公司:{{item.company}}</view>
+      </view>
+      <view class='item-content'>
+        <view class='item-phone'>手机号:{{item.phone}}</view>
+        <block wx:if="{{item.show==1}}">
+          <button class='btn' bindtap='reject' size='mini' type='warn'>拒绝</button>
+        </block>
+        <block wx:else>
+          <button class='btn' bindtap='accept' size='mini' type='primary'>接受</button>
+        </block>
+      </view>
+    </block>
+  </view> 
+</view>

@@ -1,0 +1,89 @@
+/* pages/register/register.wxss */
+page{
+  height: 100%;
+  width: 100%;
+  
+  /* background: linear-gradient(#d2d6dd, #9399a5); */
+}
+.userinfo {
+  margin-bottom: 30rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.userinfo-avatar {
+  width: 180rpx;
+  height: 180rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+.changeInfo{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 90%;
+  margin: 50rpx auto;
+}
+
+.input-area {
+  background-color: #fff;
+  text-align: left;
+}
+.input-area input {
+  height: 100rpx;
+  line-height: 100rpx;
+}
+.title{
+  top: 50rpx;
+  margin-left: 18rpx;
+  font-size: 30rpx;
+}
+.input-log{
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  flex-direction: row;
+  margin-bottom: 20rpx;
+}
+.userinfo-logIcon{
+  width: 60rpx;
+  height: 60rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+.btn-area {
+  width: 100%;
+  margin: 50rpx auto;
+}
+.picBtn{
+  width: 23%;
+  font-size: 25rpx;
+  padding: 20rpx auto;
+  height: 60rpx;
+}
+.codeBtn{
+  right: 0rpx;
+  top: 10rpx;
+  color: #bbb;
+  width: 28%;
+  font-size: 25rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+.changeInfoName input{
+  width: 100%;
+  height:100%;
+}
+.changeBtn{
+  width: 30%;
+  height: 80rpx;
+  background: #fff;
+  color: #000;
+  border-radius: 40rpx;
+  position: absolute;
+  bottom: 10%;
+  padding-left: 20rpx;
+  padding-bottom: 30rpx;
+  left: 45%;
+  margin-left: -10%;
+  line-height: 100rpx;
+}

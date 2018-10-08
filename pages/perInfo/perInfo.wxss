@@ -1,0 +1,17 @@
+/* pages/perInfo/perInfo.wxss */
+@import "../register/register.wxss";
+
+.cancel-btn{
+  margin-top: 23rpx;
+}
+.head{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  margin: 50rpx auto;
+  background-color: rgba(0, 153, 255, 0.411);
+}
+.head-margin{
+  margin-bottom: 23rpx;
+}

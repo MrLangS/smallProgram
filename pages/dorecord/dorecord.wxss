@@ -1,0 +1,53 @@
+.swiper-tab{	
+  width: 100%;	
+  border-bottom: 
+  2rpx solid #777777;	
+  text-align: center;	
+  line-height: 80rpx;
+  background-color: #56616eb4;
+}
+.swiper-tab-list{  
+  font-size: 30rpx;    
+  display: inline-block;
+  width: 33.33%;	
+  color: #ffffff;
+}
+.on{ 
+  background-color: #2f353b;
+  color: #ffffff;	
+  border-bottom: 5rpx solid #da2b0c;
+} 
+.swiper-box{ 
+  display: block; 
+  height: 100%; 
+  width: 100%; 
+  background-color: #77777723;
+  overflow: hidden; 
+}
+.swiper-box view{	
+  text-align: center;
+}
+.item{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  line-height: 80rpx;
+  background-color: white;
+  height: 80rpx;
+  /* margin-top: 4rpx; */
+  border-bottom: 1rpx solid #77777779;
+}
+.item-head{
+  margin-left: 40rpx;
+}
+.item-foot{
+  position: absolute;
+  right: 40rpx;
+}
+.click{
+  background-color: #7777770c;
+}
+.item-icon{
+  margin-left: 10rpx;
+  margin-top: 5rpx;
+}

@@ -1,0 +1,5 @@
+var tools=require("./comm.wxs");
+
+console.log(tools.foo);
+console.log(tools.bar("refcomm.wxs"));
+console.log(tools.msg);

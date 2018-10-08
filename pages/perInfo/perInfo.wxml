@@ -1,0 +1,44 @@
+<view  bindtap="bindViewTap" class="userinfo head">
+  <image class="userinfo-avatar" src="{{avatarUrl}}" bindtap='preview' background-size="cover"></image>
+  <button class="picBtn head-margin" bindtap='onPicBtn'>{{picManage}}</button>
+</view>
+<view class='changeInfo'>
+  <form bindsubmit="formSubmit">
+    <input hidden='true' name="avatarUrl" value='{{avatarUrl}}'></input>
+    <view class="input-area">
+      <label class='title'>姓名</label>
+      <view class='input-log'>
+        <image class="userinfo-logIcon" src="{{logIcon}}"></image>
+        <input placeholder='请输入姓名' name="name" bindinput='getNameValue' value='{{name}}' 
+        focus='{{focus}}' disabled='{{inputTag}}'/> 
+      </view>
+      <label class='title'>公司</label>
+      <view class='input-log'>
+        <image class='userinfo-logIcon' src='{{companyIcon}}'></image>
+        <input placeholder='请输入公司名称' name="company" bindinput='getCompanyValue' value='{{company}}' disabled='{{inputTag}}'/>
+      </view>
+      <label class='title'>手机</label>
+      <view class='input-log'>
+        <image class="userinfo-logIcon"src="{{phoneIcon}}"></image>
+        <input placeholder='请输入手机号' name="phone" bindinput='getPhoneValue' value='{{phone}}' disabled='{{inputTag}}'/> 
+        <!-- <button class='codeBtn' open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>自动获取</button> -->
+      </view>
+      
+    </view>
+    <view class="btn-area">
+      <view class="btn">
+        <block wx:if="{{changeBtn}}">
+          <button bindtap='modify' style="background-color:#0099FF; color:white" size="default">编辑</button> 
+        </block>
+        <block wx:else>
+          <button form-type='submit' type='primary' size="default">确认</button> 
+          <!-- <button bindtap='confirm' type='primary' size="default">确认</button> -->
+          <button bindtap='cancel' class='cancel-btn' size="default">取消</button> 
+        </block>
+      </view>
+        <!-- <button  disabled="{{disabled}}" style="background-color:{{loginBtnBgBgColor}}"   formType="submit"  loading="{{btnLoading}}"> {{loginBtnTxt}} </button> -->
+    </view>
+  </form>
+</view>
+
+

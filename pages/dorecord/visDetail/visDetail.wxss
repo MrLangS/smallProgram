@@ -1,0 +1,16 @@
+/* pages/dorecord/visDetail/visDetail.wxss */
+@import "../invDetail/invDetail.wxss";
+
+.post-btn{
+  margin-top: 40px;
+}
+.call-icon{
+  position: absolute;
+  width: 70rpx;
+  height: 70rpx;
+  left: 550rpx;
+  top: 276rpx;
+  margin-top: 5rpx;
+  /* margin: auto; */
+  /* border-radius: 50%; */
+}
