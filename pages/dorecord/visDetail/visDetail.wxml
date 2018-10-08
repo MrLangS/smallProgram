@@ -1,50 +1,104 @@
-<!-- 分隔栏 -->
-<block wx:if="{{show==2}}">
-  <view class='devide'>很遗憾!您已被拒绝</view>
-</block>
-<block wx:elif="{{show==1}}">
-  <view class='devide'>请您记得按时赴约!</view>
-</block>
-<block wx:elif="{{show==0}}">
-  <view class='devide'>未接受邀请!</view>
-</block>
-<!-- 邀请函模版 -->
-<view class='changeInfo'>
-  <image class="call-icon" src="{{callIcon}}" bindtap='makecall' background-size="cover"></image>
-  <view class='area'>
-    <view class='head'>邀请函</view>
-    <view class='head-content'>
-      <label class='head-title'>邀请人</label> <label class='head-con'>{{invitor}}</label>
+<view class='top' style='height:{{winHeight}}px'>
+  <!-- 分隔栏 -->
+  <block wx:if="{{show==2}}">
+    <view class='dev'>很遗憾!您已被拒绝</view>
+  </block>
+  <block wx:elif="{{show==1}}">
+    <view class='dev'>请您记得按时赴约!</view>
+  </block>
+  <block wx:elif="{{show==0}}">
+    <view class='dev'>未接受邀请!</view>
+  </block>
+  <!-- 邀请函模版 -->
+  <view class='changeInfo'>
+    <image class="call-icon" src="{{callIcon}}" bindtap='makecall' background-size="cover"></image>
+    <view class='area'>
+      <view class='head'>邀请函</view>
+      <view class='head-content'>
+        <label class='head-title'>邀请人</label> <label class='head-con'>{{invitor.name}}</label>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>所属公司</label> <label class='head-con'>{{invitor.company}}</label>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>联系电话</label> <label class='head-con'>{{invitor.phone}}</label>
+      </view>
+      <!-- 事由 -->
+      <view class='reason-title'>邀请事由</view>
+      <view class='reason'>
+        <view class='reason-content'>{{reason}}</view>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>日期</label> <label class='head-con'>{{year}}年{{month}}月{{day}}日</label>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>开始时间</label> <label class='head-con'>{{starttime}}</label>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>结束时间</label> <label class='head-con'>{{endtime}}</label>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>地址</label> <label class='head-con'>{{address}}</label>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>人数</label> <label class='head-con'>{{num}}</label>
+      </view>
     </view>
-    <view class='head-content'>
-      <label class='head-title'>所属公司</label> <label class='head-con'>{{company}}</label>
-    </view>
-    <view class='head-content'>
-      <label class='head-title'>联系电话</label> <label class='head-con'>{{phone}}</label>
-    </view>
-    <!-- 事由 -->
-    <view class='reason-title'>邀请事由</view>
-    <view class='reason'>
-      <view class='reason-content'>{{reason}}</view>
-    </view>
-    <view class='head-content'>
-      <label class='head-title'>日期</label> <label class='head-con'>{{year}}年{{month}}月{{day}}日</label>
-    </view>
-    <view class='head-content'>
-      <label class='head-title'>开始时间</label> <label class='head-con'>{{starttime}}</label>
-    </view>
-    <view class='head-content'>
-      <label class='head-title'>结束时间</label> <label class='head-con'>{{endtime}}</label>
-    </view>
-    <view class='head-content'>
-      <label class='head-title'>地址</label> <label class='head-con'>{{address}}</label>
-    </view>
-    <view class='head-content'>
-      <label class='head-title'>人数</label> <label class='head-con'>{{num}}</label>
-    </view>
+    <block wx:if="{{registed}}">
+      <button bindtap='accept' hidden='{{show!=0}}' type='primary' class='post-btn'>接受邀请</button> 
+    </block>
+    <block wx:if="{{show!=2}}">
+      <button open-type="share" class='post-btn' size="default">转发邀请</button>
+    </block>
   </view>
-  <block wx:if="{{show!=0}}">
-    <button type='primary' open-type="share" class='post-btn'>转发邀请</button>
+  <block wx:if="{{!registed&&show==0}}">
+    <!-- 分隔栏 -->
+    <view class='devide bottom' bindtap='scrollDown' hidden='{{role=="admin"}}'>
+      完善信息接受邀请
+    </view>
   </block>
 </view>
+<!-- ============================================================================================== -->
+<block wx:if="{{!registed&&show==0}}">
+  <!-- 分隔栏 -->
+  <view class='devide' bindtap='scrollUp' hidden='{{role=="admin"}}'>查看邀请信息</view>
+  <!-- 需要填写的个人信息 -->
+  <view class='changeInfo' hidden='{{role=="admin"}}'>
+    <view class="userinfo">
+      <image class="userinfo-avatar" src="{{avatarUrl}}" bindtap='preview' background-size="cover"></image>
+      <button class="picBtn" bindtap='onPicBtn'>{{picManage}}</button>
+    </view>
+    <form bindsubmit="visformSubmit">
+      <view class="input-area">
+        <label class='title'>姓名</label>
+        <view class='input-log'>
+          <image class="userinfo-logIcon" src="{{logIcon}}"></image>
+          <input placeholder='请输入姓名' bindinput='getNameValue' value='{{name}}'/> 
+        </view>
+        <label class='title'>公司</label>
+        <view class='input-log'>
+          <image class='userinfo-logIcon' src='{{companyIcon}}'></image>
+          <input placeholder='请输入公司名称' bindinput='getCompany' value='{{visCompany}}'/>
+        </view>
+        <label class='title'>手机</label>
+        <view class='input-log'>
+          <image class="userinfo-logIcon"src="{{phoneIcon}}"></image>
+          <input placeholder='请输入手机号' bindinput='getPhoneValue' value='{{phone}}'/> 
+          <button class='codeBtn' open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>自动获取</button>
+        </view>
+        <view class='input-log'>
+          <image class="userinfo-logIcon" src="{{verifiIcon}}"></image>
+          <input placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'/> 
+          <button class='codeBtn' bindtap='getVerificationCode' disabled='{{disabled}}' >{{codename}}</button>
+        </view>
+      </view>
+      <view class="btn-area">
+        <view class="btn">
+          <button bindtap='accept' type='primary' size="default">接受邀请</button> 
+        </view>
+          <!-- <button  disabled="{{disabled}}" style="background-color:{{loginBtnBgBgColor}}"   formType="submit"  loading="{{btnLoading}}"> {{loginBtnTxt}} </button> -->
+      </view>
+    </form>
+  </view>
+</block>
 

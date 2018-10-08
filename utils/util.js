@@ -19,16 +19,33 @@ function tran(that) {
   var tranJsonData = {
     starttime: _that.starttime,
     endtime: _that.endtime,
-    hideTag: true,
     year: _that.year,
     month: _that.month,
     day: _that.day,
-    index: _that.index,
-    hideTag01: true,
-    role: "user"
+    num: _that.numArr[_that.index],
+    invitor: _that.invitor,
+    reason: _that.reason,
+    address: _that.address
   }
   return JSON.stringify(tranJsonData)
   // return JSON.parse(tranJsonData)
+}
+
+//设置邀请数据
+function inviteInfo(that,initData){
+  var data = JSON.parse(initData)
+  that.setData({
+    reason: data.reason,
+    year: data.year,
+    month: data.month,
+    day: data.day,
+    starttime: data.starttime,
+    endtime: data.endtime,
+    address: data.address,
+    num: data.num,
+    invitor: data.invitor,
+    show: data.show,
+  })
 }
 
 //邮箱以及手机的正则表达式
@@ -157,5 +174,6 @@ module.exports = {
   tran: tran,
   checkPhone: checkPhone,
   checkForm: checkForm,
-  checkPerInfo: checkPerInfo
+  checkPerInfo: checkPerInfo,
+  inviteInfo: inviteInfo
 }

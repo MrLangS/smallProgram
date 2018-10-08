@@ -13,7 +13,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.3.0",
 	"appid": "wxab85b5facf961d5d",
-	"projectname": "wx_app02",
+	"projectname": "visitor-system",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},

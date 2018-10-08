@@ -1,8 +1,9 @@
 /* pages/dorecord/visDetail/visDetail.wxss */
-@import "../invDetail/invDetail.wxss";
+@import "../../invite/invite.wxss";
 
 .post-btn{
-  margin-top: 40px;
+  margin-top: 10px;
+  width: 100%;
 }
 .call-icon{
   position: absolute;
@@ -13,4 +14,15 @@
   margin-top: 5rpx;
   /* margin: auto; */
   /* border-radius: 50%; */
+}
+.dev{
+  display: block;
+  width: 100%;	
+  /* border-bottom:  */
+  /* 2rpx solid #777777;	 */
+  font-size: 30rpx;
+  text-align: center;	
+  line-height: 60rpx;
+  background-color: #b2b2b227;
+  color: rgba(124, 127, 128, 0.863)
 }

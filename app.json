@@ -1,8 +1,8 @@
 {
   "pages":[
-    "pages/invite/invite",
-    "pages/register/register",
     "pages/dorecord/dorecord",
+    "pages/register/register",
+    "pages/invite/invite",
     "pages/perInfo/perInfo",
     "pages/dorecord/invDetail/invDetail",
     "pages/dorecord/visDetail/visDetail",

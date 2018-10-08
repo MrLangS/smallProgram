@@ -130,13 +130,13 @@ page{
   font-size: 25rpx;
 }
 .backBtn{
-  margin-left: 30rpx;
+  margin-left: 0rpx;
   width: 25%;
   height: 90rpx;
   text-align: center;
 }
 .postBtn{
-  margin-right: 30rpx;
+  margin-right: 0rpx;
   width: 25%;
   height: 90rpx;
 }

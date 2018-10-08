@@ -26,40 +26,9 @@ Page({
     currentDay: {year : util.getPicker('year'), month : util.getPicker('month'), day : util.getPicker('day')},
     value: util.getPicker('arr'),
     invitor: {name: '郎某',company: '人人智能',phone: '18401610488'},
-    role: "admi",
-    reason: '学术讨论学术研究',
-    //标签->访客信息是否显示
-    hideTag01: false,
-    // 访客部分信息
-    headpic: '',//头像
-    name: '',//姓名
-    visphone: '',//手机号
-    visCompany: '',
-    code: '',//验证码
-    picManage: '添加头像',
-    iscode: '01',//用于存放验证码接口里获取到的code
-    avatarUrl: "../resource/images/timg.png", //默认头像图片
-    logIcon: "../resource/images/logIcon.png",
-    phoneIcon: "../resource/images/phone.png",
-    pwdIcon: "../resource/images/pwdIcon.png",
-    verifiIcon: "../resource/images/verifiIcon.png",
-    companyIcon: "../resource/images/company.png",
-    imgArr: ['D:/627wx1/wx_app/pages/resource/images/timg.png'],
-    codename: '获取验证码',
-    winWidth: '',
-    winHeight: '',
-  },
-  scrollDown: function(){
-    wx.pageScrollTo({
-      scrollTop: this.data.winHeight,
-      duration: 500
-    })
-  },
-  scrollUp: function () {
-    wx.pageScrollTo({
-      scrollTop: 0,
-      duration: 500
-    })
+    role: "admin",
+    registed: 0,
+    reason: '学术讨论学术研究',  
   },
   //时间选择器事件
   startTimeChange: function (e) {
@@ -131,35 +100,13 @@ Page({
       withShareTicket:true
     })
     var that=this
-    //获得手机屏幕信息
-    wx.getSystemInfo({
-      success: function (res) {
-        that.setData({
-          winWidth: res.windowWidth,
-          winHeight: res.windowHeight
-        });
-      }
-    });
-    if(options.dataset){
-      var tranData=JSON.parse(options.dataset)
-      that.setData({
-        starttime: tranData.starttime,
-        endtime: tranData.endtime,
-        hideTag: tranData.hideTag,
-        year: tranData.year,
-        month: tranData.month,
-        day: tranData.day,
-        index: tranData.index,
-        hideTag01: tranData.hideTag01,
-        role: tranData.role,
-      })
-    }
     if (wx.getStorageSync("registed")==1){
       var info = wx.getStorageSync('wxuserInfo')
       that.setData({
         name: info.username,
         visCompany: info.company,
         phone: info.phonenum,
+        registed: 1,
         // avatarUrl: ''
       })
     }
@@ -218,7 +165,8 @@ Page({
     }
     return {
       title: '邀请函',
-      path: 'pages/invite/invite?dataset='+util.tran(this),
+      // path: 'pages/invite/invite?dataset='+util.tran(this),
+      path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(this),
       success: function (res) {
         // 转发成功
         //提交邀请表单
@@ -273,77 +221,7 @@ Page({
       }
     }
   },
-  // 个人填写信息部分
-  //预览头像
-  preview: function (e) {
-    var that = this
-    var imgArr = this.data.imgArr
-    wx.previewImage({
-      urls: imgArr,
-      success: function (res) { },
-      fail: function (res) { },
-      complete: function (e) { }
-    })
-  },
-  //添加头像
-  onPicBtn: function () {
-    var that = this
-    var imgArr = that.data.imgArr
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-        var tempFilePaths = res.tempFilePaths
-        if (tempFilePaths.length > 0) {
-          imgArr[0] = tempFilePaths[0]
-          that.setData({
-            avatarUrl: tempFilePaths,
-            imgArr: imgArr,
-            picManage: '更换头像'
-          })
-        }
-      },
-    })
-  },
-  //自动获取微信绑定手机号，需要微信认证可使用
-  getPhoneNumber: function (e) {
-    console.log(e.detail.errMsg)
-    console.log(e.detail.iv)
-    console.log(e.detail.encryptedDate)
-    if (e.detail.errMsg == 'getPhoneNumber:fail 该 appid 没有权限') {
-      wx.showModal({
-        title: '提示',
-        showCancel: false,
-        content: '未授权',
-        success: function (res) { }
-      })
-    } else {
-      wx.showModal({
-        title: '提示',
-        showCancel: false,
-        content: '同意授权',
-        success: function (res) { }
-      })
-    }
-
-  },
   //获取input输入框的值
-  getNameValue: function (e) {
-    this.setData({
-      name: e.detail.value
-    })
-  },
-  getPhoneValue: function (e) {
-    this.setData({
-      phone: e.detail.value
-    })
-  },
-  getCodeValue: function (e) {
-    this.setData({
-      code: e.detail.value
-    })
-  },
   getAds: function(e){
     this.setData({
       address: e.detail.value
@@ -353,52 +231,6 @@ Page({
     this.setData({
       reason: e.detail.value
     })
-  },
-  getCompany: function(e){
-    this.setData({
-      visCompany: e.detail.value
-    })  
-  },
-
-  //获取验证码
-  getVerificationCode() {
-    this.getCode();
-    var that = this
-    that.setData({
-      disabled: true
-    })
-  },
-  getCode: function () {
-    var a = this.data.phone;
-    var _this = this;
-    if (util.checkPhone(this)) {
-      wx.request({
-        data: {},
-        'url': '接口地址',
-        success(res) {
-          console.log(res.data.data)
-          _this.setData({
-            iscode: res.data.data
-          })
-          var num = 61;
-          var timer = setInterval(function () {
-            num--;
-            if (num <= 0) {
-              clearInterval(timer);
-              _this.setData({
-                codename: '重新发送',
-                disabled: false
-              })
-
-            } else {
-              _this.setData({
-                codename: num + "s"
-              })
-            }
-          }, 1000)
-        }
-      })
-    }
   },
 
   //提交表单信息

@@ -1,162 +1,114 @@
-<view class='top' style='height:{{winHeight}}px'>
-  <view class='changeInfo'>
-    <form bindsubmit="invformSubmit">
-      <!-- 填写邀请信息模版 -->
-      <view class="area" hidden='{{hideTag}}'>
-        <view class='input-log'>
-          <label class='lab'>日期</label>
-          <label class='content' bindtap='chooseDay'>{{year}}年{{month}}月{{day}}日</label>
-        </view>
-        <view class='input-log'>
-          <label class='lab'>时间</label>
-          <picker mode="time" value="09:00" start="06:00" end="24:00" bindchange="startTimeChange">
-            <label class='picker'>{{starttime}}</label>
-            <!-- <input class='picker'  placeholder='选择时间' value='{{starttime}}'/> -->
-          </picker>
-          <view class='middle'>至</view>
-          <picker mode="time" value="14:00" start="06:00" end="24:00" bindchange="endTimeChange">
-            <label class='pickerr'>{{endtime}}</label>
-            <!-- <input class='pickerr'  placeholder='选择时间' value='{{endtime}}'/> -->
-          </picker>
-          <!-- <input class='content'  placeholder='选择时间' bindinput='getCompany' value='{{}}'/> -->
-        </view>
-        <view class='input-log'>
-        <label class='lab'>地址</label>
-          <input class='content'  placeholder='选择访问区域' bindinput='getAds' value='{{address}}'/> 
-        </view>
-        <view class='input-log'>
-          <label class='lab'>人数</label>
-          <picker bindchange="bindNumChange" value="{{index}}" range="{{numArr}}">
-            <view class='content'>{{numArr[index]}}</view>
-            <!-- <input class='content' placeholder='选择邀请人数' value='{{numArr[index]}}'/>  -->
-          </picker>
-          
-        </view>
-        <view class='input-log'>
-          <label class='lab'>事由</label>
-          <!-- <textarea class='area-content' placeholder='填写邀请事由' placeholder-class='holder' ></textarea> -->
-          <input class='content' placeholder='填写邀请事由' bindinput='getReason' value='{{}}'/> 
-        </view>
-      </view>
-
-      <!-- 邀请函模版 -->
-      <view class='area' hidden='{{!hideTag}}'>
-        <view class='head'>邀请函</view>
-        <view class='head-content'>
-          <label class='head-title'>邀请人</label> <label class='head-con'>{{invitor.name}}</label>
-        </view>
-        <view class='head-content'>
-          <label class='head-title'>所属公司</label> <label class='head-con'>{{invitor.company}}</label>
-        </view>
-        <view class='head-content'>
-          <label class='head-title'>联系电话</label> <label class='head-con'>{{invitor.phone}}</label>
-        </view>
-        <!-- 事由 -->
-        <view class='reason-title'>邀请事由</view>
-        <view class='reason'>
-          <view class='reason-content'>{{reason}}</view>
-        </view>
-        <view class='head-content'>
-          <label class='head-title'>日期</label> <label class='head-con'>{{year}}年{{month}}月{{day}}日</label>
-        </view>
-        <view class='head-content'>
-          <label class='head-title'>开始时间</label> <label class='head-con'>{{starttime}}</label>
-        </view>
-        <view class='head-content'>
-          <label class='head-title'>结束时间</label> <label class='head-con'>{{endtime}}</label>
-        </view>
-        <view class='head-content'>
-          <label class='head-title'>地址</label> <label class='head-con'>北京市朝阳区</label>
-        </view>
-        <view class='head-content'>
-          <label class='head-title'>人数</label> <label class='head-con'>{{numArr[index]}}</label>
-        </view>
-      </view>
-      <!-- 按钮区域 -->
-      <view class="btn-area">
-        <view class="btn">
-          <!-- <button form-type='submit' open-type="share" type='primary' size="default">发送邀请</button>  -->
-          <button style="background-color:#0099FF;color:#fff" 
-          bindtap='switchChange' size="default" hidden='{{hideTag}}'>确认</button>
-        </view>
-        <view class="btn01" hidden='{{!hideTag}}'>
-          <!-- <button form-type='submit' open-type="share" type='primary' size="default">发送邀请</button>  -->
-          <block wx:if="{{!hideTag01}}">
-            <button bindtap='switchChange' class='backBtn'>返回</button>
-            <button open-type="share" type='primary' class='postBtn'>邀请</button>
-            
-            <!-- <button form-type='submit' hidden='true' ></button> -->
-          </block>
-          <block wx:else>
-            <button open-type="share" type='primary' size='default'>转发邀请</button>
-          </block>
-        </view>
-      </view>
-    </form>
-    <view class='footer'>当前日期：{{currentDay.year}}年{{currentDay.month}}月{{currentDay.day}}日</view>
-
-    <!-- 日期弹窗 -->
-    <modal hidden="{{hiddenmodal}}" title="日期选择" confirm-text="确定" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm">
-      <picker-view indicator-style="height: 50px;" style="width: 100%; height: 300px;margin-right:50rpx;" value="{{value}}" bindchange="bindChange">
-        <picker-view-column>
-          <view wx:for="{{years}}" wx:key style="line-height: 50px">{{item}}年</view>
-        </picker-view-column>
-        <picker-view-column>
-          <view wx:for="{{months}}" wx:key style="line-height: 50px">{{item}}月</view>
-        </picker-view-column>
-        <picker-view-column>
-          <view wx:for="{{days}}" wx:key style="line-height: 50px">{{item}}日</view>
-        </picker-view-column>
-      </picker-view>
-    </modal>
-  </view>
-
-  <!-- 分隔栏 -->
-  <view class='devide bottom' bindtap='scrollDown' hidden='{{role=="admin"}}'>
-    点击下滑
-  </view>
-</view>
-<!-- ============================================================================================== -->
-<!-- 分隔栏 -->
-<view class='devide' bindtap='scrollUp' hidden='{{role=="admin"}}'>查看邀请信息</view>
-<!-- 需要填写的个人信息 -->
-<view class='changeInfo' hidden='{{role=="admin"}}'>
-  <view  bindtap="bindViewTap" class="userinfo">
-    <image class="userinfo-avatar" src="{{avatarUrl}}" bindtap='preview' background-size="cover"></image>
-    <button class="picBtn" bindtap='onPicBtn'>{{picManage}}</button>
-  </view>
-  <form bindsubmit="visformSubmit">
-    <view class="input-area">
-      <label class='title'>姓名</label>
+<view class='changeInfo'>
+  <form bindsubmit="invformSubmit">
+    <!-- 填写邀请信息模版 -->
+    <view class="area" hidden='{{hideTag}}'>
       <view class='input-log'>
-        <image class="userinfo-logIcon" src="{{logIcon}}"></image>
-        <input placeholder='请输入姓名' bindinput='getNameValue' value='{{name}}'/> 
-      </view>
-      <label class='title'>公司</label>
-      <view class='input-log'>
-        <image class='userinfo-logIcon' src='{{companyIcon}}'></image>
-        <input placeholder='请输入公司名称' bindinput='getCompany' value='{{visCompany}}'/>
-      </view>
-      <label class='title'>手机</label>
-      <view class='input-log'>
-        <image class="userinfo-logIcon"src="{{phoneIcon}}"></image>
-        <input placeholder='请输入手机号' bindinput='getPhoneValue' value='{{phone}}'/> 
-        <button class='codeBtn' open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>自动获取</button>
+        <label class='lab'>日期</label>
+        <label class='content' bindtap='chooseDay'>{{year}}年{{month}}月{{day}}日</label>
       </view>
       <view class='input-log'>
-        <image class="userinfo-logIcon" src="{{verifiIcon}}"></image>
-        <input placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'/> 
-        <button class='codeBtn' bindtap='getVerificationCode' disabled='{{disabled}}' >{{codename}}</button>
+        <label class='lab'>时间</label>
+        <picker mode="time" value="09:00" start="06:00" end="24:00" bindchange="startTimeChange">
+          <label class='picker'>{{starttime}}</label>
+          <!-- <input class='picker'  placeholder='选择时间' value='{{starttime}}'/> -->
+        </picker>
+        <view class='middle'>至</view>
+        <picker mode="time" value="14:00" start="06:00" end="24:00" bindchange="endTimeChange">
+          <label class='pickerr'>{{endtime}}</label>
+          <!-- <input class='pickerr'  placeholder='选择时间' value='{{endtime}}'/> -->
+        </picker>
+        <!-- <input class='content'  placeholder='选择时间' bindinput='getCompany' value='{{}}'/> -->
       </view>
-    </view>
-    <view class="btn-area">
-      <view class="btn">
-        <button open-type="share" type='primary' size="default">接受邀请</button> 
+      <view class='input-log'>
+      <label class='lab'>地址</label>
+        <input class='content'  placeholder='选择访问区域' bindinput='getAds' value='{{address}}'/> 
+      </view>
+      <view class='input-log'>
+        <label class='lab'>人数</label>
+        <picker bindchange="bindNumChange" value="{{index}}" range="{{numArr}}">
+          <view class='content'>{{numArr[index]}}</view>
+          <!-- <input class='content' placeholder='选择邀请人数' value='{{numArr[index]}}'/>  -->
+        </picker>
         
       </view>
-        <!-- <button  disabled="{{disabled}}" style="background-color:{{loginBtnBgBgColor}}"   formType="submit"  loading="{{btnLoading}}"> {{loginBtnTxt}} </button> -->
+      <view class='input-log'>
+        <label class='lab'>事由</label>
+        <!-- <textarea class='area-content' placeholder='填写邀请事由' placeholder-class='holder' ></textarea> -->
+        <input class='content' placeholder='填写邀请事由' bindinput='getReason' value='{{reason}}'/> 
+      </view>
+    </view>
+
+    <!-- 邀请函模版 -->
+    <view class='area' hidden='{{!hideTag}}'>
+      <view class='head'>邀请函</view>
+      <view class='head-content'>
+        <label class='head-title'>邀请人</label> <label class='head-con'>{{invitor.name}}</label>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>所属公司</label> <label class='head-con'>{{invitor.company}}</label>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>联系电话</label> <label class='head-con'>{{invitor.phone}}</label>
+      </view>
+      <!-- 事由 -->
+      <view class='reason-title'>邀请事由</view>
+      <view class='reason'>
+        <view class='reason-content'>{{reason}}</view>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>日期</label> <label class='head-con'>{{year}}年{{month}}月{{day}}日</label>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>开始时间</label> <label class='head-con'>{{starttime}}</label>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>结束时间</label> <label class='head-con'>{{endtime}}</label>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>地址</label> <label class='head-con'>北京市朝阳区</label>
+      </view>
+      <view class='head-content'>
+        <label class='head-title'>人数</label> <label class='head-con'>{{numArr[index]}}</label>
+      </view>
+    </view>
+    <!-- 按钮区域 -->
+    <view class="btn-area">
+      <view class="btn">
+        <!-- <button form-type='submit' open-type="share" type='primary' size="default">发送邀请</button>  -->
+        <button style="background-color:#0099FF;color:#fff" 
+        bindtap='switchChange' size="default" hidden='{{hideTag}}'>确认</button>
+      </view>
+      <view class="btn01" hidden='{{!hideTag}}'>
+        <!-- <button form-type='submit' open-type="share" type='primary' size="default">发送邀请</button>  -->
+        <block wx:if="{{!hideTag01}}">
+          <button bindtap='switchChange' class='backBtn'>返回</button>
+          <button open-type="share" type='primary' class='postBtn'>邀请</button>
+          
+          <!-- <button form-type='submit' hidden='true' ></button> -->
+        </block>
+        <block wx:else>
+          <button open-type="share" type='primary' size='default'>转发邀请</button>
+        </block>
+      </view>
+      <view hidden='{{!hideTag}}'><button>新增空白邀请</button></view>
     </view>
   </form>
+  <view class='footer'>当前日期：{{currentDay.year}}年{{currentDay.month}}月{{currentDay.day}}日</view>
+
+  <!-- 日期弹窗 -->
+  <modal hidden="{{hiddenmodal}}" title="日期选择" confirm-text="确定" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm">
+    <picker-view indicator-style="height: 50px;" style="width: 100%; height: 300px;margin-right:50rpx;" value="{{value}}" bindchange="bindChange">
+      <picker-view-column>
+        <view wx:for="{{years}}" wx:key style="line-height: 50px">{{item}}年</view>
+      </picker-view-column>
+      <picker-view-column>
+        <view wx:for="{{months}}" wx:key style="line-height: 50px">{{item}}月</view>
+      </picker-view-column>
+      <picker-view-column>
+        <view wx:for="{{days}}" wx:key style="line-height: 50px">{{item}}日</view>
+      </picker-view-column>
+    </picker-view>
+  </modal>
 </view>
 
 
