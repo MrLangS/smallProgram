@@ -26,7 +26,6 @@ App({
             url: loginUrl,
             data: { code: code },
             success: function (res) {
-              console.log(res)
               var openid = res.data.openid //返回openid
               console.log("openid is: " + openid);
               that.globalData.openId = openid;
@@ -57,6 +56,30 @@ App({
               console.log("fail")
             }
           })
+          if (wx.getStorageSync('wxuserInfo').staffId==null){
+            wx.request({
+              url: getApp().globalData.server + '/Invitation/isInternalUser.do',
+              data: {
+                openId: wx.getStorageSync('openid'),
+                phoneNO: wx.getStorageSync('wxuserInfo').phonenum
+              },
+              method: 'get',
+              success: function (res) {
+                console.log(res.data.msg)
+                if (res.data.msg){
+                  var userInfoUrl = getApp().globalData.server + '/SysWXUserAction/getUserMsgByOpenId.do?openId='
+                  wx.request({
+                    url: userInfoUrl + wx.getStorageSync('openid'),
+                    method: 'post',
+                    success: function (res) {
+                      wx.setStorageSync('wxuserInfo', res.data);
+                    }
+                  })
+                }
+                // wx.setStorageSync(key, data)
+              }
+            })
+          }
           
           // ------------------------------------
         } else {

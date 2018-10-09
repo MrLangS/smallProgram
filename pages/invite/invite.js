@@ -100,16 +100,27 @@ Page({
       withShareTicket:true
     })
     var that=this
-    if (wx.getStorageSync("registed")==1){
-      var info = wx.getStorageSync('wxuserInfo')
-      that.setData({
-        name: info.username,
-        visCompany: info.company,
-        phone: info.phonenum,
-        registed: 1,
-        // avatarUrl: ''
+    var staffId = wx.getStorageSync('wxuserInfo').staffId
+    if (staffId!=null){
+      wx.request({
+        url: getApp().globalData.server +'/Invitation/getRegions.do',
+        data: { staffId: staffId},
+        method: 'get',
+        success: function(res){
+          console.log(res.data[0])
+        }
       })
     }
+    // if (wx.getStorageSync("registed")==1){
+    //   var info = wx.getStorageSync('wxuserInfo')
+    //   that.setData({
+    //     name: info.username,
+    //     visCompany: info.company,
+    //     phone: info.phonenum,
+    //     registed: 1,
+    //     // avatarUrl: ''
+    //   })
+    // }
     
   },
 
