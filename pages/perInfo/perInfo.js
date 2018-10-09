@@ -11,6 +11,7 @@ Page({
     phone: '',//手机号
     company: '',
     picManage: '更换头像',
+    disabled: false,
     avatarUrl: "../resource/images/timg.png", //默认头像图片
     logIcon: "../resource/images/logIcon.png",
     phoneIcon: "../resource/images/phone.png",
@@ -20,7 +21,21 @@ Page({
     imgArr: ['D:/627wx1/wx_app/pages/resource/images/timg.png'],
     changeBtn: true,
     inputTag: true,
-    focus: false
+    focus: false,
+    codeTag: true,//验证码区域显示标签
+    codename: '获取验证码'
+  },
+  //修改手机号
+  modifyPhone: function(){
+    this.setData({
+      codeTag: false
+    })
+  },
+  cancelModify:function(){
+    this.setData({
+      phone: wx.getStorageSync('oldPhone'),
+      codeTag: true
+    })
   },
   //预览头像
   preview: function (e) {
@@ -129,7 +144,8 @@ Page({
             phone: user.phonenum,
             changeBtn: true,
             inputTag: true,
-            focus: false
+            focus: false,
+            codeTag: true
           })
           wx.showToast({
             title: '修改成功',
@@ -150,7 +166,8 @@ Page({
       company: initdata.company,
       changeBtn: true,
       inputTag: true,
-      focus: false
+      focus: false,
+      codeTag: true
     })
   },
   //获取input输入框的值

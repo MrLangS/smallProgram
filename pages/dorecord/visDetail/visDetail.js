@@ -54,6 +54,20 @@ Page({
       duration: 500
     })
   },
+  //接受邀请
+  accept: function(){
+    // wx.request({
+    //   url: '',
+    //   method: 'post',
+    //   data:{},
+    //   success: function(res){
+
+    //   }
+    // })
+    this.setData({
+      show: 1
+    })
+  },
 
   /**
    * 生命周期函数--监听页面加载
@@ -86,7 +100,7 @@ Page({
     }
     return {
       title: '邀请函',
-      path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(this),
+      path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(this,"vis"),
       success: function (res) {
         // 转发成功
 

@@ -7,6 +7,7 @@ Page({
     code: '',//验证码
     company: '',//公司名称
     picManage: '添加头像',
+    disabled: false,
     iscode: '01',//用于存放验证码接口里获取到的code
     avatarUrl: "../resource/images/timg.png", //默认头像图片
     logIcon: "../resource/images/logIcon.png",

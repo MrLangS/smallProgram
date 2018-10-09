@@ -8,7 +8,7 @@ Page({
     winWidth: 0,
     winHeight: 0,
     // tab切换
-    currentTab: 0,
+    currentTab: 1,
     inviteList: [
       { reason: '讨论', year: '2018', month: '09', day: '29', 
       starttime: '09:00', endtime: '14:00', address: '北京', num: 2},

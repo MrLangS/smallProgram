@@ -14,7 +14,7 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 //转发所需要携带的信息
-function tran(that) {
+function tran(that,role) {
   var _that = that.data
   var tranJsonData = {
     starttime: _that.starttime,
@@ -25,7 +25,11 @@ function tran(that) {
     num: _that.numArr[_that.index],
     invitor: _that.invitor,
     reason: _that.reason,
-    address: _that.address
+    address: _that.address,
+    // invId: invId
+  }
+  if(role=="vis"){
+    tranJsonData.num=_that.num
   }
   return JSON.stringify(tranJsonData)
   // return JSON.parse(tranJsonData)

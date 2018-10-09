@@ -166,7 +166,7 @@ Page({
     return {
       title: '邀请函',
       // path: 'pages/invite/invite?dataset='+util.tran(this),
-      path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(this),
+      path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(this,"inv"),
       success: function (res) {
         // 转发成功
         //提交邀请表单

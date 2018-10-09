@@ -21,7 +21,13 @@
       <view class='input-log'>
         <image class="userinfo-logIcon"src="{{phoneIcon}}"></image>
         <input placeholder='请输入手机号' name="phone" bindinput='getPhoneValue' value='{{phone}}' disabled='{{inputTag}}'/> 
-        <!-- <button class='codeBtn' open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>自动获取</button> -->
+        <button class='codeBtn' bindtap='modifyPhone' hidden='{{!inputTag?(codeTag?false:true):true}}'>更改绑定</button>
+        <button class='codeBtn' bindtap='cancelModify' hidden='{{codeTag}}'>取消更改</button>
+      </view>
+      <view class='input-log' hidden='{{codeTag}}'>
+        <image class="userinfo-logIcon" src="{{verifiIcon}}"></image>
+        <input placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'/> 
+        <button class='codeBtn' bindtap='getVerificationCode' disabled='{{disabled}}' >{{codename}}</button>
       </view>
       
     </view>
