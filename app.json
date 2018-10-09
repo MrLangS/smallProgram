@@ -6,6 +6,7 @@
     "pages/perInfo/perInfo",
     "pages/dorecord/invDetail/invDetail",
     "pages/dorecord/visDetail/visDetail",
+    "pages/dorecord/thrDetail/thrDetail",
     "pages/login/login",
     "pages/index/index",
     "pages/logs/logs"

@@ -1,0 +1,8 @@
+{
+  "navigationBarBackgroundColor": "#fff",
+  "navigationBarTextStyle": "black",
+  "navigationBarTitleText": "通行记录",
+  "backgroundColor": "#fff",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "light"
+}
