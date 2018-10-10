@@ -8,6 +8,8 @@ Page({
   data: {
     invitationId: '',//邀请id
     invitor: '',
+    vistorName: '',
+    vistorPhone: '',
     reason: '',
     year: '',
     month: '',

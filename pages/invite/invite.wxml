@@ -32,6 +32,14 @@
         
       </view>
       <view class='input-log'>
+        <label class='lab'>姓名</label>
+        <input class='content' placeholder='填写代表成员姓名' bindinput='getVistorName' value='{{vistorName}}'/> 
+      </view>
+      <view class='input-log'>
+        <label class='lab'>电话</label>
+        <input class='content' placeholder='填写代表成员手机号' bindinput='getVistorPhone' value='{{vistorPhone}}'/> 
+      </view>
+      <view class='input-log'>
         <label class='lab'>事由</label>
         <!-- <textarea class='area-content' placeholder='填写邀请事由' placeholder-class='holder' ></textarea> -->
         <input class='content' placeholder='填写邀请事由' bindinput='getReason' value='{{reason}}'/> 
@@ -69,6 +77,12 @@
       </view>
       <view class='head-content'>
         <label class='head-title'>人数</label> <label class='head-con'>{{numArr[index]}}</label>
+      </view>
+       <view class='head-content'>
+        <label class='head-title'>代表成员</label> <label class='head-con'>{{vistorName}}</label>
+      </view>
+       <view class='head-content'>
+        <label class='head-title'>成员手机号</label> <label class='head-con'>{{vistorPhone}}</label>
       </view>
     </view>
     <!-- 按钮区域 -->

@@ -38,6 +38,8 @@ function tran(that, role) {
     invitor: _that.invitor,
     reason: _that.reason,
     address: _that.address,
+    vistorName: _that.vistorName,
+    vistorPhone: _that.vistorPhone,
     invitationId: _that.invitationId,//邀请id     
     // invId: invId
   }
@@ -61,6 +63,8 @@ function inviteInfo(that,initData,tag){
     address: data.address,
     num: data.num,
     invitor: data.invitor,
+    vistorName: data.vistorName,
+    vistorPhone: data.vistorPhone,
     invitationId: data.invitationId
   })
   if(tag==1){

@@ -33,6 +33,8 @@ Page({
     role: "admin",
     registed: 0,
     reason: '学术讨论学术研究',  
+    vistorName: '',//代表成员姓名
+    vistorPhone: '',//代表成员手机号
     count: 0,//记录点击邀请按钮的次数
     invitationId: 0,//邀请id 
   },
@@ -230,8 +232,8 @@ Page({
           staffId: invitor.staffId,
           username: invitor.username,
           phonenum: invitor.phonenum,
-          // visitorLinkmanName:that.
-          // visitorLinkmanPhone:that.
+          visitorLinkmanName: that.data.vistorName,
+          visitorLinkmanPhone:that.data.vistorPhone,
           reason: that.data.reason,
           regionIds: that.data.regionIds
         },
@@ -309,6 +311,16 @@ Page({
   getReason: function (e) {
     this.setData({
       reason: e.detail.value
+    })
+  },
+  getVistorName: function(e){
+    this.setData({
+      vistorName: e.detail.value
+    })
+  },
+  getVistorPhone: function (e) {
+    this.setData({
+      vistorPhone: e.detail.value
     })
   },
 
