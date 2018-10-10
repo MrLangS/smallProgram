@@ -13,22 +13,28 @@ Page({
     starttime: '09:00',
     endtime: '14:00',
     address: '',
+    regionList: [],
+    regionIds: [],
     hideTag: false,
     numArr: util.getPickerList('nums'),
     index: 0,
     hiddenmodal: true,
+    modal_are: true,
     years: util.getPickerList('years'),
     year: year,
     months: util.getPickerList('months'),
     month: month,
     days: util.getPickerList('days'),
     day: day,
+    // date: [year, month, day],
     currentDay: {year : util.getPicker('year'), month : util.getPicker('month'), day : util.getPicker('day')},
     value: util.getPicker('arr'),
-    invitor: {name: '郎某',company: '人人智能',phone: '18401610488'},
+    invitor: {name: '',company: '',phone: ''},
     role: "admin",
     registed: 0,
     reason: '学术讨论学术研究',  
+    count: 0,//记录点击邀请按钮的次数
+    invitationId: 0,//邀请id 
   },
   //时间选择器事件
   startTimeChange: function (e) {
@@ -66,6 +72,30 @@ Page({
       hideTag: !this.data.hideTag
     })
   },
+  //区域多选事件
+  checkboxChange: function(e){
+    console.log('checkbox发生change事件，携带value值为：', e.detail.value)
+    var text=[]
+    var ids=[]
+    for(var i=0;i<e.detail.value.length;i++){
+      var row=e.detail.value[i].split(',');
+      text=text.concat(row[0])
+      ids=ids.concat(row[1])
+    }
+    this.setData({
+      address: text,
+      regionIds: ids
+    })
+  },
+  //获取区域的值
+  getAds: function () {
+    // this.setData({
+    //   address: e.detail.value
+    // })
+    this.setData({
+      modal_are: !this.data.modal_are
+    })
+  },
   //弹出框
   chooseDay: function () {
     buff(this)
@@ -87,6 +117,21 @@ Page({
       hiddenmodal: true
     })
   },
+  cancel_are: function () {
+    this.setData({
+      modal_are: true,
+    });
+  },
+  confirm_are: function () {
+    this.setData({
+      modal_are: true
+    })
+  },
+  newInv: function(){
+    this.setData({
+      count: 0
+    })
+  },
   //测试
   test: function(){
     console.log("test")
@@ -100,28 +145,25 @@ Page({
       withShareTicket:true
     })
     var that=this
-    var staffId = wx.getStorageSync('wxuserInfo').staffId
+    var userInfo = wx.getStorageSync('wxuserInfo')
+    var staffId = userInfo.staffId
     if (staffId!=null){
+      var invitor=this.data.invitor
+      invitor.name = userInfo.username
+      invitor.phone = userInfo.phonenum
+      invitor.company = userInfo.address
       wx.request({
         url: getApp().globalData.server +'/Invitation/getRegions.do',
         data: { staffId: staffId},
         method: 'get',
         success: function(res){
-          console.log(res.data[0])
+          that.setData({
+            invitor: invitor,
+            regionList: res.data
+          })
         }
       })
-    }
-    // if (wx.getStorageSync("registed")==1){
-    //   var info = wx.getStorageSync('wxuserInfo')
-    //   that.setData({
-    //     name: info.username,
-    //     visCompany: info.company,
-    //     phone: info.phonenum,
-    //     registed: 1,
-    //     // avatarUrl: ''
-    //   })
-    // }
-    
+    }  
   },
 
   /**
@@ -169,19 +211,76 @@ Page({
   /**
    * 用户点击分享
    */
-  onShareAppMessage: function (res) {
-    var that=this
-    if (res.from === 'button') {
-      console.log(res.target)
+  invite: function(){
+    var that = this
+    console.log(that.data.count)
+    if (that.data.count == 0) {
+      /*发起邀请请求*/
+      var date = util.formatDay(that)
+      var starttime = util.formatTimestamp(that, 0)
+      var endtime = util.formatTimestamp(that, 1)
+      var invitor = wx.getStorageSync("wxuserInfo")
+      wx.request({
+        url: getApp().globalData.server + "/Invitation/sponsorInvitation.do",
+        data: {
+          visitorDay: date,
+          startTime: starttime,
+          endTime: endtime,
+          visitorCount: that.data.numArr[that.data.index],
+          staffId: invitor.staffId,
+          username: invitor.username,
+          phonenum: invitor.phonenum,
+          // visitorLinkmanName:that.
+          // visitorLinkmanPhone:that.
+          reason: that.data.reason,
+          regionIds: that.data.regionIds
+        },
+        method: 'post',
+        success: function (res) {
+          console.log(res.data)
+          if (res.data.msg == 'ok') {
+            // wx.setStorageSync('invitationId', res.data.invitationId)
+            that.setData({
+              invitationId: res.data.invitationId
+            })
+            console.log('邀请添加成功...')
+            console.log("邀请id:" + that.data.invitationId)
+            wx.showToast({
+              title: '添加邀请成功',
+              icon: 'success',
+              duration: 1500
+            })
+          } else {
+            console.log('邀请失败...')
+          }
+          that.setData({
+            count: ++that.data.count
+          })
+        },
+      })
+    } else {
+      that.setData({
+        count: ++that.data.count
+      })
     }
+    this.setData({
+      hideTag: !this.data.hideTag
+    })
+  },
+  onShareAppMessage: function () {
+    var that=this
+    // if (res.from === 'button') {
+    //   console.log(res.target)
+    // }
+    //转发部分
     return {
       title: '邀请函',
-      // path: 'pages/invite/invite?dataset='+util.tran(this),
-      path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(this,"inv"),
+      path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(that, "inv"),
       success: function (res) {
         // 转发成功
         //提交邀请表单
         //that.invformSubmit()
+
         console.log("转发成功:" + JSON.stringify(res));
         var shareTickets = res.shareTickets;
         // if (shareTickets.length == 0) {
@@ -194,49 +293,18 @@ Page({
         //     console.log(res)
         //   }
         // })
-        /*发起邀请请求*/
-        // wx.request({
-        //   url: getApp().globalData.server + "/SysWXUserAction/registerWXUser.do",
-        //   data: {
-        //     wxOpenId: openIdValue,
-        //     username: that.data.name,
-        //     company: that.data.company,
-        //     phonenum: that.data.phone,
-        //     photoURL: that.data.avatarUrl,
-        //     formId: formIdValue
-        //   },
-        //   method: 'post',
-        //   success: function (res) {
-        //     console.log(res.data)
-        //     if (res.data.msg == 'ok') {
-        //       console.log('邀请成功...')
-        //       wx.showToast({
-        //         title: '邀请成功',
-        //         icon: 'success',
-        //         duration: 1500
-        //       })
-        //     } else {
-        //       console.log('邀请失败...')
-        //       wx.showToast({
-        //         title: '邀请失败',
-        //         icon: 'loading',
-        //         duration: 1500
-        //       })
-        //     }
-        //   },
-        // })
       },
       fail: function (res) {
         // 转发失败
         console.log("转发失败:" + JSON.stringify(res));
+        wx.showToast({
+          title: '邀请失败',
+          icon: 'loading',
+          duration: 1500
+        })
       }
     }
-  },
-  //获取input输入框的值
-  getAds: function(e){
-    this.setData({
-      address: e.detail.value
-    })
+            //转发部分末尾
   },
   getReason: function (e) {
     this.setData({

@@ -190,7 +190,7 @@ Page({
         data:{
           wxOpenId: openIdValue,
           username: that.data.name,
-          company: that.data.company,
+          address: that.data.company,
           phonenum: that.data.phone,
           photoURL: that.data.avatarUrl,
           formId: formIdValue

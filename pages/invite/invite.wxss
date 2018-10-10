@@ -26,6 +26,10 @@ page{
   margin-bottom: 30rpx;
   opacity: 0.8;
 }
+.checkbox{
+  display: flex;
+  flex-direction: row;
+}
 .middle{
   margin-top: 15rpx;
   margin-left: 20rpx;

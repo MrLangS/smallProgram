@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    invitationId: '',//邀请id
     invitor: '',
     reason: '',
     year: '',
@@ -19,7 +20,7 @@ Page({
     callIcon: '../../resource/images/call.png',
     winWidth: '',
     winHeight: '',
-    registed: 1,//1代表用户已注册
+    registed: 0,//1代表用户已注册
     // 访客部分信息
     headpic: '',//头像
     name: '',//姓名
@@ -55,15 +56,63 @@ Page({
     })
   },
   //接受邀请
-  accept: function(){
-    // wx.request({
-    //   url: '',
-    //   method: 'post',
-    //   data:{},
-    //   success: function(res){
-
-    //   }
-    // })
+  //已注册的接受
+  accept01: function(){
+    wx.request({
+      url: getApp().globalData.server +'/Invitation/addVisitor.do',
+      method: 'get',
+      data:{
+        invitationId: this.data.invitationId,
+        userId: wx.getStorageSync('wxuserInfo').id
+      },
+      success: function(res){
+        if(res.data){
+          wx.showToast({
+            title: '接受成功',
+            icon: 'success',
+            duration: 1500
+          })
+        }else{
+          wx.showToast({
+            title: '接受失败',
+            duration: 1500
+          })
+        }
+      }
+    })
+    this.setData({
+      show: 1
+    })
+  },
+  //未注册的接受
+  accept02: function () {
+    var that=this
+    wx.request({
+      url: getApp().globalData.server + '/Invitation/addVisitorAndRegisterUser.do',
+      method: 'post',
+      data: {
+        wxOpenId: wx.getStorageSync('openid'),
+        username: that.data.name,
+        address: that.data.visCompany,
+        phonenum: that.data.visPhone,
+        photoURL: that.data.avatarUrl,
+        invitationId: that.data.invitationId,
+      },
+      success: function (res) {
+        if (res.data) {
+          wx.showToast({
+            title: '接受成功',
+            icon: 'success',
+            duration: 1500
+          })
+        } else {
+          wx.showToast({
+            title: '接受失败',
+            duration: 1500
+          })
+        }
+      }
+    })
     this.setData({
       show: 1
     })
@@ -76,9 +125,9 @@ Page({
     var that = this
     //初始化页面的数据
     if(options.dataset!=null){
-      util.inviteInfo(this,options.dataset)
+      util.inviteInfo(this,options.dataset,0)
     }else{
-      util.inviteInfo(this, options.detail)
+      util.inviteInfo(this, options.detail,1)
     }
     //获得手机屏幕信息
     wx.getSystemInfo({
@@ -126,7 +175,6 @@ Page({
   // 个人填写信息部分
   //预览头像
   preview: function (e) {
-    console.log("预览头像")
     var that = this
     var imgArr = this.data.imgArr
     wx.previewImage({
@@ -140,20 +188,59 @@ Page({
   onPicBtn: function () {
     var that = this
     var imgArr = that.data.imgArr
+    var openIdValue = wx.getStorageSync('openid');
+    console.log(openIdValue)
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: function (res) {
+        var uploadUserUrl = getApp().globalData.server + "/SysWXUserAction/uploadPhoto.do"
         var tempFilePaths = res.tempFilePaths
         if (tempFilePaths.length > 0) {
           imgArr[0] = tempFilePaths[0]
-          that.setData({
-            avatarUrl: tempFilePaths,
-            imgArr: imgArr,
-            picManage: '更换头像'
+          wx.uploadFile({
+            url: uploadUserUrl,
+            filePath: tempFilePaths[0],
+            name: 'personPhoto',
+            header: { "Content-Type": "multipart/form-data" },
+            formData: {
+              openId: openIdValue
+            },
+            success: function (res) {
+              console.log('上传图片请求...')
+              var data = JSON.parse(res.data)
+              console.log(data)
+              if (data.quality == 0) {
+                that.setData({
+                  avatarUrl: data.photoURL,
+                  imgArr: imgArr,
+                  quality: 0,
+                })
+                wx.showToast({
+                  title: '上传成功',
+                  icon: 'success',
+                  duration: 1500
+                })
+              } else {
+                wx.showToast({
+                  title: '图片不合格',
+                  icon: 'loading',
+                  duration: 1500
+                })
+              }
+            },
+            fail: function (res) {
+              console.log('上传失败...')
+              wx.showModal({
+                title: '提示',
+                content: '上传失败',
+                showCancel: false
+              })
+            },
           })
         }
+
       },
     })
   },
@@ -186,7 +273,7 @@ Page({
   },
   getPhoneValue: function (e) {
     this.setData({
-      phone: e.detail.value
+      visPhone: e.detail.value
     })
   },
   getCodeValue: function (e) {

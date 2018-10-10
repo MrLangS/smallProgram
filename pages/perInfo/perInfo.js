@@ -60,8 +60,6 @@ Page({
       success: function (res) {
         var uploadUserUrl = getApp().globalData.server + "/SysWXUserAction/uploadPhoto.do"
         var tempFilePaths = res.tempFilePaths
-        picId
-        var picId=wx.getStorageSync(key)
         if (tempFilePaths.length > 0) {
           imgArr[0] = tempFilePaths[0]
           wx.uploadFile({
@@ -131,7 +129,7 @@ Page({
           username: this.data.name,
           oldPhoneNO: wx.getStorageSync("oldPhone"),
           newPhoneNO: this.data.phone,
-          company: this.data.company
+          address: this.data.company
         },
         method: 'post',
         success: function(res){
@@ -163,7 +161,7 @@ Page({
     this.setData({
       name: initdata.username,
       phone: initdata.phonenum,
-      company: initdata.company,
+      company: initdata.address,
       changeBtn: true,
       inputTag: true,
       focus: false,
@@ -195,7 +193,7 @@ Page({
     this.setData({
       name: initdata.username,
       phone: initdata.phonenum,
-      company: initdata.company,
+      company: initdata.address,
       avatarUrl: initdata.photoURL,
     })
   },

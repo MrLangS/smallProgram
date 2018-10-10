@@ -45,11 +45,12 @@
       </view>
     </view>
     <block wx:if="{{registed}}">
-      <button bindtap='accept' hidden='{{show!=0}}' type='primary' class='post-btn'>接受邀请</button> 
+      <button bindtap='accept01' hidden='{{show!=0}}' type='primary' class='post-btn'>接受邀请</button> 
     </block>
     <block wx:if="{{show!=2}}">
       <button open-type="share" class='post-btn' size="default">转发邀请</button>
     </block>
+    <!-- <view>邀请id:{{invitationId}}</view> -->
   </view>
   <block wx:if="{{!registed&&show==0}}">
     <!-- 分隔栏 -->
@@ -94,7 +95,7 @@
       </view>
       <view class="btn-area">
         <view class="btn">
-          <button bindtap='accept' type='primary' size="default">接受邀请</button> 
+          <button bindtap='accept02' type='primary' size="default">接受邀请</button> 
         </view>
           <!-- <button  disabled="{{disabled}}" style="background-color:{{loginBtnBgBgColor}}"   formType="submit"  loading="{{btnLoading}}"> {{loginBtnTxt}} </button> -->
       </view>

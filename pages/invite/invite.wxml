@@ -21,7 +21,7 @@
       </view>
       <view class='input-log'>
       <label class='lab'>地址</label>
-        <input class='content'  placeholder='选择访问区域' bindinput='getAds' value='{{address}}'/> 
+        <input class='content'  placeholder='选择访问区域' bindtap='getAds' value='{{address}}' disabled='true'/> 
       </view>
       <view class='input-log'>
         <label class='lab'>人数</label>
@@ -65,7 +65,7 @@
         <label class='head-title'>结束时间</label> <label class='head-con'>{{endtime}}</label>
       </view>
       <view class='head-content'>
-        <label class='head-title'>地址</label> <label class='head-con'>北京市朝阳区</label>
+        <label class='head-title'>地址</label> <label class='head-con'>{{address}}</label>
       </view>
       <view class='head-content'>
         <label class='head-title'>人数</label> <label class='head-con'>{{numArr[index]}}</label>
@@ -76,7 +76,7 @@
       <view class="btn">
         <!-- <button form-type='submit' open-type="share" type='primary' size="default">发送邀请</button>  -->
         <button style="background-color:#0099FF;color:#fff" 
-        bindtap='switchChange' size="default" hidden='{{hideTag}}'>确认</button>
+        bindtap='invite' size="default" hidden='{{hideTag}}'>确认</button>
       </view>
       <view class="btn01" hidden='{{!hideTag}}'>
         <!-- <button form-type='submit' open-type="share" type='primary' size="default">发送邀请</button>  -->
@@ -90,7 +90,7 @@
           <button open-type="share" type='primary' size='default'>转发邀请</button>
         </block>
       </view>
-      <view hidden='{{!hideTag}}'><button>新增空白邀请</button></view>
+      <view hidden='{{!hideTag}}' bindtap='newInv'><button>新增空白邀请</button></view>
     </view>
   </form>
   <view class='footer'>当前日期：{{currentDay.year}}年{{currentDay.month}}月{{currentDay.day}}日</view>
@@ -108,6 +108,15 @@
         <view wx:for="{{days}}" wx:key style="line-height: 50px">{{item}}日</view>
       </picker-view-column>
     </picker-view>
+  </modal>
+  <!-- 区域选择弹窗 -->
+  <modal hidden="{{modal_are}}" title="区域选择" confirm-text="确定" cancel-text="取消" bindconfirm="confirm_are"
+  bindcancel="cancel_are">
+    <checkbox-group bindchange="checkboxChange">
+      <label class="checkbox" wx:key wx:for="{{regionList}}">
+        <checkbox value="{{item.name}},{{item.id}}" checked="{{item.checked}}"/>{{item.name}}
+      </label>
+    </checkbox-group>
   </modal>
 </view>
 

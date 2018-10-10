@@ -13,8 +13,20 @@ const formatNumber = n => {
   n = n.toString()
   return n[1] ? n : '0' + n
 }
+function formatDay(that){
+  var date=that.data
+  return [date.year, date.month, date.day].join('-')
+}
+function formatTimestamp(that,tag){
+  var datetime = that.data
+  if(tag==0){
+    return [datetime.year, datetime.month, datetime.day].join('-') + ' ' + datetime.starttime
+  }else{
+    return [datetime.year, datetime.month, datetime.day].join('-') + ' ' + datetime.endtime
+  }
+}
 //转发所需要携带的信息
-function tran(that,role) {
+function tran(that, role) {
   var _that = that.data
   var tranJsonData = {
     starttime: _that.starttime,
@@ -26,6 +38,7 @@ function tran(that,role) {
     invitor: _that.invitor,
     reason: _that.reason,
     address: _that.address,
+    invitationId: _that.invitationId,//邀请id     
     // invId: invId
   }
   if(role=="vis"){
@@ -36,7 +49,7 @@ function tran(that,role) {
 }
 
 //设置邀请数据
-function inviteInfo(that,initData){
+function inviteInfo(that,initData,tag){
   var data = JSON.parse(initData)
   that.setData({
     reason: data.reason,
@@ -48,8 +61,13 @@ function inviteInfo(that,initData){
     address: data.address,
     num: data.num,
     invitor: data.invitor,
-    show: data.show,
+    invitationId: data.invitationId
   })
+  if(tag==1){
+    that.setData({
+      show: data.show
+    })
+  }
 }
 
 //邮箱以及手机的正则表达式
@@ -172,6 +190,8 @@ function checkCode(that) {
 
 module.exports = {
   formatTime: formatTime,
+  formatDay: formatDay,
+  formatTimestamp: formatTimestamp,
   regexConfig: regexConfig,
   getPicker: getPicker,
   getPickerList: getPickerList,
