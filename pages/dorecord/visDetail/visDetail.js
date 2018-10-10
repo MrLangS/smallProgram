@@ -131,6 +131,9 @@ Page({
     }else{
       util.inviteInfo(this, options.detail,1)
     }
+    that.setData({
+      registed: wx.getStorageSync('registed')
+    })
     //获得手机屏幕信息
     wx.getSystemInfo({
       success: function (res) {
