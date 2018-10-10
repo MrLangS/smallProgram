@@ -70,7 +70,7 @@ Page({
       complete: function(res) {},
     })
   },
-  //点击列表项查看邀请详细内容
+  //点击列表项查看受邀详细内容
   clickVisit: function (e) {
     var index = e.currentTarget.dataset.index
     console.log("查看第" + (index + 1) + "项")
@@ -112,6 +112,35 @@ Page({
         }); 
       } 
     });
+    //获得邀请列表请求
+    wx.request({
+      url: getApp().globalData.server + '/Invitation/invitationList.do',
+      method: 'get',
+      data: {
+        staffId: wx.getStorageSync('wxuserInfo').staffId
+      },
+      success: function (res) {
+        console.log(res.data)
+        // this.setData({
+        //   inviteList: res.data
+        // })
+
+      }
+    })
+    //获得受邀列表请求
+    wx.request({
+      url: getApp().globalData.server + '/Invitation/invitedList.do',
+      method: 'get',
+      data: {
+        userId: wx.getStorageSync('wxuserInfo').id
+      },
+      success: function (res) {
+        console.log(res.data)
+        // this.setData({
+        //   visitList: res.data
+        // })
+      }
+    })
 
   },
 

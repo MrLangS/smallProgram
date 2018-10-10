@@ -60,6 +60,21 @@ Page({
    */
   onLoad: function (options) {
     var detail=JSON.parse(options.detail)
+    //获得邀请人员列表请求
+    wx.request({
+      url: getApp().globalData.server + '/Invitation/getOneInvitationVisitors.do',
+      method: 'get',
+      data: {
+        invitationId: 0
+      },
+      success: function (res) {
+        console.log(res.data)
+        // this.setData({
+        //   memberList: res.data
+        // })
+
+      }
+    })
     this.setData({
       reason: detail.reason,
       year: detail.year,
