@@ -25,6 +25,16 @@ function formatTimestamp(that,tag){
     return [datetime.year, datetime.month, datetime.day].join('-') + ' ' + datetime.endtime
   }
 }
+function tranStamp(timestamp,tag){
+  var arr=timestamp.split(" ")
+  if(!tag){
+    return arr[0].split("-")
+  }else{
+    var time = arr[1].split(":")
+    return time[0]+":"+time[1]
+  }
+  
+}
 //转发所需要携带的信息
 function tran(that, role) {
   var _that = that.data
@@ -53,23 +63,35 @@ function tran(that, role) {
 //设置邀请数据
 function inviteInfo(that,initData,tag){
   var data = JSON.parse(initData)
-  that.setData({
-    reason: data.reason,
-    year: data.year,
-    month: data.month,
-    day: data.day,
-    starttime: data.starttime,
-    endtime: data.endtime,
-    address: data.address,
-    num: data.num,
-    invitor: data.invitor,
-    vistorName: data.vistorName,
-    vistorPhone: data.vistorPhone,
-    invitationId: data.invitationId
-  })
-  if(tag==1){
+  if(tag==0){
     that.setData({
-      show: data.show
+      reason: data.reason,
+      year: data.year,
+      month: data.month,
+      day: data.day,
+      starttime: data.starttime,
+      endtime: data.endtime,
+      address: data.address,
+      num: data.num,
+      invitor: data.invitor,
+      vistorName: data.vistorName,
+      vistorPhone: data.vistorPhone,
+      invitationId: data.invitationId
+    })
+  }
+  if(tag==1){
+    var invitor={name: '',company: '',phone: ''}
+    invitor.name = data.invitationManName
+    // invitor.company = data.company
+    invitor.phone = data.invitationManPhone
+    that.setData({
+      status: data.status,
+      reason: data.reason,
+      num: data.visitorCount,
+      invitor: invitor,
+      vistorName: data.visitorLinkmanName,
+      vistorPhone: data.visitorLinkmanPhone,
+      invitationId: data.id
     })
   }
 }
@@ -203,5 +225,6 @@ module.exports = {
   checkPhone: checkPhone,
   checkForm: checkForm,
   checkPerInfo: checkPerInfo,
-  inviteInfo: inviteInfo
+  inviteInfo: inviteInfo,
+  tranStamp: tranStamp
 }

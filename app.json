@@ -1,5 +1,6 @@
 {
   "pages":[
+    "pages/index/index",
     "pages/dorecord/dorecord",
     "pages/invite/invite",
     "pages/register/register",
@@ -8,7 +9,6 @@
     "pages/dorecord/visDetail/visDetail",
     "pages/dorecord/thrDetail/thrDetail",
     "pages/login/login",
-    "pages/index/index",
     "pages/logs/logs"
   ],
   "workers": "workers",

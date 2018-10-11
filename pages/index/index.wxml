@@ -1,62 +1,8 @@
-<!--index.wxml-->
-<view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
-    <view id="tapTest" data-hi='weChat' bindtap='tapName'>click me to jump</view>
-
-    <button open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>获取手机号</button>
-    <button bindtap='makecall'>拨打手机号</button>
-
-    <!-- 
-    <wxs src="../comm/comm.wxs" module="tools" />
-    <view>{{tools.bar("nice")}}</view>
-    <view>{{tools.msg}}</view> 
-    -->
-    
-    <!-- <wxs src="../comm/refcomm.wxs" module="refcomm" /> -->
-
-    <switch wx:for="{{objectArray}}" wx:key="unique" style="display: block;"> {{item.id}} </switch>
-    <button bindtap="switch"> Switch </button>
-    <button bindtap="addToFront"> Add to the front </button>
-
-    <template name="msgItem">
-      <view>
-        <text>{{index}}{{msg}}</text>
-        <text>Time:{{time}}</text>
-      </view>
-    </template>
-    <template is="msgItem" data="{{...item}}" />
-
-    <switch wx:for="{{numberArray}}" wx:key="*this" style="display: block;"> {{item}} </switch>
-    <button bindtap="addNumberToFront"> Add to the front </button>
-    <!-- <view wx:for="{{array}}" wx:key="key">{{index+1}}:{{item}}</view> -->
-    <view wx:if="{{view=='xiaohong'}}">小红</view>
-    <view wx:elif="{{view=='xiaoming'}}">小明</view>
-    <view wx:else="{{view=='xiaowang'}}">小王</view>
-    <view>{{hello.key2}}{{array[1]}}</view>
-    <!-- 
-    <view wx:for="{{[1,2,3,4,5,6,7,8,9]}}" wx:for-item="i">
-      <view wx:for="{{[1,2,3,4,5,6,7,8,9]}}" wx:for-item="j">
-        <view wx:if="{{i<=j}}">{{i}}*{{j}}={{i*j}}</view>
-      </view>
-    </view>
-     -->
-    <!-- 
-    <block wx:for="{{[1,2,3]}}">
-      <view>{{index}}</view>
-      <view>{{item}}</view>
-    </block>
-     -->
-    <button open-type="share"> 点击转发 </button>
-    <view hidden="{{flag?true:false}}">show</view>
-    <!-- <view wx:for="{{[1,2,3]}}">{{item}}</view> -->
-  </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
-    <button bindtap='clickme'>改变文字</button>
-  </view>
+<!-- <view style="background-image:url('../resource/images/invited.png')" class="div"></view> -->
+<view>
+  <image class='invite' mode='scaleToFill' src='{{invPng}}'></image>
 </view>
+<view>
+  <image class='invite' mode='scaleToFill' src='{{invPng}}'></image>
+</view>
+

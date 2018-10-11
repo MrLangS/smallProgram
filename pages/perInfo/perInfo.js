@@ -138,7 +138,7 @@ Page({
           wx.setStorageSync("wxuserInfo", user)
           that.setData({
             name: user.username,
-            company: user.company,
+            company: user.address,
             phone: user.phonenum,
             changeBtn: true,
             inputTag: true,

@@ -232,6 +232,7 @@ Page({
           staffId: invitor.staffId,
           username: invitor.username,
           phonenum: invitor.phonenum,
+          address: invitor.address,
           visitorLinkmanName: that.data.vistorName,
           visitorLinkmanPhone:that.data.vistorPhone,
           reason: that.data.reason,
@@ -261,6 +262,43 @@ Page({
         },
       })
     } else {
+      /*修改邀请请求*/
+      var date = util.formatDay(that)
+      var starttime = util.formatTimestamp(that, 0)
+      var endtime = util.formatTimestamp(that, 1)
+      var invitor = wx.getStorageSync("wxuserInfo")
+      wx.request({
+        url: getApp().globalData.server + "/Invitation/updateInvitation.do",
+        data: {
+          visitorDay: date,
+          startTime: starttime,
+          endTime: endtime,
+          visitorCount: that.data.numArr[that.data.index],
+          staffId: invitor.staffId,
+          username: invitor.username,
+          address: invitor.address,
+          phonenum: invitor.phonenum,
+          visitorLinkmanName: that.data.vistorName,
+          visitorLinkmanPhone: that.data.vistorPhone,
+          reason: that.data.reason,
+          invitationId: that.data.invitationId,
+          regionIds: that.data.regionIds
+        },
+        method: 'post',
+        success: function (res) {
+          if (res.data.msg == 'ok') {
+            // wx.setStorageSync('invitationId', res.data.invitationId)
+            console.log('邀请函修改成功...')
+            wx.showToast({
+              title: '邀请函修改成功',
+              icon: 'success',
+              duration: 1500
+            })
+          } else {
+            console.log('邀请函修改失败...')
+          }
+        },
+      })
       that.setData({
         count: ++that.data.count
       })

@@ -10,7 +10,7 @@
   <view wx:for="{{inviteList}}" wx:key="id" data-index="{{index}}" bindtap='clickInvite'>
     <view class='item' hover-class='click'>
       <view class='item-head'>{{item.reason}}</view>
-      <view class='item-foot'>{{item.year}}.{{item.month}}.{{item.day}}</view>
+      <view class='item-foot'>{{item.visitorLinkmanName}}</view>
     </view>
   </view>   
   </swiper-item>   
@@ -19,9 +19,9 @@
   <view class='item'>内容暂定</view>
   <view wx:for="{{visitList}}" wx:key="id" data-index="{{index}}" bindtap='clickVisit'>
     <view class='item' hover-class='click'>
-      <view class='item-icon'><icon class='icon' type="{{item.show==1? 'success':(item.show==0?'info':'cancel')}}" size='18' /></view>
+      <view class='item-icon'><icon class='icon' type="{{item.status==2? 'success':(item.status==1?'info':'cancel')}}" size='18' /></view>
       <view class='item-head'>{{item.reason}}</view>
-      <view class='item-foot'>{{item.year}}.{{item.month}}.{{item.day}}</view>
+      <view class='item-foot'>{{item.invitationManName}}</view>
     </view>
   </view>    
   </swiper-item>    

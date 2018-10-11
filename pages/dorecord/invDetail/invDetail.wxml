@@ -22,6 +22,12 @@
     <view class='head-content'>
       <label class='head-title'>人数</label> <label class='head-con'>{{num}}</label>
     </view>
+    <view class='head-content'>
+      <label class='head-title'>代表成员</label> <label class='head-con'>{{vistorName}}</label>
+    </view>
+    <view class='head-content'>
+      <label class='head-title'>成员手机号</label> <label class='head-con'>{{vistorPhone}}</label>
+    </view>
   </view>
 </view>
 <!-- 分隔栏 -->

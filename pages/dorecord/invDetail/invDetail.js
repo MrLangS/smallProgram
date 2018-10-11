@@ -1,10 +1,13 @@
 // pages/dorecord/invDetail/invDetail.js
+var util = require('../../../utils/util.js')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    invitationId: '',//邀请id
+    invitor: { name: '', company: '', phone: '' },
     reason:'',
     year: '',
     month:'',
@@ -13,6 +16,8 @@ Page({
     endtime: '',
     address: '',
     num: 0,
+    vistorName: '',
+    vistorPhone: '',
     hidenIndex: null,
     hidenTag: false,
     memberList: [
@@ -65,25 +70,35 @@ Page({
       url: getApp().globalData.server + '/Invitation/getOneInvitationVisitors.do',
       method: 'get',
       data: {
-        invitationId: 0
+        invitationId: detail.id
       },
       success: function (res) {
-        console.log(res.data)
+        console.log("成员列表:" )
+        console.log(res)
         // this.setData({
         //   memberList: res.data
         // })
 
       }
     })
+    var invitor = this.data.invitor
+    invitor.name = detail.invitationManName
+    invitor.phone = detail.invitationManPhone
+    invitor.company = detail.invitationManAddress
+    var date = util.tranStamp(detail.visitorDay,0)
     this.setData({
       reason: detail.reason,
-      year: detail.year,
-      month: detail.month,
-      day: detail.day,
-      starttime: detail.starttime,
-      endtime: detail.endtime,
-      address: detail.address,
-      num: detail.num
+      year: date[0],
+      month: date[1],
+      day: date[2],
+      starttime: util.tranStamp(detail.startTime, 1),
+      endtime: util.tranStamp(detail.endTime, 1),
+      address: detail.regionNames,
+      num: detail.visitorCount,
+      vistorName: detail.visitorLinkmanName,
+      vistorPhone: detail.visitorLinkmanPhone,
+      invitationId: detail.id,//邀请id
+      invitor: invitor,
     })
   },
 

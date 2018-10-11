@@ -112,6 +112,20 @@ Page({
         }); 
       } 
     });
+  },
+
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+    
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    var that = this
     //获得邀请列表请求
     wx.request({
       url: getApp().globalData.server + '/Invitation/invitationList.do',
@@ -120,13 +134,14 @@ Page({
         staffId: wx.getStorageSync('wxuserInfo').staffId
       },
       success: function (res) {
+        console.log("获得邀请记录")
         console.log(res.data)
-        // this.setData({
-        //   inviteList: res.data
-        // })
-
+        that.setData({
+          inviteList: res.data
+        })
       }
     })
+    var that = this
     //获得受邀列表请求
     wx.request({
       url: getApp().globalData.server + '/Invitation/invitedList.do',
@@ -135,27 +150,13 @@ Page({
         userId: wx.getStorageSync('wxuserInfo').id
       },
       success: function (res) {
+        console.log("获得受邀记录")
         console.log(res.data)
-        // this.setData({
-        //   visitList: res.data
-        // })
+        that.setData({
+          visitList: res.data
+        })
       }
     })
-
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
   },
 
   /**

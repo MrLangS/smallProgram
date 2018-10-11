@@ -7,7 +7,7 @@ Page({
    */
   data: {
     invitationId: '',//邀请id
-    invitor: '',
+    invitor: { name: '', company: '', phone: '' },
     vistorName: '',
     vistorPhone: '',
     reason: '',
@@ -18,8 +18,9 @@ Page({
     endtime: '',
     address: '',
     num: 1,
-    show:0,
+    status:1,
     callIcon: '../../resource/images/call.png',
+    invPNG: '../../resource/images/invited.png',
     winWidth: '',
     winHeight: '',
     registed: 0,//1代表用户已注册
@@ -39,6 +40,7 @@ Page({
     companyIcon: "../../resource/images/company.png",
     imgArr: ['D:/627wx1/wx_app/pages/resource/images/timg.png'],
     codename: '获取验证码',
+    isPost: 0,//判断页面是否由转发进入
   },
   makecall: function(){
     wx.makePhoneCall({
@@ -60,15 +62,20 @@ Page({
   //接受邀请
   //已注册的接受
   accept01: function(){
+    var that=this
     wx.request({
-      url: getApp().globalData.server +'/Invitation/addVisitor.do',
-      method: 'get',
-      data:{
-        invitationId: this.data.invitationId,
-        userId: wx.getStorageSync('wxuserInfo').id
+      url: getApp().globalData.server +'/Invitation/changeVisitorStatus.do',
+      data: {
+        invitationId: that.data.invitationId,
+        userId: wx.getStorageSync('wxuserInfo').id,
+        status: 2
       },
+      method: 'get',
       success: function(res){
         if(res.data){
+          that.setData({
+            status: 2
+          })
           wx.showToast({
             title: '接受成功',
             icon: 'success',
@@ -81,9 +88,6 @@ Page({
           })
         }
       }
-    })
-    this.setData({
-      show: 1
     })
   },
   //未注册的接受
@@ -116,7 +120,7 @@ Page({
       }
     })
     this.setData({
-      show: 1
+      status: 2
     })
   },
 
@@ -128,6 +132,9 @@ Page({
     //初始化页面的数据
     if(options.dataset!=null){
       util.inviteInfo(this,options.dataset,0)
+      this.setData({
+        isPost: 1
+      })
     }else{
       util.inviteInfo(this, options.detail,1)
     }
@@ -143,6 +150,25 @@ Page({
         });
       }
     });
+  },
+  /**
+ * 生命周期函数--监听页面初次渲染完成
+ */
+  onReady: function () {
+    //为邀请函添加访客
+    if (this.data.isPost==1&&wx.getStorageSync('wxuserInfo').id!=null){
+      wx.request({
+        url: getApp().globalData.server + '/Invitation/addVisitor.do',
+        method: 'get',
+        data: {
+          invitationId: this.data.invitationId,
+          userId: wx.getStorageSync('wxuserInfo').id
+        },
+        success: function (res) {
+          console.log(res.data)
+        }
+      })
+    }
   },
   /**
    * 用户点击右上角分享
@@ -330,12 +356,6 @@ Page({
         }
       })
     }
-  },
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
   },
 
   /**

@@ -78,7 +78,7 @@
       <view class='head-content'>
         <label class='head-title'>人数</label> <label class='head-con'>{{numArr[index]}}</label>
       </view>
-       <view class='head-content'>
+      <view class='head-content'>
         <label class='head-title'>代表成员</label> <label class='head-con'>{{vistorName}}</label>
       </view>
        <view class='head-content'>
