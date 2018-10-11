@@ -82,11 +82,18 @@ function inviteInfo(that,initData,tag){
   if(tag==1){
     var invitor={name: '',company: '',phone: ''}
     invitor.name = data.invitationManName
-    // invitor.company = data.company
+    invitor.company = data.invitationManAddress
     invitor.phone = data.invitationManPhone
+    var date = tranStamp(data.visitorDay, 0)
     that.setData({
       status: data.status,
       reason: data.reason,
+      year: date[0],
+      month: date[1],
+      day: date[2],
+      starttime: tranStamp(data.startTime, 1),
+      endtime: tranStamp(data.endTime, 1),
+      address: data.address,
       num: data.visitorCount,
       invitor: invitor,
       vistorName: data.visitorLinkmanName,

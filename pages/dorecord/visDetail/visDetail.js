@@ -105,7 +105,12 @@ Page({
         invitationId: that.data.invitationId,
       },
       success: function (res) {
-        if (res.data) {
+        if (res.data.msg =='ok') {
+          wx.setStorageSync('wxuserInfo', res.data.sysWXUser);
+          wx.setStorageSync('registed', 1)
+          this.setData({
+            status: 2
+          })
           wx.showToast({
             title: '接受成功',
             icon: 'success',
@@ -118,9 +123,6 @@ Page({
           })
         }
       }
-    })
-    this.setData({
-      status: 2
     })
   },
 

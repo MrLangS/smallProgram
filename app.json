@@ -1,5 +1,6 @@
 {
   "pages":[
+    "pages/result/result",
     "pages/index/index",
     "pages/dorecord/dorecord",
     "pages/invite/invite",

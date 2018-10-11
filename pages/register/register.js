@@ -204,10 +204,9 @@ Page({
           if(res.data.msg=='ok'){
             console.log('注册成功...')
             wx.setStorageSync("wxuserInfo", res.data.sysWXUser)
-            wx.showToast({
-              title: '注册成功',
-              icon: 'success',
-              duration: 1500
+            wx.setStorageSync('registed', 1)
+            wx.redirectTo({
+              url: '../result/result',
             })
           }else{
             console.log('注册失败...')
