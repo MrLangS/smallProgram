@@ -72,6 +72,8 @@ Page({
       },
       method: 'get',
       success: function(res){
+        console.log("确认邀请结果信息:")
+        console.log(res.data)
         if(res.data){
           that.setData({
             status: 2
@@ -173,7 +175,7 @@ Page({
     }
   },
   /**
-   * 用户点击右上角分享
+   * 转发
    */
   onShareAppMessage: function (res) {
     var that = this

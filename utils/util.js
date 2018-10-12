@@ -35,6 +35,86 @@ function tranStamp(timestamp,tag){
   }
   
 }
+function login(that){
+  // 登录
+  wx.login({
+    success: res => {
+      // 发送 res.code 到后台换取 openId, sessionKey, unionId
+      var code = res.code
+      if (code) {
+        console.log('获取用户登录凭证：' + code);
+        var loginUrl = getApp().globalData.server + '/SysWXUserAction/onLogin.do?code=' + code;
+        // --------- 发送凭证 ------------------
+        wx.request({
+          url: loginUrl,
+          data: { code: code },
+          success: function (res) {
+            var openid = res.data.openid //返回openid
+            console.log("openid is: " + openid);
+            wx.setStorageSync('openid', openid);
+            var registed = res.data.registed
+            wx.setStorageSync('registed', registed)
+            console.log("registed:" + registed)
+            that.setData({
+              registed: wx.getStorageSync('registed')
+            })
+            if (registed == '1') {
+              // wx.redirectTo({ url: '/pages/index/index' })
+              //获取用户信息的请求
+              var userInfoUrl = getApp().globalData.server + '/SysWXUserAction/getUserMsgByOpenId.do?openId='
+              wx.request({
+                url: userInfoUrl + wx.getStorageSync('openid'),
+                method: 'post',
+                // dataType: 'json',
+                success: function (res) {
+                  console.log(res)
+                  wx.setStorageSync('wxuserInfo', res.data);
+                  // that.globalData.wxuserInfo = res.data
+                  //关联内部员工
+                  if (wx.getStorageSync('wxuserInfo').staffId == null) {
+                    wx.request({
+                      url: getApp().globalData.server + '/Invitation/isInternalUser.do',
+                      data: {
+                        openId: wx.getStorageSync('openid'),
+                        phoneNO: wx.getStorageSync('wxuserInfo').phonenum
+                      },
+                      method: 'get',
+                      success: function (res) {
+                        console.log(res.data.msg)
+                        if (res.data.msg) {
+                          var userInfoUrl = getApp().globalData.server
+                          userInfoUrl = userInfoUrl + '/SysWXUserAction/getUserMsgByOpenId.do?openId='
+                          wx.request({
+                            url: userInfoUrl + wx.getStorageSync('openid'),
+                            method: 'post',
+                            success: function (res) {
+                              wx.setStorageSync('wxuserInfo', res.data);
+                            }
+                          })
+                        }
+                        // wx.setStorageSync(key, data)
+                      }
+                    })
+                  }
+                }
+              })
+            }
+            else {
+              // wx.redirectTo({ url: '/pages/invite/invite' })
+            }
+          },
+          fail: function () {
+            console.log("fail")
+          }
+        })
+
+        // ------------------------------------
+      } else {
+        console.log('获取用户登录态失败：' + res.errMsg);
+      }
+    }
+  })
+}
 //转发所需要携带的信息
 function tran(that, role) {
   var _that = that.data
@@ -93,7 +173,7 @@ function inviteInfo(that,initData,tag){
       day: date[2],
       starttime: tranStamp(data.startTime, 1),
       endtime: tranStamp(data.endTime, 1),
-      address: data.address,
+      address: data.regionNames,
       num: data.visitorCount,
       invitor: invitor,
       vistorName: data.visitorLinkmanName,
@@ -233,5 +313,6 @@ module.exports = {
   checkForm: checkForm,
   checkPerInfo: checkPerInfo,
   inviteInfo: inviteInfo,
-  tranStamp: tranStamp
+  tranStamp: tranStamp,
+  login: login
 }

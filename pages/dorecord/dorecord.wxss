@@ -27,27 +27,45 @@
 .swiper-box view{	
   text-align: center;
 }
-.item{
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  line-height: 80rpx;
-  background-color: white;
-  height: 80rpx;
-  /* margin-top: 4rpx; */
-  border-bottom: 1rpx solid #77777779;
-}
-.item-head{
-  margin-left: 40rpx;
-}
-.item-foot{
-  position: absolute;
-  right: 40rpx;
-}
+
 .click{
   background-color: #7777770c;
 }
+
+.item{
+  display: flex;
+  flex-direction: row;
+  /* position: relative; */
+  width: 100%;
+  line-height: 60rpx;
+  background-color: white;
+  height: 120rpx;
+  /* margin-top: 4rpx; */
+  border-bottom: 1rpx solid #888888;
+}
+.item-head{
+  width: 120rpx;
+  height: 120rpx;
+  text-align: center;
+  align-self: center;
+  /* border-right: 1rpx solid #b2b2b2; */
+  background-color: #b2b2b2;
+  opacity: 0.6
+}
+.item-top{
+  margin-left: 40rpx;
+}
+.item-bot{
+  opacity: 0.6;
+  font-size: 25rpx;
+}
+.item-bottom{
+  margin-left: 40rpx;
+  opacity: 0.6;
+  font-size: 30rpx;
+}
 .item-icon{
-  margin-left: 10rpx;
-  margin-top: 5rpx;
+  position: absolute;
+  line-height: 120rpx;
+  right: 30rpx;
 }

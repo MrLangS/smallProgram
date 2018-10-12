@@ -1,14 +1,14 @@
 {
   "pages":[
-    "pages/result/result",
     "pages/index/index",
     "pages/dorecord/dorecord",
+    "pages/dorecord/thrDetail/thrDetail",
+    "pages/result/result",
     "pages/invite/invite",
     "pages/register/register",
     "pages/perInfo/perInfo",
     "pages/dorecord/invDetail/invDetail",
     "pages/dorecord/visDetail/visDetail",
-    "pages/dorecord/thrDetail/thrDetail",
     "pages/login/login",
     "pages/logs/logs"
   ],

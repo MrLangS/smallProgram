@@ -20,28 +20,69 @@ Page({
     vistorPhone: '',
     hidenIndex: null,
     hidenTag: false,
-    memberList: [
-      { head: '../../resource/images/timg.png', name: '小明', company: '人人智能', phone: '18401610488', show: 1 },
-      { head: '../../resource/images/timg.png', name: '小红', company: '小红公司', phone: '18234343443', show: 1 },
-      { head: '../../resource/images/timg.png', name: '小光', company: '小光公司', phone: '15464342343', show: 1 },
-      { head: '../../resource/images/timg.png', name: '小亮', company: '小亮公司', phone: '17332434255', show: 1 },
-    ]
+    memberList: []
   },
 
   //拒绝事件
   reject: function(){
     var that=this
-    that.data.memberList[that.data.hidenIndex].show=0
-    that.setData({
-      memberList: that.data.memberList
+    wx.request({
+      url: getApp().globalData.server + '/Invitation/changeVisitorStatus.do',
+      data: {
+        invitationId: that.data.invitationId,
+        userId: wx.getStorageSync('wxuserInfo').id,
+        status: 3
+      },
+      method: 'get',
+      success: function (res) {
+        if (res.data) {
+          that.data.memberList[that.data.hidenIndex].visitorStatus = 3
+          that.setData({
+            memberList: that.data.memberList
+          })
+          wx.showToast({
+            title: '拒绝成功',
+            icon: 'success',
+            duration: 1500
+          })
+        } else {
+          wx.showToast({
+            title: '拒绝失败',
+            duration: 1500
+          })
+        }
+      }
     })
   },
   //接受事件
   accept: function(){
     var that = this
-    that.data.memberList[that.data.hidenIndex].show = 1
-    that.setData({
-      memberList: that.data.memberList
+    wx.request({
+      url: getApp().globalData.server + '/Invitation/changeVisitorStatus.do',
+      data: {
+        invitationId: that.data.invitationId,
+        userId: wx.getStorageSync('wxuserInfo').id,
+        status: 2
+      },
+      method: 'get',
+      success: function (res) {
+        if (res.data) {
+          that.data.memberList[that.data.hidenIndex].visitorStatus = 2
+          that.setData({
+            memberList: that.data.memberList
+          })
+          wx.showToast({
+            title: '接受成功',
+            icon: 'success',
+            duration: 1500
+          })
+        } else {
+          wx.showToast({
+            title: '接受失败',
+            duration: 1500
+          })
+        }
+      }
     })
   },
   //折叠或展开
@@ -64,6 +105,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that=this
     var detail=JSON.parse(options.detail)
     //获得邀请人员列表请求
     wx.request({
@@ -75,18 +117,18 @@ Page({
       success: function (res) {
         console.log("成员列表:" )
         console.log(res)
-        // this.setData({
-        //   memberList: res.data
-        // })
+        that.setData({
+          memberList: res.data
+        })
 
       }
     })
-    var invitor = this.data.invitor
+    var invitor = that.data.invitor
     invitor.name = detail.invitationManName
     invitor.phone = detail.invitationManPhone
     invitor.company = detail.invitationManAddress
     var date = util.tranStamp(detail.visitorDay,0)
-    this.setData({
+    that.setData({
       reason: detail.reason,
       year: date[0],
       month: date[1],

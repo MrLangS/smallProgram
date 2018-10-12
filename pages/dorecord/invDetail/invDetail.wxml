@@ -35,23 +35,23 @@
 <view class='memInfo'>
   <view wx:for="{{memberList}}" wx:key data-index="{{index}}" bindtap='clickItem'>
     <view class='item' hover-class='click' bindtap='expand'>
-      <image class="userinfo-avatar" src="{{item.head}}"background-size="cover"></image>
-      <view class='item-name'>{{item.name}}</view>
-      <view class='item-foot'><icon class='icon' type="{{item.show==1? 'success':'cancel'}}" size='18' /></view>
+      <image class="userinfo-avatar" src="{{item.photoURL}}"background-size="cover"></image>
+      <view class='item-name'>{{item.visitorName}}</view>
+      <view class='item-foot'><icon class='icon' type="{{item.visitorStatus==2? 'success':'cancel'}}" size='18' /></view>
     </view>
     <block wx:if="{{hidenIndex==index&&hidenTag}}">
       <view class='item-content'>
-        <view class='item-phone'>到访时间:{{item.arriveTime}}</view>
+        <view class='item-phone'>到访时间:{{item.visitorEnterTime}}</view>
       </view>
       <view class='item-content'>
-        <view class='item-phone'>离开时间:{{item.leaveTime}}</view>
+        <view class='item-phone'>离开时间:{{item.visitorLeaveTime}}</view>
       </view>
       <view class='item-content'>
-        <view class='item-phone'>所属公司:{{item.company}}</view>
+        <view class='item-phone'>所属公司:{{item.visitorAddress}}</view>
       </view>
       <view class='item-content'>
-        <view class='item-phone'>手机号:{{item.phone}}</view>
-        <block wx:if="{{item.show==1}}">
+        <view class='item-phone'>手机号:{{item.visitorPhoneNo}}</view>
+        <block wx:if="{{item.visitorStatus==2}}">
           <button class='btn' bindtap='reject' size='mini' type='warn'>拒绝</button>
         </block>
         <block wx:else>

@@ -1,4 +1,5 @@
 // pages/dorecord/dorecord.js
+var util = require('../../utils/util.js')
 Page({
 
   /**
@@ -9,53 +10,8 @@ Page({
     winHeight: 0,
     // tab切换
     currentTab: 1,
-    inviteList: [
-      { reason: '讨论', year: '2018', month: '09', day: '29', 
-      starttime: '09:00', endtime: '14:00', address: '北京', num: 2},
-      {
-        reason: '学术', year: '2018', month: '08', day: '31',
-        starttime: '13:00', endtime: '14:00', address: '上海', num: 1
-      },
-      {
-        reason: '研究', year: '2018', month: '07', day: '11',
-        starttime: '08:00', endtime: '14:00', address: '吉林', num: 4
-      },
-      {
-        reason: '会议', year: '2018', month: '09', day: '29',
-        starttime: '11:00', endtime: '14:00', address: '江西', num: 3
-      },
-      {
-        reason: '峰会', year: '2018', month: '06', day: '06',
-        starttime: '09:00', endtime: '14:00', address: '杭州', num: 11
-      }
-    ],
-    visitList: [
-      {
-        reason: '讨论', year: '2018', month: '09', day: '29', invitationId:1,
-        invitor: { name: '老王', company: '老王公司', phone: '18201020394'} , show: 1,
-        starttime: '09:00', endtime: '14:00', address: '北京', num: 2
-      },
-      {
-        reason: '学术', year: '2018', month: '08', day: '31', invitationId: 2,
-        invitor: { name: '老汪', company: '老汪公司', phone: '18201020394'} , show: 0,
-        starttime: '13:00', endtime: '14:00', address: '上海', num: 1
-      },
-      {
-        reason: '研究', year: '2018', month: '07', day: '11', invitationId: 3,
-        invitor: {name: '老郎',company: '老郎公司', phone: '18201020394'}, show: 2,
-        starttime: '08:00', endtime: '14:00', address: '吉林', num: 4
-      },
-      {
-        reason: '会议', year: '2018', month: '09', day: '29', invitationId: 4,
-        invitor: {name: '老曲', company: '老曲公司', phone: '18201020394'}, show: 1,
-        starttime: '11:00', endtime: '14:00', address: '江西', num: 3
-      },
-      {
-        reason: '峰会', year: '2018', month: '06', day: '06', invitationId: 5,
-        invitor: {name: '老江',company: '老江公司', phone: '18201020394'} , show: 1,
-        starttime: '09:00', endtime: '14:00', address: '杭州', num: 11
-      }
-    ],
+    inviteList: [],
+    visitList: [],
   },
   //点击列表项查看邀请详细内容
   clickInvite: function(e){
@@ -135,13 +91,18 @@ Page({
       },
       success: function (res) {
         console.log("获得邀请记录")
-        console.log(res.data)
+        var inviteList = res.data
+        for (var inv of inviteList) {
+          var date = util.tranStamp(inv.visitorDay, 0)
+          inv.year = date[0]
+          inv.month = date[1]
+          inv.day = date[2]
+        }
         that.setData({
-          inviteList: res.data
+          inviteList: inviteList
         })
       }
     })
-    var that = this
     //获得受邀列表请求
     wx.request({
       url: getApp().globalData.server + '/Invitation/invitedList.do',
@@ -151,9 +112,15 @@ Page({
       },
       success: function (res) {
         console.log("获得受邀记录")
-        console.log(res.data)
+        var visitList = res.data
+        for (var vis of visitList){
+          var date = util.tranStamp(vis.visitorDay, 0)
+          vis.year = date[0]
+          vis.month = date[1]
+          vis.day = date[2]
+        }
         that.setData({
-          visitList: res.data
+          visitList: visitList
         })
       }
     })
