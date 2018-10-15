@@ -12,6 +12,7 @@ Page({
     currentTab: 1,
     inviteList: [],
     visitList: [],
+    role:0,//用户角色
   },
   //点击列表项查看邀请详细内容
   clickInvite: function(e){
@@ -60,6 +61,12 @@ Page({
    */
   onLoad: function (options) {
     var that=this
+    var staffId = wx.getStorageSync('wxuserInfo').staffId
+    if (staffId != null || staffId.length!=0){
+      that.setData({
+        role: 1,
+      }); 
+    }
     wx.getSystemInfo({ 
       success: function (res) { 
         that.setData({ 

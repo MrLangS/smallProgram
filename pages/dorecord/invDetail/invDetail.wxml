@@ -1,7 +1,10 @@
 <!-- 邀请函模版 -->
 <view class='changeInfo'>
   <view class='area'>
-    <view class='head'>邀请函</view>
+    <view class='head'>
+      <view>邀请函</view>
+      <button open-type="share" class='shareBtn'>转发邀请</button>
+    </view>
     <!-- 事由 -->
     <view class='reason-title'>邀请事由</view>
     <view class='reason'>

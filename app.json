@@ -1,12 +1,12 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/dorecord/dorecord",
-    "pages/dorecord/thrDetail/thrDetail",
     "pages/result/result",
-    "pages/invite/invite",
     "pages/register/register",
     "pages/perInfo/perInfo",
+    "pages/dorecord/dorecord",
+    "pages/dorecord/thrDetail/thrDetail",
+    "pages/invite/invite",
     "pages/dorecord/invDetail/invDetail",
     "pages/dorecord/visDetail/visDetail",
     "pages/login/login",
@@ -18,21 +18,21 @@
     "backgroundColor": "gray",
     "list": [
       {
-        "pagePath":"pages/perInfo/perInfo",
-        "text":"个人信息",
-        "active":true
+        "pagePath": "pages/index/index",
+        "text": "首页"
       },
       {
         "pagePath": "pages/invite/invite",
         "text": "邀请"
       },
       {
-        "pagePath": "pages/index/index",
-        "text": "首页"
-      },
-      {
         "pagePath": "pages/dorecord/dorecord",
         "text": "记录"
+      },
+      {
+        "pagePath": "pages/perInfo/perInfo",
+        "text": "我",
+        "active": true
       }
       
     ]

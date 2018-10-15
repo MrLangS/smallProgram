@@ -19,7 +19,7 @@ Page({
   },
   intoInfo: function(){
     wx.switchTab({
-      url: '/pages/perInfo/perInfo',
+      url: '/pages/dorecord/dorecord',
     })
   },
   intoInv: function () {

@@ -190,11 +190,13 @@ Page({
    */
   onLoad: function (options) {
     var initdata = wx.getStorageSync('wxuserInfo')
+    var imgArr = [initdata.photoURL]
     this.setData({
       name: initdata.username,
       phone: initdata.phonenum,
       company: initdata.address,
       avatarUrl: initdata.photoURL,
+      imgArr: imgArr
     })
   },
 

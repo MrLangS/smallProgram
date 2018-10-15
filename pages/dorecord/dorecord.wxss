@@ -9,8 +9,20 @@
 .swiper-tab-list{  
   font-size: 30rpx;    
   display: inline-block;
-  width: 33.33%;	
+  width: 50%;	
   color: #ffffff;
+}
+.swiper-tab-li{  
+  font-size: 30rpx;    
+  display: inline-block;
+  width: 100%;	
+  color: #ffffff;
+}
+.tip{
+  /* height: 300rpx; */
+  line-height: 600rpx;
+  width: 100%;
+  text-align: center;
 }
 .on{ 
   background-color: #2f353b;

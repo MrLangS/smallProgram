@@ -1,4 +1,4 @@
-<view  bindtap="bindViewTap" class="userinfo head">
+<view class="userinfo head">
   <image class="userinfo-avatar" src="{{avatarUrl}}" bindtap='preview' background-size="cover"></image>
   <button class="picBtn head-margin" bindtap='onPicBtn'>{{picManage}}</button>
 </view>

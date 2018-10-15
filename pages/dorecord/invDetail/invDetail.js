@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    invitationId: '',//邀请id
+    invitationId: 0,//邀请id
     invitor: { name: '', company: '', phone: '' },
     reason:'',
     year: '',
@@ -189,7 +189,33 @@ Page({
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage: function () {
-
+  onShareAppMessage: function (res) {
+    var that = this
+    if (res.from === 'button') {
+      console.log(res.target)
+    }
+    return {
+      title: '邀请函',
+      path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(this, "vis"),
+      success: function (res) {
+        // 转发成功
+        console.log("转发成功:" + JSON.stringify(res));
+        var shareTickets = res.shareTickets;
+        // if (shareTickets.length == 0) {
+        //   return false;
+        // }
+        // //可以获取群组信息
+        // wx.getShareInfo({
+        //   shareTicket: shareTickets[0],
+        //   success: function (res) {
+        //     console.log(res)
+        //   }
+        // })
+      },
+      fail: function (res) {
+        // 转发失败
+        console.log("转发失败:" + JSON.stringify(res));
+      }
+    }
   }
 })

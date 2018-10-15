@@ -16,6 +16,7 @@ Page({
     regionList: [],
     regionIds: [],
     hideTag: false,
+    hideTag01:true,
     numArr: util.getPickerList('nums'),
     index: 0,
     hiddenmodal: true,
@@ -30,13 +31,31 @@ Page({
     currentDay: {year : util.getPicker('year'), month : util.getPicker('month'), day : util.getPicker('day')},
     value: util.getPicker('arr'),
     invitor: {name: '',company: '',phone: ''},
-    role: "admin",
+    role: 0,//判断角色，0为普通用户
     registed: 0,
-    reason: '学术讨论学术研究',  
+    reason: '',  
     vistorName: '',//代表成员姓名
     vistorPhone: '',//代表成员手机号
     count: 0,//记录点击邀请按钮的次数
     invitationId: 0,//邀请id 
+  },
+  //新增空白邀请
+  newInv: function () {
+    this.setData({
+      count: 0,
+      year: this.data.currentDay.year,
+      month: this.data.currentDay.month,
+      day: this.data.currentDay.day,
+      starttime: '09:00',
+      endtime: '14:00',
+      address: '', 
+      index: 0,
+      reason: '',
+      vistorName: '',//代表成员姓名
+      vistorPhone: '',//代表成员手机号
+      invitationId: 0,//邀请id 
+      hideTag: !this.data.hideTag
+    })
   },
   //时间选择器事件
   startTimeChange: function (e) {
@@ -129,11 +148,7 @@ Page({
       modal_are: true
     })
   },
-  newInv: function(){
-    this.setData({
-      count: 0
-    })
-  },
+  
   //测试
   test: function(){
     console.log("test")
@@ -149,7 +164,11 @@ Page({
     var that=this
     var userInfo = wx.getStorageSync('wxuserInfo')
     var staffId = userInfo.staffId
-    if (staffId!=null){
+    
+    if (staffId != null || staffId.length != 0){
+      that.setData({
+        role: 1
+      })
       var invitor=this.data.invitor
       invitor.name = userInfo.username
       invitor.phone = userInfo.phonenum
@@ -213,99 +232,103 @@ Page({
   /**
    * 用户点击分享
    */
+  //确认邀请函
   invite: function(){
     var that = this
     console.log(that.data.count)
-    if (that.data.count == 0) {
-      /*发起邀请请求*/
-      var date = util.formatDay(that)
-      var starttime = util.formatTimestamp(that, 0)
-      var endtime = util.formatTimestamp(that, 1)
-      var invitor = wx.getStorageSync("wxuserInfo")
-      wx.request({
-        url: getApp().globalData.server + "/Invitation/sponsorInvitation.do",
-        data: {
-          visitorDay: date,
-          startTime: starttime,
-          endTime: endtime,
-          visitorCount: that.data.numArr[that.data.index],
-          staffId: invitor.staffId,
-          username: invitor.username,
-          phonenum: invitor.phonenum,
-          address: invitor.address,
-          visitorLinkmanName: that.data.vistorName,
-          visitorLinkmanPhone:that.data.vistorPhone,
-          reason: that.data.reason,
-          regionIds: that.data.regionIds
-        },
-        method: 'post',
-        success: function (res) {
-          console.log(res.data)
-          if (res.data.msg == 'ok') {
-            // wx.setStorageSync('invitationId', res.data.invitationId)
+    if (util.checkInvitation(this)){
+      if (that.data.count == 0) {
+        /*发起邀请请求*/
+        var date = util.formatDay(that)
+        var starttime = util.formatTimestamp(that, 0)
+        var endtime = util.formatTimestamp(that, 1)
+        var invitor = wx.getStorageSync("wxuserInfo")
+        wx.request({
+          url: getApp().globalData.server + "/Invitation/sponsorInvitation.do",
+          data: {
+            visitorDay: date,
+            startTime: starttime,
+            endTime: endtime,
+            visitorCount: that.data.numArr[that.data.index],
+            staffId: invitor.staffId,
+            username: invitor.username,
+            phonenum: invitor.phonenum,
+            address: invitor.address,
+            visitorLinkmanName: that.data.vistorName,
+            visitorLinkmanPhone: that.data.vistorPhone,
+            reason: that.data.reason,
+            regionIds: that.data.regionIds
+          },
+          method: 'post',
+          success: function (res) {
+            console.log(res.data)
+            if (res.data.msg == 'ok') {
+              // wx.setStorageSync('invitationId', res.data.invitationId)
+              that.setData({
+                invitationId: res.data.invitationId
+              })
+              console.log('邀请添加成功...')
+              console.log("邀请id:" + that.data.invitationId)
+              wx.showToast({
+                title: '添加邀请成功',
+                icon: 'success',
+                duration: 1500
+              })
+            } else {
+              console.log('邀请添加失败...')
+            }
             that.setData({
-              invitationId: res.data.invitationId
+              count: ++that.data.count
             })
-            console.log('邀请添加成功...')
-            console.log("邀请id:" + that.data.invitationId)
-            wx.showToast({
-              title: '添加邀请成功',
-              icon: 'success',
-              duration: 1500
-            })
-          } else {
-            console.log('邀请失败...')
-          }
-          that.setData({
-            count: ++that.data.count
-          })
-        },
-      })
-    } else {
-      /*修改邀请请求*/
-      var date = util.formatDay(that)
-      var starttime = util.formatTimestamp(that, 0)
-      var endtime = util.formatTimestamp(that, 1)
-      var invitor = wx.getStorageSync("wxuserInfo")
-      wx.request({
-        url: getApp().globalData.server + "/Invitation/updateInvitation.do",
-        data: {
-          visitorDay: date,
-          startTime: starttime,
-          endTime: endtime,
-          visitorCount: that.data.numArr[that.data.index],
-          staffId: invitor.staffId,
-          username: invitor.username,
-          address: invitor.address,
-          phonenum: invitor.phonenum,
-          visitorLinkmanName: that.data.vistorName,
-          visitorLinkmanPhone: that.data.vistorPhone,
-          reason: that.data.reason,
-          invitationId: that.data.invitationId,
-          regionIds: that.data.regionIds
-        },
-        method: 'post',
-        success: function (res) {
-          if (res.data.msg == 'ok') {
-            // wx.setStorageSync('invitationId', res.data.invitationId)
-            console.log('邀请函修改成功...')
-            wx.showToast({
-              title: '邀请函修改成功',
-              icon: 'success',
-              duration: 1500
-            })
-          } else {
-            console.log('邀请函修改失败...')
-          }
-        },
-      })
-      that.setData({
-        count: ++that.data.count
+          },
+        })
+      } else {
+        /*修改邀请请求*/
+        var date = util.formatDay(that)
+        var starttime = util.formatTimestamp(that, 0)
+        var endtime = util.formatTimestamp(that, 1)
+        var invitor = wx.getStorageSync("wxuserInfo")
+        wx.request({
+          url: getApp().globalData.server + "/Invitation/updateInvitation.do",
+          data: {
+            visitorDay: date,
+            startTime: starttime,
+            endTime: endtime,
+            visitorCount: that.data.numArr[that.data.index],
+            staffId: invitor.staffId,
+            username: invitor.username,
+            address: invitor.address,
+            phonenum: invitor.phonenum,
+            visitorLinkmanName: that.data.vistorName,
+            visitorLinkmanPhone: that.data.vistorPhone,
+            reason: that.data.reason,
+            invitationId: that.data.invitationId,
+            regionIds: that.data.regionIds
+          },
+          method: 'post',
+          success: function (res) {
+            if (res.data.msg == 'ok') {
+              // wx.setStorageSync('invitationId', res.data.invitationId)
+              console.log('邀请函修改成功...')
+              wx.showToast({
+                title: '邀请函修改成功',
+                icon: 'success',
+                duration: 1500
+              })
+            } else {
+              console.log('邀请函修改失败...')
+            }
+          },
+        })
+        that.setData({
+          count: ++that.data.count
+        })
+      }
+      this.setData({
+        hideTag: !this.data.hideTag
       })
     }
-    this.setData({
-      hideTag: !this.data.hideTag
-    })
+    
   },
   onShareAppMessage: function () {
     var that=this
@@ -320,7 +343,9 @@ Page({
         // 转发成功
         //提交邀请表单
         //that.invformSubmit()
-
+        that.setData({
+          hideTag01: false
+        })
         console.log("转发成功:" + JSON.stringify(res));
         var shareTickets = res.shareTickets;
         // if (shareTickets.length == 0) {

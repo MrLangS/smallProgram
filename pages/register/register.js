@@ -15,7 +15,7 @@ Page({
     pwdIcon: "../resource/images/pwdIcon.png",
     verifiIcon: "../resource/images/verifiIcon.png",
     companyIcon: "../resource/images/company.png",
-    imgArr: ['D:/627wx1/wx_app/pages/resource/images/timg.png'],
+    imgArr: ['D:/627wx1/wx_app/smallProgram/pages/resource/images/timg.png'],
     codename: '获取验证码'
   },
   //预览头像
@@ -180,7 +180,7 @@ Page({
     var formIdValue=e.detail.formId
     var openIdValue = wx.getStorageSync('openid');
     console.log('get openid is: ' + openIdValue)
-    var flag=util.checkForm(this)//图片还没加，为了方便测试
+    var flag=util.checkForm(this)//表单验证
     // var flag=this.checkName()&&this.checkPhone()&&this.checkCode()
     
     var uploadUserUrl ="" //getApp().globalData.server + 'UserApplyAction!uploadUserInfo.do'

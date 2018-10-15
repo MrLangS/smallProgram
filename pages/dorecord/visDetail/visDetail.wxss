@@ -5,6 +5,11 @@
   margin-top: 10px;
   width: 100%;
 }
+.back-btn{
+  opacity: 0.5;
+  margin-top: 10px;
+  width: 100%;
+}
 .call-icon{
   position: absolute;
   width: 70rpx;

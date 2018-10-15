@@ -1,3 +1,4 @@
+<block wx:if="{{role!=0}}">
 <view class='changeInfo'>
   <form bindsubmit="invformSubmit">
     <!-- 填写邀请信息模版 -->
@@ -94,17 +95,17 @@
       </view>
       <view class="btn01" hidden='{{!hideTag}}'>
         <!-- <button form-type='submit' open-type="share" type='primary' size="default">发送邀请</button>  -->
-        <block wx:if="{{!hideTag01}}">
-          <button bindtap='switchChange' class='backBtn'>返回</button>
-          <button open-type="share" type='primary' class='postBtn'>邀请</button>
+        <block wx:if="{{hideTag01}}">
+          <button bindtap='switchChange' class='backBtn'>返回修改</button>
+          <button open-type="share" type='primary' class='postBtn'>确认邀请</button>
           
           <!-- <button form-type='submit' hidden='true' ></button> -->
         </block>
         <block wx:else>
-          <button open-type="share" type='primary' size='default'>转发邀请</button>
+          <button open-type="share" type='primary' size='default' class='shareBtn'>转发邀请</button>
         </block>
       </view>
-      <view hidden='{{!hideTag}}' bindtap='newInv'><button>新增空白邀请</button></view>
+      <view hidden='{{!hideTag}}' bindtap='newInv' class='blkBtn'><button>新增空白邀请</button></view>
     </view>
   </form>
   <view class='footer'>当前日期：{{currentDay.year}}年{{currentDay.month}}月{{currentDay.day}}日</view>
@@ -133,5 +134,9 @@
     </checkbox-group>
   </modal>
 </view>
+</block>  
+<block wx:else>
+  <view class='tip'>抱歉!非内部用户不能发起邀请</view>
+</block>
 
 

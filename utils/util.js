@@ -124,7 +124,7 @@ function tran(that, role) {
     year: _that.year,
     month: _that.month,
     day: _that.day,
-    num: _that.numArr[_that.index],
+    num:0,
     invitor: _that.invitor,
     reason: _that.reason,
     address: _that.address,
@@ -135,6 +135,8 @@ function tran(that, role) {
   }
   if(role=="vis"){
     tranJsonData.num=_that.num
+  }else{
+    tranJsonData.num =_that.numArr[_that.index]
   }
   return JSON.stringify(tranJsonData)
   // return JSON.parse(tranJsonData)
@@ -236,9 +238,16 @@ function getPicker(tag){
 
 //表单验证
 function checkForm(that){
-  if(checkName(that)&&checkPhone(that)&&checkCode(that)){
+  if (checkImage(that)&&checkName(that)&&checkPhone(that)&&checkCode(that)){
     return true
   }else{
+    return false
+  }
+}
+function checkInvitation(that){
+  if (checkAddress(that) && checkVistorName(that) && checkVistorPhone(that) && checkReason(that)) {
+    return true
+  } else {
     return false
   }
 }
@@ -249,10 +258,78 @@ function checkPerInfo(that) {
     return false
   }
 }
+function checkImage(that) {
+  if (that.data.quality== 1) {
+    wx.showToast({
+      title: '照片须为本人清晰头像',
+      icon: 'none',
+      duration: 1000
+    })
+    return false;
+  } else {
+    return true
+  }
+}
+function checkAddress(that){
+  if (that.data.address == "") {
+    wx.showToast({
+      title: '地址不能为空',
+      icon: 'none',
+      duration: 1000
+    })
+    return false;
+  } else {
+    return true
+  }
+}
+function checkVistorName(that) {
+  if (that.data.vistorName.trim() == "") {
+    wx.showToast({
+      title: '姓名不能为空',
+      icon: 'none',
+      duration: 1000
+    })
+    return false;
+  } else {
+    return true
+  }
+}
 function checkName(that) {
   if (that.data.name.trim() == "") {
     wx.showToast({
       title: '姓名不能为空',
+      icon: 'none',
+      duration: 1000
+    })
+    return false;
+  } else {
+    return true
+  }
+}
+function checkReason(that) {
+  if (that.data.reason.trim() == "") {
+    wx.showToast({
+      title: '事由不能为空',
+      icon: 'none',
+      duration: 1000
+    })
+    return false;
+  } else {
+    return true
+  }
+}
+function checkVistorPhone(that) {
+  var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
+  if (that.data.vistorPhone == "") {
+    wx.showToast({
+      title: '手机号不能为空',
+      icon: 'none',
+      duration: 1000
+    })
+    return false;
+  } else if (!myreg.test(that.data.vistorPhone)) {
+    wx.showToast({
+      title: '请输入正确的手机号',
       icon: 'none',
       duration: 1000
     })
@@ -311,6 +388,7 @@ module.exports = {
   tran: tran,
   checkPhone: checkPhone,
   checkForm: checkForm,
+  checkInvitation: checkInvitation,
   checkPerInfo: checkPerInfo,
   inviteInfo: inviteInfo,
   tranStamp: tranStamp,

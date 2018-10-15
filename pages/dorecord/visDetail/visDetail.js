@@ -27,7 +27,7 @@ Page({
     // 访客部分信息
     headpic: '',//头像
     name: '',//姓名
-    visphone: '',//手机号
+    phone: '',//手机号
     visCompany: '',
     code: '',//验证码
     picManage: '添加头像',
@@ -39,12 +39,18 @@ Page({
     verifiIcon: "../../resource/images/verifiIcon.png",
     companyIcon: "../../resource/images/company.png",
     imgArr: ['D:/627wx1/wx_app/pages/resource/images/timg.png'],
+    quality: 1,//图片质量
     codename: '获取验证码',
     isPost: 0,//判断页面是否由转发进入
   },
   makecall: function(){
     wx.makePhoneCall({
-      phoneNumber: this.data.phone,
+      phoneNumber: this.data.invitor.phone,
+    })
+  },
+  back: function(){
+    wx.switchTab({
+      url: '../../index/index',
     })
   },
   scrollDown: function () {
@@ -95,37 +101,40 @@ Page({
   //未注册的接受
   accept02: function () {
     var that=this
-    wx.request({
-      url: getApp().globalData.server + '/Invitation/addVisitorAndRegisterUser.do',
-      method: 'post',
-      data: {
-        wxOpenId: wx.getStorageSync('openid'),
-        username: that.data.name,
-        address: that.data.visCompany,
-        phonenum: that.data.visPhone,
-        photoURL: that.data.avatarUrl,
-        invitationId: that.data.invitationId,
-      },
-      success: function (res) {
-        if (res.data.msg =='ok') {
-          wx.setStorageSync('wxuserInfo', res.data.sysWXUser);
-          wx.setStorageSync('registed', 1)
-          this.setData({
-            status: 2
-          })
-          wx.showToast({
-            title: '接受成功',
-            icon: 'success',
-            duration: 1500
-          })
-        } else {
-          wx.showToast({
-            title: '接受失败',
-            duration: 1500
-          })
+    if (util.checkForm(that)){
+      wx.request({
+        url: getApp().globalData.server + '/Invitation/addVisitorAndRegisterUser.do',
+        method: 'post',
+        data: {
+          wxOpenId: wx.getStorageSync('openid'),
+          username: that.data.name,
+          address: that.data.visCompany,
+          phonenum: that.data.phone,
+          photoURL: that.data.avatarUrl,
+          invitationId: that.data.invitationId,
+        },
+        success: function (res) {
+          if (res.data.msg == 'ok') {
+            wx.setStorageSync('wxuserInfo', res.data.sysWXUser);
+            wx.setStorageSync('registed', 1)
+            that.setData({
+              status: 2
+            })
+            wx.showToast({
+              title: '接受成功',
+              icon: 'success',
+              duration: 1500
+            })
+          } else {
+            wx.showToast({
+              title: '接受失败',
+              duration: 1500
+            })
+          }
         }
-      }
-    })
+      })
+    }
+    
   },
 
   /**
@@ -135,12 +144,12 @@ Page({
     var that = this
     //初始化页面的数据
     if(options.dataset!=null){
-      util.inviteInfo(this,options.dataset,0)
-      this.setData({
+      util.inviteInfo(that,options.dataset,0)
+      that.setData({
         isPost: 1
       })
     }else{
-      util.inviteInfo(this, options.detail,1)
+      util.inviteInfo(that, options.detail,1)
     }
     that.setData({
       registed: wx.getStorageSync('registed')
@@ -187,7 +196,6 @@ Page({
       path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(this,"vis"),
       success: function (res) {
         // 转发成功
-
         console.log("转发成功:" + JSON.stringify(res));
         var shareTickets = res.shareTickets;
         // if (shareTickets.length == 0) {
@@ -259,7 +267,7 @@ Page({
                 })
               } else {
                 wx.showToast({
-                  title: '图片不合格',
+                  title: '照片须为本人清晰头像',
                   icon: 'loading',
                   duration: 1500
                 })
@@ -308,7 +316,7 @@ Page({
   },
   getPhoneValue: function (e) {
     this.setData({
-      visPhone: e.detail.value
+      phone: e.detail.value
     })
   },
   getCodeValue: function (e) {
