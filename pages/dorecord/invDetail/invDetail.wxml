@@ -1,9 +1,10 @@
 <!-- 邀请函模版 -->
+<view class='devide' hidden='{{!ddl}}'>抱歉!该邀请已过期</view>
 <view class='changeInfo'>
   <view class='area'>
     <view class='head'>
       <view>邀请函</view>
-      <button open-type="share" class='shareBtn'>转发邀请</button>
+      <button open-type="share" class='shareBtn' hidden='{{ddl}}'>转发邀请</button>
     </view>
     <!-- 事由 -->
     <view class='reason-title'>邀请事由</view>
@@ -34,11 +35,11 @@
   </view>
 </view>
 <!-- 分隔栏 -->
-<view class='devide'>已接受人员</view>
+<view class='devide'>对方接受人员列表</view>
 <view class='memInfo'>
   <view wx:for="{{memberList}}" wx:key data-index="{{index}}" bindtap='clickItem'>
     <view class='item' hover-class='click' bindtap='expand'>
-      <image class="userinfo-avatar" src="{{item.photoURL}}"background-size="cover"></image>
+      <image class="userinfo-avatar" src="{{item.photoURL}}" background-size="cover"></image>
       <view class='item-name'>{{item.visitorName}}</view>
       <view class='item-foot'><icon class='icon' type="{{item.visitorStatus==2? 'success':'cancel'}}" size='18' /></view>
     </view>
@@ -53,12 +54,15 @@
         <view class='item-phone'>所属公司:{{item.visitorAddress}}</view>
       </view>
       <view class='item-content'>
-        <view class='item-phone'>手机号:{{item.visitorPhoneNo}}</view>
-        <block wx:if="{{item.visitorStatus==2}}">
-          <button class='btn' bindtap='reject' size='mini' type='warn'>拒绝</button>
-        </block>
-        <block wx:else>
-          <button class='btn' bindtap='accept' size='mini' type='primary'>接受</button>
+        <image class="userinfo-avatar" bindtap='call' src="{{phoneIcon}}" background-size="cover"></image>
+        <view class='item-name'>手机号:{{item.visitorPhoneNo}}</view>
+        <block wx:if="{{!ddl}}">
+          <block wx:if="{{item.visitorStatus==2}}">
+            <button class='btn' bindtap='reject' size='mini' type='warn'>拒绝</button>
+          </block>
+          <block wx:else>
+            <button class='btn' bindtap='accept' size='mini' type='primary'>接受</button>
+          </block>
         </block>
       </view>
     </block>

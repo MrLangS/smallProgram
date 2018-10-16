@@ -11,6 +11,6 @@
   <image class='img' bindtap='intoInfo' mode='scaleToFill' src='{{infoPng}}'></image>
 </view>
 <view class='imgbox'>
-  <image class='img' bindtap='intoInv' mode='scaleToFill' src='{{invPng}}'></image>
+  <image class='img opa' bindtap='intoInv' mode='scaleToFill' src='{{invPng}}'></image>
 </view>
 

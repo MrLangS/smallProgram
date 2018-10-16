@@ -1,8 +1,8 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/result/result",
     "pages/register/register",
+    "pages/result/result",
     "pages/perInfo/perInfo",
     "pages/dorecord/dorecord",
     "pages/dorecord/thrDetail/thrDetail",
@@ -19,20 +19,27 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "pages/resource/images/homeGray.png",
+        "selectedIconPath": "pages/resource/images/homeWhite.png"
       },
       {
         "pagePath": "pages/invite/invite",
-        "text": "邀请"
+        "text": "邀请",
+        "iconPath": "pages/resource/images/applyGray.png",
+        "selectedIconPath": "pages/resource/images/applyWhite.png"
       },
       {
         "pagePath": "pages/dorecord/dorecord",
-        "text": "记录"
+        "text": "记录",
+        "iconPath": "pages/resource/images/recordGray.png",
+        "selectedIconPath": "pages/resource/images/recordWhite.png"
       },
       {
         "pagePath": "pages/perInfo/perInfo",
         "text": "我",
-        "active": true
+        "iconPath": "pages/resource/images/meGary.png",
+        "selectedIconPath": "pages/resource/images/meWhite.png"
       }
       
     ]

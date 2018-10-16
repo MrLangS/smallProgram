@@ -38,6 +38,10 @@
   width: 100%;
   height: 100%;
 }
+.opa{
+  margin-top: 10rpx;
+  opacity: 0.9;
+}
 .txt{
   position: relative;
 }

@@ -18,11 +18,20 @@ Page({
     num: 0,
     vistorName: '',
     vistorPhone: '',
+    index:0,
     hidenIndex: null,
     hidenTag: false,
-    memberList: []
+    memberList: [],
+    phoneIcon: '/pages/resource/images/call.png',
+    ddl: false,//邀请是否过期标签
   },
 
+  //拨打电话
+  call:function(e){
+    wx.makePhoneCall({
+      phoneNumber: this.data.memberList[this.data.index].visitorPhoneNo,
+    })
+  },
   //拒绝事件
   reject: function(){
     var that=this
@@ -47,7 +56,7 @@ Page({
           })
         } else {
           wx.showToast({
-            title: '拒绝失败',
+            title: '操作异常',
             duration: 1500
           })
         }
@@ -66,7 +75,7 @@ Page({
       },
       method: 'get',
       success: function (res) {
-        if (res.data) {
+        if (res.data = 'SUCCESS') {
           that.data.memberList[that.data.hidenIndex].visitorStatus = 2
           that.setData({
             memberList: that.data.memberList
@@ -76,9 +85,16 @@ Page({
             icon: 'success',
             duration: 1500
           })
+        } else if (res.data = 'confirmCountIsOverflow') {
+          wx.showToast({
+            title: '抱歉！人数已满，接受失败',
+            icon: 'none',
+            duration: 1500
+          })
         } else {
           wx.showToast({
-            title: '接受失败',
+            title: '出现异常，请重试',
+            icon: 'none',
             duration: 1500
           })
         }
@@ -93,11 +109,12 @@ Page({
   },
   clickItem: function (e) {
     var index = e.currentTarget.dataset.index
-    console.log("查看第" + (index + 1) + "项")
+    // console.log("查看第" + (index + 1) + "项")
     if(this.data.hidenIndex!=index){
       this.setData({
         hidenIndex: index,
-        hidenTag: true
+        hidenTag: true,
+        index: index
       })
     }
   },
@@ -142,6 +159,14 @@ Page({
       invitationId: detail.id,//邀请id
       invitor: invitor,
     })
+    if (util.compareTime(that)) {
+      console.log("该邀请未过期")
+    } else {
+      console.log("该邀请已过期")
+      that.setData({
+        ddl: true
+      })
+    }
   },
 
   /**

@@ -8,7 +8,7 @@ Page({
     company: '',//公司名称
     picManage: '添加头像',
     disabled: false,
-    iscode: '01',//用于存放验证码接口里获取到的code
+    iscode: '',//用于存放验证码接口里获取到的code
     avatarUrl: "../resource/images/timg.png", //默认头像图片
     logIcon: "../resource/images/logIcon.png",
     phoneIcon: "../resource/images/phone.png",
@@ -142,29 +142,34 @@ Page({
     })
   },
   getCode: function () {
-    var a = this.data.phone;
-    var _this = this;
-    if (this.checkPhone()){
+    var that = this;
+    if (util.checkPhone(that)){
       wx.request({
-        url: getApp().globalData.server + "/SysWXUserAction/registerWXUser.do",
+        url: getApp().globalData.server + "/SysWXUserAction/sendVerificationCode.do?phoneNo=" + that.data.phone,
         data: {},
+        method:'post',
         success(res) {
-          console.log(res.data.data)
-          _this.setData({
-            iscode: res.data.data
+          console.log(res)
+          that.setData({
+            iscode: res.data.code
+          })
+          wx.showToast({
+            title: '验证码已发送成功',
+            icon: 'success',
+            duration: 1000
           })
           var num = 61;
           var timer = setInterval(function () {
             num--;
             if (num <= 0) {
               clearInterval(timer);
-              _this.setData({
+              that.setData({
                 codename: '重新发送',
                 disabled: false
               })
 
             } else {
-              _this.setData({
+              that.setData({
                 codename: num + "s"
               })
             }

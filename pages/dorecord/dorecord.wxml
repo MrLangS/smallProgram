@@ -7,13 +7,13 @@
     <view class="swiper-tab-li {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">拜访记录</view> 
   </block> -->
 </view> 
-<swiper current="{{currentTab}}" duration="300" style="height:{{winHeight - 31}}px" bindchange="bindChange">
+<swiper current="{{currentTab}}" duration="300" style="height:{{height}}rpx" bindchange="bindChange">
   <!-- 邀请记录 -->    
   <swiper-item>      
     <!-- 新样式 -->
     <block wx:if="{{role!=0}}">
-      <block wx:if="{{inviteList.length!=0}}">
-        <view wx:for="{{inviteList}}" wx:key="id" data-index="{{index}}" bindtap='clickInvite'>
+      <block wx:if="{{showInvList.length!=0}}">
+        <view wx:for="{{showInvList}}" wx:key="id" data-index="{{index}}" bindtap='clickInvite'>
           <view class='item'>
             <view class='item-head'>
               <view class=''>{{item.year}}</view>

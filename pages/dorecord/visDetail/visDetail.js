@@ -31,7 +31,8 @@ Page({
     visCompany: '',
     code: '',//验证码
     picManage: '添加头像',
-    iscode: '01',//用于存放验证码接口里获取到的code
+    disabled: false,
+    iscode: '',//用于存放验证码接口里获取到的code
     avatarUrl: "../../resource/images/timg.png", //默认头像图片
     logIcon: "../../resource/images/logIcon.png",
     phoneIcon: "../../resource/images/phone.png",
@@ -42,6 +43,7 @@ Page({
     quality: 1,//图片质量
     codename: '获取验证码',
     isPost: 0,//判断页面是否由转发进入
+    ddl: false,//判断邀请是否过期
   },
   makecall: function(){
     wx.makePhoneCall({
@@ -80,7 +82,7 @@ Page({
       success: function(res){
         console.log("确认邀请结果信息:")
         console.log(res.data)
-        if(res.data){
+        if (res.data ='SUCCESS'){
           that.setData({
             status: 2
           })
@@ -89,9 +91,16 @@ Page({
             icon: 'success',
             duration: 1500
           })
+        } else if (res.data = 'confirmCountIsOverflow'){
+          wx.showToast({
+            title: '人数已满，接受失败',
+            icon: 'none',
+            duration: 1500
+          })
         }else{
           wx.showToast({
-            title: '接受失败',
+            title: '出现异常，请重试',
+            icon: 'none',
             duration: 1500
           })
         }
@@ -125,9 +134,16 @@ Page({
               icon: 'success',
               duration: 1500
             })
+          } else if (res.data.msg = 'confirmCountIsOverflow') {
+            wx.showToast({
+              title: '人数已满，接受失败',
+              icon: 'none',
+              duration: 1500
+            })
           } else {
             wx.showToast({
-              title: '接受失败',
+              title: '出现异常，请重试',
+              icon: 'none',
               duration: 1500
             })
           }
@@ -154,6 +170,14 @@ Page({
     that.setData({
       registed: wx.getStorageSync('registed')
     })
+    if(util.compareTime(that)){
+      console.log("该邀请未过期")
+    }else{
+      console.log("该邀请已过期")
+      that.setData({
+        status: 4
+      })
+    }
     //获得手机屏幕信息
     wx.getSystemInfo({
       success: function (res) {
@@ -338,29 +362,34 @@ Page({
     })
   },
   getCode: function () {
-    var a = this.data.phone;
-    var _this = this;
-    if (util.checkPhone(this)) {
+    var that = this;
+    if (util.checkPhone(that)) {
       wx.request({
+        url: getApp().globalData.server + "/SysWXUserAction/sendVerificationCode.do?phoneNo=" + that.data.phone,
         data: {},
-        'url': '接口地址',
+        method: 'post',
         success(res) {
-          console.log(res.data.data)
-          _this.setData({
-            iscode: res.data.data
+          console.log(res)
+          that.setData({
+            iscode: res.data.code
+          })
+          wx.showToast({
+            title: '验证码已发送成功',
+            icon: 'success',
+            duration: 1000
           })
           var num = 61;
           var timer = setInterval(function () {
             num--;
             if (num <= 0) {
               clearInterval(timer);
-              _this.setData({
+              that.setData({
                 codename: '重新发送',
                 disabled: false
               })
 
             } else {
-              _this.setData({
+              that.setData({
                 codename: num + "s"
               })
             }

@@ -231,9 +231,47 @@ function getPicker(tag){
     return date.getMonth() + 1
   }else if(tag=='day'){
     return date.getDate()
-  }else if('arr'){
+  }else if (tag =='arr'){
     return [date.getFullYear()-2017,date.getMonth(),date.getDate()-1]
+  }else if(tag=='hour'){
+    return date.getHours()
+  }else if (tag == 'minute') {
+    return date.getMinutes()
   }
+}
+
+//比较 接受的时间
+function compareTime(that){
+  // console.log(getPicker('year')+"" + getPicker('month') + getPicker('day') + getPicker('hour') + getPicker('minute'))
+  var year = getPicker('year')
+  var month = getPicker('month')
+  var day = getPicker('day') 
+  var hour = getPicker('hour')
+  var minute = getPicker('minute')
+  var _that=that.data
+  var arr=_that.starttime.split(':')
+  var tag=false
+  if (year<_that.year){
+    tag=true
+  } else if (year== _that.year){
+    if (month< _that.month) {
+      tag = true
+    } else if (month == _that.month){
+      if(day<_that.day){
+        tag=true
+      }else if(day==_that.day){
+        if(hour<arr[0]){
+          tag=true
+        }else if(hour==arr[0]){
+          if(minute<arr[1]){
+            tag=true
+          }
+        }
+      }
+    }
+  }
+  
+  return tag
 }
 
 //表单验证
@@ -245,7 +283,7 @@ function checkForm(that){
   }
 }
 function checkInvitation(that){
-  if (checkAddress(that) && checkVistorName(that) && checkVistorPhone(that) && checkReason(that)) {
+  if (checkTime(that)&&checkAddress(that) && checkVistorName(that) && checkVistorPhone(that) && checkReason(that)) {
     return true
   } else {
     return false
@@ -253,9 +291,25 @@ function checkInvitation(that){
 }
 function checkPerInfo(that) {
   if (checkName(that) && checkPhone(that)) {
-    return true
+    if (that.data.codeTag==false){
+      return checkCode(that)?true:false
+    }else{
+      return true
+    }   
   } else {
     return false
+  }
+}
+function checkTime(that){
+  if (that.data.starttime >= that.data.endtime) {
+    wx.showToast({
+      title: '开始时间必须小于结束时间',
+      icon: 'none',
+      duration: 1000
+    })
+    return false;
+  } else {
+    return true
   }
 }
 function checkImage(that) {
@@ -392,5 +446,6 @@ module.exports = {
   checkPerInfo: checkPerInfo,
   inviteInfo: inviteInfo,
   tranStamp: tranStamp,
-  login: login
+  login: login,
+  compareTime: compareTime
 }

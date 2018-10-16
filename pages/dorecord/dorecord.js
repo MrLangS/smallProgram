@@ -8,8 +8,13 @@ Page({
   data: {
     winWidth: 0,
     winHeight: 0,
+    height:0,
     // tab切换
     currentTab: 1,
+    showInvList:[],//显示列表
+    showVisList: [],//显示列表
+    loadInvCount: 1,
+    loadVisCount: 1,
     inviteList: [],
     visitList: [],
     role:0,//用户角色
@@ -106,7 +111,9 @@ Page({
           inv.day = date[2]
         }
         that.setData({
-          inviteList: inviteList
+          height:120*10,
+          inviteList: inviteList,
+          showInvList: inviteList.slice(0,10)
         })
       }
     })
@@ -158,7 +165,49 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    if(this.data.currentTab==0){
+      this.setData({
+        loadInvCount: this.data.loadInvCount + 1
+      })
+      if (10 * (this.data.loadInvCount - 1) >= this.data.inviteList.length) {
+        wx.showLoading({
+          title: '已加载至最底部',
+        })
+      } else {
+        wx.showLoading({
+          title: '正在加载',
+        })
+        var showInvList = this.data.inviteList.slice(0, 10 * this.data.loadInvCount)
+        var len = showInvList.length
+        this.setData({
+          showInvList: showInvList,
+          height: 120 * len
+        })
+      }
+    }else{
+      this.setData({
+        loadVisCount: this.data.loadVisCount + 1
+      })
+      if (10 * (this.data.loadVisCount - 1) >= this.data.visitList.length) {
+        wx.showLoading({
+          title: '已加载至最底部',
+        })
+      } else {
+        wx.showLoading({
+          title: '正在加载',
+        })
+        console.log(this.data.visitList)
+        var showVisList = this.data.visitList.slice(0, 10 * this.data.loadVisCount)
+        var len = showVisList.length
+        this.setData({
+          showVisList: showVisList,
+          height: 120 * len
+        })
+      }
+    }
+    setTimeout(function () {
+      wx.hideLoading()
+    }, 500)
   },
 
   /**

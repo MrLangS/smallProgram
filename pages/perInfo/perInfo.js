@@ -11,7 +11,9 @@ Page({
     phone: '',//手机号
     company: '',
     picManage: '更换头像',
+    code: '',//验证码
     disabled: false,
+    iscode: '',//用于存放验证码接口里获取到的code
     avatarUrl: "../resource/images/timg.png", //默认头像图片
     logIcon: "../resource/images/logIcon.png",
     phoneIcon: "../resource/images/phone.png",
@@ -182,6 +184,11 @@ Page({
   getPhoneValue: function (e) {
     this.setData({
       phone: e.detail.value
+    })
+  },
+  getCodeValue: function (e) {
+    this.setData({
+      code: e.detail.value
     })
   },
 
