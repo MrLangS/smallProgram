@@ -1,5 +1,5 @@
-<view class='top' style='height:{{winHeight}}px;'>
-<!-- background-image:url({{invPNG}}) -->
+<!-- <view class='top' style='height:{{winHeight}}px;'> -->
+<view class='top'>
   <!-- 分隔栏 -->
   <block wx:if="{{status==3}}">
     <view class='dev'>很遗憾!您已被拒绝</view>
@@ -67,17 +67,15 @@
     </block>
     <!-- <view>邀请id:{{invitationId}}</view> -->
   </view>
-  <block wx:if="{{!registed&&status==1&&status!=4}}">
-    <!-- 分隔栏 -->
-    <view class='devide bottom' bindtap='scrollDown' hidden='{{role=="admin"}}'>
-      完善信息接受邀请
-    </view>
-  </block>
 </view>
 <!-- ============================================================================================== -->
 <block wx:if="{{!registed&&status==1&&status!=4}}">
   <!-- 分隔栏 -->
-  <view class='devide' bindtap='scrollUp' hidden='{{role=="admin"}}'>查看邀请信息</view>
+  <view class='devide' bindtap='scrBotm'>
+    <view class='tit'>初次接受邀请需要完善相关信息</view>
+    <image class="down" src="{{downPNG}}" background-size="cover"></image>
+  </view>
+  
   <!-- 需要填写的个人信息 -->
   <view class='changeInfo' hidden='{{role=="admin"}}'>
     <view class="userinfo">

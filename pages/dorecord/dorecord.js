@@ -89,7 +89,6 @@ Page({
    */
   onLoad: function (options) {
     var that=this
-    console.log(wx.getStorageSync('wxuserInfo'))
     var staffId = wx.getStorageSync('wxuserInfo').staffId
     // || staffId.length != 0
     if (staffId != null){
@@ -154,7 +153,6 @@ Page({
       success: function (res) {
         console.log("获得受邀记录")
         var visitList = res.data
-        console.log(visitList)
         for (var vis of visitList){
           var date = util.tranStamp(vis.visitorDay, 0)
           vis.year = date[0]

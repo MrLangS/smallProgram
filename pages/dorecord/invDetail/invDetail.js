@@ -150,11 +150,11 @@ Page({
       },
       success: function (res) {
         console.log("成员列表:" )
-        console.log(res)
-        that.setData({
-          memberList: res.data
-        })
-
+        if(res.data!=null){
+          that.setData({
+            memberList: res.data
+          })
+        }   
       }
     })
     var invitor = that.data.invitor

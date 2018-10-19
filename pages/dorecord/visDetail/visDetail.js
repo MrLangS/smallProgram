@@ -20,6 +20,7 @@ Page({
     status:1,
     callIcon: '../../resource/images/call.png',
     invPNG: '../../resource/images/invited.png',
+    downPNG: '../../resource/images/down.png',
     winWidth: '',
     winHeight: '',
     registed: 0,//1代表用户已注册
@@ -63,6 +64,12 @@ Page({
   scrollUp: function () {
     wx.pageScrollTo({
       scrollTop: 0,
+      duration: 500
+    })
+  },
+  scrBotm:function(){
+    wx.pageScrollTo({
+      scrollTop: 2000,
       duration: 500
     })
   },
@@ -177,9 +184,11 @@ Page({
     var that = this
     //初始化页面的数据
     if(options.dataset!=null){
-      //登录
-      util.login(that)
-      util.inviteInfo(that,options.dataset,0)
+      if (wx.getStorageSync('wxuserInfo')==null){
+        //登录
+        util.login(that)
+      }
+      util.inviteInfo(that, options.dataset, 0)
       that.setData({
         isPost: 1
       })

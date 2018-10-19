@@ -9,6 +9,13 @@
   display: flex;
   direction: row;
 }
+.tip{
+  /* height: 300rpx; */
+  line-height: 200rpx;
+  width: 100%;
+  text-align: center;
+  color: #b2b2b2;
+}
 .shareBtn{
   height: 60rpx;
   line-height: 60rpx;

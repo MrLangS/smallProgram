@@ -37,6 +37,7 @@
 <!-- 分隔栏 -->
 <view class='devide'>对方接受人员列表</view>
 <view class='memInfo'>
+<block wx:if="{{memberList.length!=0}}">
   <view wx:for="{{memberList}}" wx:key data-index="{{index}}" bindtap='clickItem'>
     <view class='item' hover-class='click' bindtap='expand'>
       <image class="userinfo-avatar" src="{{item.photoURL}}" background-size="cover"></image>
@@ -67,4 +68,8 @@
       </view>
     </block>
   </view> 
+</block>
+<block wx:else>
+  <view class='tip'>暂无接受人员</view>
+</block>
 </view>

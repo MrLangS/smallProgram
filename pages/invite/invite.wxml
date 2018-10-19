@@ -103,7 +103,7 @@
           <button open-type="share" type='primary' size='default' class='shareBtn'>转发邀请</button>
         </block>
       </view>
-      <block wx:if="{{hideTag01}}">
+      <block wx:if="{{hideTag01&&hideTag}}">
         <view class='footer-r'>确认邀请以后不能修改邀请函内容</view>
       </block>
       <view hidden='{{!hideTag}}' bindtap='newInv' class='blkBtn'><button>新增空白邀请</button></view>

@@ -1,5 +1,6 @@
 /* pages/dorecord/visDetail/visDetail.wxss */
 @import "../../invite/invite.wxss";
+@import "../../register/register.wxss";
 
 .post-btn{
   margin-top: 10px;
@@ -30,4 +31,17 @@
   line-height: 60rpx;
   background-color: #eeeeee;
   color: rgba(124, 127, 128, 0.863)
+}
+.down {
+  width: 50rpx;
+  height: 50rpx;
+  left: 0rpx;
+  margin-top: 15rpx;
+  /* margin: auto; */
+  /* border-radius: 50%; */
+}
+.tit{
+  text-align: right;
+  padding-right: 20rpx;
+  width: 75%;
 }

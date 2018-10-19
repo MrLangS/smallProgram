@@ -157,15 +157,16 @@ page{
   height: 90rpx;
 }
 .devide{
-  display: block;
+  /* display: block; */
+  display: flex;
+  direction: row;
   width: 100%;	
-  border-bottom: 
-  2rpx solid #777777;	
   font-size: 30rpx;
   text-align: center;	
+  height: 80rpx;
   line-height: 80rpx;
-  background-color: #b2b2b2;
-  color: #FFFFFF
+  background-color: #eeeeee;
+  color: rgba(124, 127, 128, 0.863);
 }
 .bottom{
   position: absolute;

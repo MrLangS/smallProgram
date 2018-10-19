@@ -54,7 +54,8 @@ Page({
       vistorName: '',//代表成员姓名
       vistorPhone: '',//代表成员手机号
       invitationId: 0,//邀请id 
-      hideTag: !this.data.hideTag
+      hideTag: !this.data.hideTag,
+      hideTag01: true
     })
   },
   //时间选择器事件
