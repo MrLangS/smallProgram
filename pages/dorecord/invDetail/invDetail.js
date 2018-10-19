@@ -35,71 +35,88 @@ Page({
   //拒绝事件
   reject: function(){
     var that=this
-    wx.request({
-      url: getApp().globalData.server + '/Invitation/changeVisitorStatus.do',
-      data: {
-        invitationId: that.data.invitationId,
-        userId: wx.getStorageSync('wxuserInfo').id,
-        status: 3
-      },
-      method: 'get',
-      success: function (res) {
-        if (res.data) {
-          that.data.memberList[that.data.hidenIndex].visitorStatus = 3
-          that.setData({
-            memberList: that.data.memberList
-          })
-          wx.showToast({
-            title: '拒绝成功',
-            icon: 'success',
-            duration: 1500
-          })
-        } else {
-          wx.showToast({
-            title: '操作异常',
-            duration: 1500
+    wx.showModal({
+      title: '提示',
+      content: '确认拒绝该访客吗？',
+      success: function(res){
+        if (res.confirm) {
+          wx.request({
+            url: getApp().globalData.server + '/Invitation/changeVisitorStatus.do',
+            data: {
+              invitationId: that.data.invitationId,
+              userId: that.data.memberList[that.data.hidenIndex].userId,
+              status: 3
+            },
+            method: 'get',
+            success: function (res) {
+              if (res.data) {
+                that.data.memberList[that.data.hidenIndex].visitorStatus = 3
+                that.setData({
+                  memberList: that.data.memberList
+                })
+                wx.showToast({
+                  title: '拒绝成功',
+                  icon: 'success',
+                  duration: 1500
+                })
+              } else {
+                wx.showToast({
+                  title: '操作异常',
+                  duration: 1500
+                })
+              }
+            }
           })
         }
       }
     })
+    
   },
   //接受事件
   accept: function(){
     var that = this
-    wx.request({
-      url: getApp().globalData.server + '/Invitation/changeVisitorStatus.do',
-      data: {
-        invitationId: that.data.invitationId,
-        userId: wx.getStorageSync('wxuserInfo').id,
-        status: 2
-      },
-      method: 'get',
-      success: function (res) {
-        if (res.data = 'SUCCESS') {
-          that.data.memberList[that.data.hidenIndex].visitorStatus = 2
-          that.setData({
-            memberList: that.data.memberList
-          })
-          wx.showToast({
-            title: '接受成功',
-            icon: 'success',
-            duration: 1500
-          })
-        } else if (res.data = 'confirmCountIsOverflow') {
-          wx.showToast({
-            title: '抱歉！人数已满，接受失败',
-            icon: 'none',
-            duration: 1500
-          })
-        } else {
-          wx.showToast({
-            title: '出现异常，请重试',
-            icon: 'none',
-            duration: 1500
+    wx.showModal({
+      title: '提示',
+      content: '确认接受该访客吗?',
+      success: function(res){
+        if(res.confirm){
+          wx.request({
+            url: getApp().globalData.server + '/Invitation/changeVisitorStatus.do',
+            data: {
+              invitationId: that.data.invitationId,
+              userId: wx.getStorageSync('wxuserInfo').id,
+              status: 2
+            },
+            method: 'get',
+            success: function (res) {
+              if (res.data = 'SUCCESS') {
+                that.data.memberList[that.data.hidenIndex].visitorStatus = 2
+                that.setData({
+                  memberList: that.data.memberList
+                })
+                wx.showToast({
+                  title: '接受成功',
+                  icon: 'success',
+                  duration: 1500
+                })
+              } else if (res.data = 'confirmCountIsOverflow') {
+                wx.showToast({
+                  title: '抱歉！人数已满，接受失败',
+                  icon: 'none',
+                  duration: 1500
+                })
+              } else {
+                wx.showToast({
+                  title: '出现异常，请重试',
+                  icon: 'none',
+                  duration: 1500
+                })
+              }
+            }
           })
         }
       }
-    })
+    }) 
   },
   //折叠或展开
   expand: function(){
@@ -222,6 +239,7 @@ Page({
     return {
       title: '邀请函',
       path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(this, "vis"),
+      imageUrl: '../../resource/images/inv.jpg',
       success: function (res) {
         // 转发成功
         console.log("转发成功:" + JSON.stringify(res));

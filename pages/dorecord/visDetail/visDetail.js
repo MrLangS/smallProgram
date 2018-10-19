@@ -1,7 +1,6 @@
 // pages/dorecord/visDetail/visDetail.js
 var util = require('../../../utils/util.js')
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -33,13 +32,13 @@ Page({
     picManage: '添加头像',
     disabled: false,
     iscode: '',//用于存放验证码接口里获取到的code
-    avatarUrl: "../../resource/images/timg.png", //默认头像图片
+    avatarUrl: "../../resource/images/default.png", //默认头像图片
     logIcon: "../../resource/images/logIcon.png",
     phoneIcon: "../../resource/images/phone.png",
     pwdIcon: "../../resource/images/pwdIcon.png",
     verifiIcon: "../../resource/images/verifiIcon.png",
     companyIcon: "../../resource/images/company.png",
-    imgArr: ['D:/627wx1/wx_app/pages/resource/images/timg.png'],
+    imgArr: ['D:/627wx1/wx_app/pages/resource/images/default.png'],
     quality: 1,//图片质量
     codename: '获取验证码',
     isPost: 0,//判断页面是否由转发进入
@@ -71,37 +70,46 @@ Page({
   //已注册的接受
   accept01: function(){
     var that=this
-    wx.request({
-      url: getApp().globalData.server +'/Invitation/changeVisitorStatus.do',
-      data: {
-        invitationId: that.data.invitationId,
-        userId: wx.getStorageSync('wxuserInfo').id,
-        status: 2
-      },
-      method: 'get',
-      success: function(res){
-        console.log("确认邀请结果信息:")
-        console.log(res.data)
-        if (res.data ='SUCCESS'){
-          that.setData({
-            status: 2
-          })
-          wx.showToast({
-            title: '接受成功',
-            icon: 'success',
-            duration: 1500
-          })
-        } else if (res.data = 'confirmCountIsOverflow'){
-          wx.showToast({
-            title: '人数已满，接受失败',
-            icon: 'none',
-            duration: 1500
-          })
-        }else{
-          wx.showToast({
-            title: '出现异常，请重试',
-            icon: 'none',
-            duration: 1500
+    wx.showModal({
+      title: '提示',
+      content: '确认接受邀请吗？',
+      success: function (res) {
+        console.log(res.confirm)
+        if (res.confirm){
+          wx.request({
+            url: getApp().globalData.server + '/Invitation/changeVisitorStatus.do',
+            data: {
+              invitationId: that.data.invitationId,
+              userId: wx.getStorageSync('wxuserInfo').id,
+              status: 2
+            },
+            method: 'get',
+            success: function (res) {
+              console.log("确认邀请结果信息:")
+              console.log(res.data)
+              if (res.data = 'SUCCESS') {
+                that.setData({
+                  status: 2
+                })
+                wx.showToast({
+                  title: '接受成功',
+                  icon: 'success',
+                  duration: 1500
+                })
+              } else if (res.data = 'confirmCountIsOverflow') {
+                wx.showToast({
+                  title: '人数已满，接受失败',
+                  icon: 'none',
+                  duration: 1500
+                })
+              } else {
+                wx.showToast({
+                  title: '出现异常，请重试',
+                  icon: 'none',
+                  duration: 1500
+                })
+              }
+            }
           })
         }
       }
@@ -111,44 +119,53 @@ Page({
   accept02: function () {
     var that=this
     if (util.checkForm(that)){
-      wx.request({
-        url: getApp().globalData.server + '/Invitation/addVisitorAndRegisterUser.do',
-        method: 'post',
-        data: {
-          wxOpenId: wx.getStorageSync('openid'),
-          username: that.data.name,
-          address: that.data.visCompany,
-          phonenum: that.data.phone,
-          photoURL: that.data.avatarUrl,
-          invitationId: that.data.invitationId,
-        },
+      wx.showModal({
+        title: '提示',
+        content: '确认接受邀请吗？',
         success: function (res) {
-          if (res.data.msg == 'ok') {
-            wx.setStorageSync('wxuserInfo', res.data.sysWXUser);
-            wx.setStorageSync('registed', 1)
-            that.setData({
-              status: 2
-            })
-            wx.showToast({
-              title: '接受成功',
-              icon: 'success',
-              duration: 1500
-            })
-          } else if (res.data.msg = 'confirmCountIsOverflow') {
-            wx.showToast({
-              title: '人数已满，接受失败',
-              icon: 'none',
-              duration: 1500
-            })
-          } else {
-            wx.showToast({
-              title: '出现异常，请重试',
-              icon: 'none',
-              duration: 1500
+          console.log(res.confirm)
+          if (res.confirm) {
+            wx.request({
+              url: getApp().globalData.server + '/Invitation/addVisitorAndRegisterUser.do',
+              method: 'post',
+              data: {
+                wxOpenId: wx.getStorageSync('openid'),
+                username: that.data.name,
+                address: that.data.visCompany,
+                phonenum: that.data.phone,
+                photoURL: that.data.avatarUrl,
+                invitationId: that.data.invitationId,
+              },
+              success: function (res) {
+                if (res.data.msg == 'ok') {
+                  wx.setStorageSync('wxuserInfo', res.data.sysWXUser);
+                  wx.setStorageSync('registed', 1)
+                  that.setData({
+                    status: 2
+                  })
+                  wx.showToast({
+                    title: '接受成功',
+                    icon: 'success',
+                    duration: 1500
+                  })
+                } else if (res.data.msg = 'confirmCountIsOverflow') {
+                  wx.showToast({
+                    title: '人数已满，接受失败',
+                    icon: 'none',
+                    duration: 1500
+                  })
+                } else {
+                  wx.showToast({
+                    title: '出现异常，请重试',
+                    icon: 'none',
+                    duration: 1500
+                  })
+                }
+              }
             })
           }
         }
-      })
+      }) 
     }
     
   },
@@ -160,16 +177,19 @@ Page({
     var that = this
     //初始化页面的数据
     if(options.dataset!=null){
+      //登录
+      util.login(that)
       util.inviteInfo(that,options.dataset,0)
       that.setData({
         isPost: 1
       })
     }else{
       util.inviteInfo(that, options.detail,1)
+      that.setData({
+        registed: wx.getStorageSync('registed')
+      })
     }
-    that.setData({
-      registed: wx.getStorageSync('registed')
-    })
+    
     if(util.compareTime(that)){
       console.log("该邀请未过期")
     }else{
@@ -218,6 +238,7 @@ Page({
     return {
       title: '邀请函',
       path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(this,"vis"),
+      imageUrl: '../../resource/images/inv.jpg',
       success: function (res) {
         // 转发成功
         console.log("转发成功:" + JSON.stringify(res));
@@ -355,48 +376,7 @@ Page({
   },
   //获取验证码
   getVerificationCode() {
-    this.getCode();
-    var that = this
-    that.setData({
-      disabled: true
-    })
-  },
-  getCode: function () {
-    var that = this;
-    if (util.checkPhone(that)) {
-      wx.request({
-        url: getApp().globalData.server + "/SysWXUserAction/sendVerificationCode.do?phoneNo=" + that.data.phone,
-        data: {},
-        method: 'post',
-        success(res) {
-          console.log(res)
-          that.setData({
-            iscode: res.data.code
-          })
-          wx.showToast({
-            title: '验证码已发送成功',
-            icon: 'success',
-            duration: 1000
-          })
-          var num = 61;
-          var timer = setInterval(function () {
-            num--;
-            if (num <= 0) {
-              clearInterval(timer);
-              that.setData({
-                codename: '重新发送',
-                disabled: false
-              })
-
-            } else {
-              that.setData({
-                codename: num + "s"
-              })
-            }
-          }, 1000)
-        }
-      })
-    }
+    util.getCode(this)
   },
 
   /**

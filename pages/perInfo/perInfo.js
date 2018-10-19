@@ -14,13 +14,14 @@ Page({
     code: '',//验证码
     disabled: false,
     iscode: '',//用于存放验证码接口里获取到的code
-    avatarUrl: "../resource/images/timg.png", //默认头像图片
+    avatarUrl: "../resource/images/default.png", //默认头像图片
     logIcon: "../resource/images/logIcon.png",
     phoneIcon: "../resource/images/phone.png",
     pwdIcon: "../resource/images/pwdIcon.png",
     verifiIcon: "../resource/images/verifiIcon.png",
     companyIcon: "../resource/images/company.png",
-    imgArr: ['D:/627wx1/wx_app/pages/resource/images/timg.png'],
+    imgArr: [],
+    registed: 0,
     changeBtn: true,
     inputTag: true,
     focus: false,
@@ -33,10 +34,14 @@ Page({
       codeTag: false
     })
   },
+  //获取验证码
+  getVerificationCode() {
+    util.getCode(this)
+  },
   cancelModify:function(){
     this.setData({
       phone: wx.getStorageSync('oldPhone'),
-      codeTag: true
+      codeTag: true,
     })
   },
   //预览头像
@@ -198,13 +203,15 @@ Page({
   onLoad: function (options) {
     var initdata = wx.getStorageSync('wxuserInfo')
     var imgArr = [initdata.photoURL]
-    this.setData({
-      name: initdata.username,
-      phone: initdata.phonenum,
-      company: initdata.address,
-      avatarUrl: initdata.photoURL,
-      imgArr: imgArr
-    })
+    if (initdata != null || initdata.length!=0){
+      this.setData({
+        name: initdata.username,
+        phone: initdata.phonenum,
+        company: initdata.address,
+        avatarUrl: initdata.photoURL,
+        imgArr: imgArr
+      })
+    }
   },
 
   /**
@@ -218,7 +225,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      registed: wx.getStorageSync('registed')
+    })
   },
 
   /**

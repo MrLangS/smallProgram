@@ -1,3 +1,4 @@
+
 <view class="swiper-tab">    
   <!-- <block wx:if="{{role!=0}}"> -->
     <view class="swiper-tab-list {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">邀请记录</view>    
@@ -6,7 +7,7 @@
   <!-- <block wx:else>
     <view class="swiper-tab-li {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">拜访记录</view> 
   </block> -->
-</view> 
+</view>   
 <swiper current="{{currentTab}}" duration="300" style="height:{{height}}rpx" bindchange="bindChange">
   <!-- 邀请记录 -->    
   <swiper-item>      
@@ -35,13 +36,14 @@
     <block wx:else>
       <view class='tip'>抱歉!非内部用户不能发起邀请</view>
     </block>
+    
   </swiper-item>   
 
   <!-- 拜访记录 -->    
   <swiper-item>      
     <!-- 新样式 -->
-    <block wx:if="{{visitList.length!=0}}">
-      <view wx:for="{{visitList}}" wx:key="id" data-index="{{index}}" bindtap='clickVisit'>
+    <block wx:if="{{showVisList.length!=0}}">
+      <view wx:for="{{showVisList}}" wx:key="id" data-index="{{index}}" bindtap='clickVisit'>
         <view class='item'>
           <view class='item-head'>
             <view class=''>{{item.year}}</view>
@@ -65,3 +67,8 @@
   </swiper-item>    
 
 </swiper>
+<view class="weui-loadmore" hidden="{{isHideLoadMore}}">
+  <view class="weui-loading"></view>
+  <view class="weui-loadmore__tips">{{tip}}</view>
+</view>
+

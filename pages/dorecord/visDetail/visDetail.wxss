@@ -28,6 +28,6 @@
   font-size: 30rpx;
   text-align: center;	
   line-height: 60rpx;
-  background-color: #b2b2b227;
+  background-color: #eeeeee;
   color: rgba(124, 127, 128, 0.863)
 }

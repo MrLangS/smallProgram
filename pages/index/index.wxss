@@ -1,4 +1,7 @@
 /**index.wxss**/
+/* Page{
+  background: #eeeeee;
+} */
 .userinfo {
   display: flex;
   flex-direction: column;
@@ -30,6 +33,7 @@
   position: relative;
   width: 100%;
   height: 400rpx;
+  /* margin-top: 10rpx; */
 }
 .img{
   position: absolute;

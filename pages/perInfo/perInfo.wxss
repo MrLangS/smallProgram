@@ -4,13 +4,20 @@
 .cancel-btn{
   margin-top: 23rpx;
 }
+.footer{
+  margin-top: 40rpx;
+  text-align: center;
+  font-size: 25rpx;
+  opacity: 0.4;
+}
 .head{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  margin: 50rpx auto;
-  background-color: rgba(0, 153, 255, 0.411);
+  margin: 0rpx auto;
+  /* background-color: rgba(0, 153, 255, 0.411); */
+  background-color: #eeeeee;
 }
 .head-margin{
   margin-bottom: 23rpx;

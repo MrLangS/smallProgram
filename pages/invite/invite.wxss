@@ -1,13 +1,10 @@
 /* pages/invite/invite.wxss */
 @import "../comm/weui.wxss";
-@import "../register/register.wxss";
-/* pages/register/register.wxss */
 page{
   height: 100%;
   width: 100%;
 }
 .tip{
-  /* height: 300rpx; */
   line-height: 600rpx;
   width: 100%;
   text-align: center;
@@ -15,21 +12,16 @@ page{
 .picker{
   background-color: #FFFFFF;
   display: flex;
-  width: 100rpx;
-  height: 60rpx;
+  height: 100rpx;
+  line-height: 100rpx;
   margin-left: 50rpx;
-  margin-top: 10rpx;
-  margin-bottom: 30rpx;
   opacity: 0.8;
 }
 .pickerr{
   background-color: #FFFFFF;
   display: flex;
-  width: 100rpx;
-  height: 60rpx;
+  line-height: 100rpx;
   margin-left: 20rpx;
-  margin-top: 10rpx;
-  margin-bottom: 30rpx;
   opacity: 0.8;
 }
 .checkbox{
@@ -37,7 +29,7 @@ page{
   flex-direction: row;
 }
 .middle{
-  margin-top: 15rpx;
+  line-height: 100rpx;
   margin-left: 20rpx;
   font-size: 35rpx;
   opacity: 0.5;
@@ -47,8 +39,6 @@ page{
   flex-direction: column;
 }
 .changeInfo{
-  /* display: flex;
-  flex-direction: column; */
   justify-content: space-between;
   width: 90%;
   margin: 50rpx auto;
@@ -63,7 +53,23 @@ page{
   display: flex;
   border-bottom: 1px solid #ddd;
   flex-direction: row;
-  margin-bottom: 20rpx;
+  height: 100rpx;
+  /* margin-bottom: 20rpx; */
+}
+.lab{
+  width: 100rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  margin-left: 20rpx;
+  opacity: 0.5;
+}
+.content{
+  display: flex;
+  width: 500rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  margin-left: 50rpx;
+  opacity: 0.8;
 }
 .head-title{
   width: 150rpx;
@@ -95,24 +101,8 @@ page{
   text-align: center;
   margin-bottom: 40rpx;
 }
-.lab{
-  width: 100rpx;
-  height: 60rpx;
-  margin-left: 20rpx;
-  margin-top: 10rpx;
-  margin-bottom: 30rpx;
-  opacity: 0.5;
-}
-.content{
-  display: flex;
-  width: 500rpx;
-  height: 60rpx;
-  /* margin: 20rpx 50rpx ; */
-  margin-left: 50rpx;
-  margin-top: 10rpx;
-  margin-bottom: 30rpx;
-  opacity: 0.8;
-}
+
+
 .area-content{
   font-size: 35rpx;
   display: flex;
@@ -130,7 +120,7 @@ page{
 .btn01{
   display: flex;
   margin-top: 50rpx;
-  margin-bottom: 40rpx;
+  /* margin-bottom: 40rpx; */
 }
 .holder{
   font-size: 30rpx;
@@ -138,6 +128,13 @@ page{
 .footer{
   text-align: center;
   font-size: 25rpx;
+}
+.footer-r{
+  width: 100%;
+  text-align: right;
+  font-size: 25rpx;
+  opacity: 0.6;
+  margin-bottom: 20rpx;
 }
 .backBtn{
   margin-left: 0rpx;
@@ -152,6 +149,7 @@ page{
 }
 .shareBtn{
   margin-right: 0rpx;
+  margin-bottom: 40rpx;
   width: 100%;
   height: 90rpx;
 }

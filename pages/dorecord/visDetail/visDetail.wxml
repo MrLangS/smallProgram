@@ -58,7 +58,9 @@
       <block wx:if="{{registed}}">
         <button bindtap='accept01' hidden='{{status!=1}}' type='primary' class='post-btn'>接受邀请</button> 
       </block>
-      <button bindtap='back' hidden='{{!isPost}}' type='primary' class='back-btn'>回到首页</button> 
+    </block>
+    <button bindtap='back' hidden='{{!isPost}}' type='primary' class='back-btn'>回到首页</button> 
+    <block wx:if="{{status!=4}}">
       <block wx:if="{{status!=3}}">
         <button open-type="share" class='post-btn' size="default">转发邀请</button>
       </block>
@@ -98,12 +100,12 @@
         <view class='input-log'>
           <image class="userinfo-logIcon"src="{{phoneIcon}}"></image>
           <input placeholder='请输入手机号' bindinput='getPhoneValue' value='{{phone}}'/> 
-          <button class='codeBtn' open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>自动获取</button>
+          <button class='codeBtn' bindtap='getVerificationCode' disabled='{{disabled}}' >{{codename}}</button>
+          <!-- <button class='codeBtn' open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>自动获取</button> -->
         </view>
         <view class='input-log'>
           <image class="userinfo-logIcon" src="{{verifiIcon}}"></image>
           <input placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'/> 
-          <button class='codeBtn' bindtap='getVerificationCode' disabled='{{disabled}}' >{{codename}}</button>
         </view>
       </view>
       <view class="btn-area">

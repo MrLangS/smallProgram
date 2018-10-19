@@ -55,7 +55,7 @@ page{
   margin: 50rpx auto;
 }
 .picBtn{
-  width: 23%;
+  width: 28%;
   font-size: 25rpx;
   padding: 20rpx auto;
   height: 60rpx;

@@ -339,6 +339,7 @@ Page({
     return {
       title: '邀请函',
       path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(that, "inv"),
+      imageUrl: '../resource/images/inv.jpg',
       success: function (res) {
         // 转发成功
         //提交邀请表单
@@ -369,7 +370,7 @@ Page({
         })
       }
     }
-            //转发部分末尾
+    //转发部分末尾
   },
   getReason: function (e) {
     this.setData({

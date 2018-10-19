@@ -8,14 +8,15 @@ Page({
     company: '',//公司名称
     picManage: '添加头像',
     disabled: false,
+    registed: 0,
     iscode: '',//用于存放验证码接口里获取到的code
-    avatarUrl: "../resource/images/timg.png", //默认头像图片
+    avatarUrl: "../resource/images/default.png", //默认头像图片
     logIcon: "../resource/images/logIcon.png",
     phoneIcon: "../resource/images/phone.png",
     pwdIcon: "../resource/images/pwdIcon.png",
     verifiIcon: "../resource/images/verifiIcon.png",
     companyIcon: "../resource/images/company.png",
-    imgArr: ['D:/627wx1/wx_app/smallProgram/pages/resource/images/timg.png'],
+    imgArr: ['D:/627wx1/wx_app/smallProgram/pages/resource/images/default.png'],
     codename: '获取验证码'
   },
   //预览头像
@@ -135,48 +136,7 @@ Page({
 
   //获取验证码
   getVerificationCode() {
-    this.getCode();
-    var that = this
-    that.setData({
-      disabled: true
-    })
-  },
-  getCode: function () {
-    var that = this;
-    if (util.checkPhone(that)){
-      wx.request({
-        url: getApp().globalData.server + "/SysWXUserAction/sendVerificationCode.do?phoneNo=" + that.data.phone,
-        data: {},
-        method:'post',
-        success(res) {
-          console.log(res)
-          that.setData({
-            iscode: res.data.code
-          })
-          wx.showToast({
-            title: '验证码已发送成功',
-            icon: 'success',
-            duration: 1000
-          })
-          var num = 61;
-          var timer = setInterval(function () {
-            num--;
-            if (num <= 0) {
-              clearInterval(timer);
-              that.setData({
-                codename: '重新发送',
-                disabled: false
-              })
-
-            } else {
-              that.setData({
-                codename: num + "s"
-              })
-            }
-          }, 1000)
-        }
-      })
-    }
+    util.getCode(this)
   },
   
   //提交表单信息
@@ -186,8 +146,6 @@ Page({
     var openIdValue = wx.getStorageSync('openid');
     console.log('get openid is: ' + openIdValue)
     var flag=util.checkForm(this)//表单验证
-    // var flag=this.checkName()&&this.checkPhone()&&this.checkCode()
-    
     var uploadUserUrl ="" //getApp().globalData.server + 'UserApplyAction!uploadUserInfo.do'
     if(flag){
       wx.request({
@@ -221,11 +179,6 @@ Page({
               duration: 1500
             })
           }
-          
-          // wx.redirectTo({
-          //   url: 'wait/wait',
-          // })
-
         },
         fail: function (e) {
         },
@@ -233,18 +186,11 @@ Page({
     }
   },
 
-  //     wx.setStorageSync('name', this.data.name);
-  //     wx.setStorageSync('phone', this.data.phone);
-  //     wx.redirectTo({
-  //       url: '../add/add',
-  //     })
-
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    util.login(this)
   },
 
   /**

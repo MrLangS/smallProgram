@@ -30,7 +30,6 @@
           <view class='content'>{{numArr[index]}}</view>
           <!-- <input class='content' placeholder='选择邀请人数' value='{{numArr[index]}}'/>  -->
         </picker>
-        
       </view>
       <view class='input-log'>
         <label class='lab'>姓名</label>
@@ -98,14 +97,17 @@
         <block wx:if="{{hideTag01}}">
           <button bindtap='switchChange' class='backBtn'>返回修改</button>
           <button open-type="share" type='primary' class='postBtn'>确认邀请</button>
-          
           <!-- <button form-type='submit' hidden='true' ></button> -->
         </block>
         <block wx:else>
           <button open-type="share" type='primary' size='default' class='shareBtn'>转发邀请</button>
         </block>
       </view>
+      <block wx:if="{{hideTag01}}">
+        <view class='footer-r'>确认邀请以后不能修改邀请函内容</view>
+      </block>
       <view hidden='{{!hideTag}}' bindtap='newInv' class='blkBtn'><button>新增空白邀请</button></view>
+      
     </view>
   </form>
   <view class='footer'>当前日期：{{currentDay.year}}年{{currentDay.month}}月{{currentDay.day}}日</view>

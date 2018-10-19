@@ -2,8 +2,8 @@
 <!-- <view class='imgbox'>
   <image class='img' mode='scaleToFill' src='{{invPng}}'></image>
 </view> -->
-<view class='head'>
-  <view hidden='{{registed}}'>
+<view class='head' hidden='{{registed==1}}'>
+  <view>
     <label bindtap='registe' class='head-txt'>还未拥有账号？点击注册</label>
   </view>
 </view>

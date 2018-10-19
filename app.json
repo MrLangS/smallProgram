@@ -5,17 +5,13 @@
     "pages/result/result",
     "pages/perInfo/perInfo",
     "pages/dorecord/dorecord",
-    "pages/dorecord/thrDetail/thrDetail",
     "pages/invite/invite",
     "pages/dorecord/invDetail/invDetail",
-    "pages/dorecord/visDetail/visDetail",
-    "pages/login/login",
-    "pages/logs/logs"
+    "pages/dorecord/visDetail/visDetail"
   ],
   "workers": "workers",
   "tabBar":{
-    "selectedColor": "white",
-    "backgroundColor": "gray",
+    "backgroundColor": "#eeeeee",
     "list": [
       {
         "pagePath": "pages/index/index",

@@ -185,6 +185,48 @@ function inviteInfo(that,initData,tag){
   }
 }
 
+//获取验证码
+function getCode(that){
+  that.setData({
+    disabled: true
+  })
+  var endPhone = that.data.phone.substr(7, 4)
+  if (checkPhone(that)) {
+    wx.request({
+      url: getApp().globalData.server + "/SysWXUserAction/sendVerificationCode.do?phoneNo=" + that.data.phone,
+      data: {},
+      method: 'post',
+      success(res) {
+        console.log(res)
+        that.setData({
+          iscode: res.data.code
+        })
+        wx.showToast({
+          title: '已向尾号' + endPhone + '的手机成功发送验证码',
+          icon: 'none',
+          duration: 1500
+        })
+        var num = 61;
+        var timer = setInterval(function () {
+          num--;
+          if (num <= 0) {
+            clearInterval(timer);
+            that.setData({
+              codename: '发送验证码',
+              disabled: false
+            })
+
+          } else {
+            that.setData({
+              codename: "重发 ("+num + "s)"
+            })
+          }
+        }, 1000)
+      }
+    })
+  }
+}
+
 //邮箱以及手机的正则表达式
 function regexConfig() {
   var reg = {
@@ -447,5 +489,6 @@ module.exports = {
   inviteInfo: inviteInfo,
   tranStamp: tranStamp,
   login: login,
-  compareTime: compareTime
+  compareTime: compareTime,
+  getCode: getCode
 }

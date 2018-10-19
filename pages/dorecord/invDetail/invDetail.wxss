@@ -66,7 +66,7 @@
   font-size: 30rpx;
   text-align: center;	
   line-height: 60rpx;
-  background-color: #b2b2b227;
+  background-color: #eeeeee;
   color: rgba(124, 127, 128, 0.863)
 }
 .userinfo-avatar {
@@ -93,14 +93,14 @@
   background-color: white;
   height: 80rpx;
   margin-top: 4rpx;
-  border-bottom: 1rpx solid #77777733;
+  border-bottom: 1rpx solid #eeeeee;
 }
 .item-content{
   display: flex;
   flex-direction: row;
   width: 100%;
   line-height: 80rpx;
-  background-color: #b2b2b227;
+  background-color: #eeeeee;
   height: 80rpx;
 }
 .item-name{

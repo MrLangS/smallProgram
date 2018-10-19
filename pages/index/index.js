@@ -35,5 +35,9 @@ Page({
     //   registed: wx.getStorageSync('registed')
     // })
   },
+  onShow: function(){
+    // console.log(this.data.registed)
+    // console.log(wx.getStorageSync('registed'))
+  },
 
 })
