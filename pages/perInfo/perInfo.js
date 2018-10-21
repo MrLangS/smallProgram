@@ -47,7 +47,7 @@ Page({
   //预览头像
   preview: function (e) {
     var that = this
-    var imgArr = this.data.imgArr
+    var imgArr = that.data.imgArr
     wx.previewImage({
       urls: imgArr,
       success: function (res) { },
@@ -69,6 +69,7 @@ Page({
         var tempFilePaths = res.tempFilePaths
         if (tempFilePaths.length > 0) {
           imgArr[0] = tempFilePaths[0]
+          console.log(imgArr)
           wx.uploadFile({
             url: uploadUserUrl,
             filePath: tempFilePaths[0],
@@ -202,6 +203,7 @@ Page({
    */
   onLoad: function (options) {
     var initdata = wx.getStorageSync('wxuserInfo')
+    
     var imgArr = [initdata.photoURL]
     if (initdata != null || initdata.length!=0){
       this.setData({
