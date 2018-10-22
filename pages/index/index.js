@@ -10,11 +10,8 @@ Page({
     registed: 0,
   },
   registe:function(){
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/register/register',
-      success: function(res) {},
-      fail: function(res) {},
-      complete: function(res) {},
     })
   },
   intoInfo: function(){

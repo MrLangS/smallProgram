@@ -10,12 +10,12 @@ Page({
 
   intoIndex: function(){
     console.log("index")
-    wx.switchTab({
+    wx.reLaunch({
       url: '../index/index',
     })
   },
   intoInfo: function () {
-    wx.switchTab({
+    wx.reLaunch({
       url: '../perInfo/perInfo',
     })
   },
