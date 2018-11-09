@@ -70,7 +70,7 @@ Page({
                 })
               } else {
                 wx.showToast({
-                  title: '图片不合格',
+                  title: '照片须为本人清晰头像',
                   icon: 'loading',
                   duration: 1500
                 })

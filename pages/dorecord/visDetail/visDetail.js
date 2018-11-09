@@ -174,7 +174,6 @@ Page({
         }
       }) 
     }
-    
   },
 
   /**
@@ -187,12 +186,17 @@ Page({
       if (wx.getStorageSync('wxuserInfo')==null){
         //登录
         util.login(that)
+      }else{
+        that.setData({
+          registed: 1
+        })
       }
       util.inviteInfo(that, options.dataset, 0)
       that.setData({
         isPost: 1
       })
     }else{
+      console.log(options.detail)
       util.inviteInfo(that, options.detail,1)
       that.setData({
         registed: wx.getStorageSync('registed')

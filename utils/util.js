@@ -15,14 +15,14 @@ const formatNumber = n => {
 }
 function formatDay(that){
   var date=that.data
-  return [date.year, date.month, date.day].join('-')
+  return [date.year, date.month, date.day].map(formatNumber).join('-')
 }
 function formatTimestamp(that,tag){
   var datetime = that.data
   if(tag==0){
-    return [datetime.year, datetime.month, datetime.day].join('-') + ' ' + datetime.starttime
+    return [datetime.year, datetime.month, datetime.day].map(formatNumber).join('-') + ' ' + datetime.starttime
   }else{
-    return [datetime.year, datetime.month, datetime.day].join('-') + ' ' + datetime.endtime
+    return [datetime.year, datetime.month, datetime.day].map(formatNumber).join('-') + ' ' + datetime.endtime
   }
 }
 function tranStamp(timestamp,tag){
@@ -187,11 +187,11 @@ function inviteInfo(that,initData,tag){
 
 //获取验证码
 function getCode(that){
-  that.setData({
-    disabled: true
-  })
   var endPhone = that.data.phone.substr(7, 4)
   if (checkPhone(that)) {
+    that.setData({
+      disabled: true
+    })
     wx.request({
       url: getApp().globalData.server + "/SysWXUserAction/sendVerificationCode.do?phoneNo=" + that.data.phone,
       data: {},
