@@ -1,5 +1,5 @@
 <view class="userinfo head">
-  <image class="userinfo-avatar" src="{{avatarUrl}}" bindtap='preview' background-size="cover"></image>
+  <image class="userinfo-avatar" src="{{avatarUrl?avatarUrl:'/pages/resource/images/default.png'}}" bindtap='preview' background-size="cover"></image>
   <block wx:if="{{registed==1}}">
     <button class="picBtn head-margin" bindtap='onPicBtn'>{{picManage}}</button>
   </block>

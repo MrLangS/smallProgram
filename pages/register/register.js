@@ -17,7 +17,111 @@ Page({
     verifiIcon: "../resource/images/verifiIcon.png",
     companyIcon: "../resource/images/company.png",
     imgArr: ['D:/627wx1/wx_app/smallProgram/pages/resource/images/default.png'],
-    codename: '获取验证码'
+    codename: '获取验证码',
+    list: [],
+    modal: true,
+    staffId: 0,
+  },
+  radioChange: function (e) {
+    console.log('radio发生change事件，携带value值为：', e.detail.value)
+    this.setData({
+      staffId: e.detail.value
+    })
+  },
+  cancel: function () {
+    this.setData({
+      modal: true,
+      staffId: 0
+    });
+  },
+  confirm: function () {
+    var that=this
+    if (this.data.staffId==0){
+      wx.showToast({
+        title: '请选择对应的内部人员',
+        icon: 'none',
+        duration: 1500,
+      })
+    }else{
+      this.setData({
+        modal: true
+      })
+      //添加人员
+      var openIdValue = wx.getStorageSync('openid');
+      wx.request({
+        url: getApp().globalData.server + "/SysWXUserAction/registerWXUser.do",
+        data: {
+          wxOpenId: openIdValue,
+          username: that.data.name,
+          address: that.data.company,
+          phonenum: that.data.phone,
+          photoURL: that.data.avatarUrl,
+          staffId: parseInt(that.data.staffId), 
+        },
+        method: 'post',
+        header: {
+          'content-type': 'application/json' // 默认值
+        },
+        success: function (res) {
+          console.log(res.data)
+          if (res.data.msg == 'ok') {
+            console.log('注册成功...')
+            wx.setStorageSync("wxuserInfo", res.data.sysWXUser)
+            wx.setStorageSync('registed', 1)
+            wx.redirectTo({
+              url: '../result/result',
+            })
+          } else {
+            console.log('注册失败...')
+            wx.showToast({
+              title: '注册失败',
+              icon: 'loading',
+              duration: 1500
+            })
+          }
+        },
+        fail: function (e) {
+        },
+      })
+      
+    }
+  },
+  //提交表单信息
+  formSubmit: function (e) {
+    var that = this
+    var formIdValue = e.detail.formId
+    var flag = util.checkForm(this)//表单验证
+    var uploadUserUrl = "" //getApp().globalData.server + 'UserApplyAction!uploadUserInfo.do' 
+
+    if(true){
+      wx.request({
+        url: getApp().globalData.server + '/SysWXUserAction/getPersonByPhoneNum.do?phoneNum=' + that.data.phone,
+        method: 'post',
+        success: (res) => {
+          console.log(res)
+          var list = res.data
+          if (list.length == 0) {
+            console.log('不是内部用户手机号')
+            wx.showToast({
+              title: '抱歉，该手机号非内部用户手机号，不能注册',
+              icon: 'none',
+              duration: 2000,
+            })
+          } else {
+            for (let i in list) {
+              console.log(i)
+              list[i].createTime = list[i].createTime.substr(0, 10)
+            }
+            that.setData({
+              list: list
+            })
+            this.setData({
+              modal: !this.data.modal
+            })
+          }
+        }
+      })
+    }
   },
   //预览头像
   preview: function (e) {
@@ -139,106 +243,7 @@ Page({
     util.getCode(this)
   },
   
-  //提交表单信息
-  formSubmit: function(e){
-    var that=this
-    var formIdValue=e.detail.formId
-    var openIdValue = wx.getStorageSync('openid');
-    console.log('get openid is: ' + openIdValue)
-    var flag=util.checkForm(this)//表单验证
-    var uploadUserUrl ="" //getApp().globalData.server + 'UserApplyAction!uploadUserInfo.do'
-    if(flag){
-      wx.request({
-        url: getApp().globalData.server + "/SysWXUserAction/registerWXUser.do",
-        data:{
-          wxOpenId: openIdValue,
-          username: that.data.name,
-          address: that.data.company,
-          phonenum: that.data.phone,
-          photoURL: that.data.avatarUrl,
-          formId: formIdValue
-        },
-        method: 'post',
-        header: {
-          'content-type': 'application/json' // 默认值
-        },
-        success: function (res) {
-          console.log(res.data)
-          if(res.data.msg=='ok'){
-            console.log('注册成功...')
-            wx.setStorageSync("wxuserInfo", res.data.sysWXUser)
-            wx.setStorageSync('registed', 1)
-            wx.redirectTo({
-              url: '../result/result',
-            })
-          }else{
-            console.log('注册失败...')
-            wx.showToast({
-              title: '注册失败',
-              icon: 'loading',
-              duration: 1500
-            })
-          }
-        },
-        fail: function (e) {
-        },
-      })
-    }
-  },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
     util.login(this)
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })

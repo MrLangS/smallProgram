@@ -42,6 +42,7 @@ page{
   display: flex;
   border-bottom: 1px solid #ddd;
   flex-direction: row;
+  /* justify-content: space-between; */
   margin-bottom: 20rpx;
 }
 .userinfo-logIcon{
@@ -61,11 +62,10 @@ page{
   height: 60rpx;
 }
 .codeBtn{
-  right: 0rpx;
   top: 10rpx;
   color: #bbb;
-  width: 35%;
-  font-size: 25rpx;
+  width: 200rpx;
+  font-size: 20rpx;
   height: 80rpx;
   line-height: 80rpx;
 }
@@ -81,9 +81,12 @@ page{
   border-radius: 40rpx;
   position: absolute;
   bottom: 10%;
-  padding-left: 20rpx;
-  padding-bottom: 30rpx;
+  
   left: 45%;
   margin-left: -10%;
-  line-height: 100rpx;
+  line-height: 80rpx;
+}
+.checkbox{
+  display: flex;
+  flex-direction: column;
 }

@@ -169,7 +169,7 @@ Page({
       day: date[2],
       starttime: util.tranStamp(detail.startTime, 1),
       endtime: util.tranStamp(detail.endTime, 1),
-      address: detail.regionNames,
+      address: detail.devNames,
       num: detail.visitorCount,
       vistorName: detail.visitorLinkmanName,
       vistorPhone: detail.visitorLinkmanPhone,

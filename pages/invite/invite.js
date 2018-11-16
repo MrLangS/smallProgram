@@ -38,6 +38,9 @@ Page({
     vistorPhone: '',//代表成员手机号
     count: 0,//记录点击邀请按钮的次数
     invitationId: 0,//邀请id 
+    list: [],
+    modal: true,
+    staffId: 0,
   },
   //新增空白邀请
   newInv: function () {
@@ -155,51 +158,135 @@ Page({
     console.log("test")
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  bindInterpeo: function(){
+    var that=this
+    if (typeof (wx.getStorageSync('wxuserInfo').phonenum)!="undefined"){
+      var phonenum = wx.getStorageSync('wxuserInfo').phonenum
+      wx.request({
+        url: getApp().globalData.server + '/SysWXUserAction/getPersonByPhoneNum.do?phoneNum=' + phonenum,
+        method: 'post',
+        success: (res) => {
+          console.log(res)
+          var list = res.data
+          if (list.length == 0) {
+            console.log('不是内部用户手机号')
+            wx.showToast({
+              title: '抱歉，您非内部用户，不能绑定',
+              icon: 'none',
+              duration: 2000,
+            })
+          } else {
+            for (let i in list) {
+              list[i].createTime = list[i].createTime.substr(0, 10)
+            }
+            that.setData({
+              list: list
+            })
+            this.setData({
+              modal: !this.data.modal
+            })
+          }
+        }
+      })
+    }else{
+      wx.showToast({
+        title: '抱歉！您当前尚未注册',
+        icon: 'none',
+        duration: 2000
+      })
+    }
+  },
+  radioChange: function (e) {
+    console.log('radio发生change事件，携带value值为：', e.detail.value)
+    this.setData({
+      staffId: e.detail.value
+    })
+  },
+  cancel01: function () {
+    this.setData({
+      modal: true,
+    });
+  },
+  confirm01: function () {
+    var that = this
+    if (this.data.staffId == 0) {
+      wx.showToast({
+        title: '请选择对应的内部人员',
+        icon: 'none',
+        duration: 1500,
+      })
+    } else {
+      var openid = wx.getStorageSync('openid')
+      wx.request({
+        url: getApp().globalData.server + '/SysWXUserAction/relevanceInnerPerson.do?openId=' + openid +'&staffId='+that.data.staffId,
+        method: 'post',
+        success: (res)=>{
+          console.log(res)
+          if (res.data.staffId){
+            that.setData({
+              role: 1
+            })
+            var userInfo = wx.getStorageSync('wxuserInfo')
+            userInfo.staffId = that.data.staffId
+            wx.setStorageSync('wxuserInfo', userInfo)
+            var invitor = that.data.invitor
+            invitor.name = userInfo.username
+            invitor.phone = userInfo.phonenum
+            invitor.company = userInfo.address
+            wx.request({
+              url: getApp().globalData.server + '/Invitation/getdevices.do',
+              data: { staffId: that.data.staffId },
+              method: 'get',
+              success: function (res) {
+                console.log(res)
+                that.setData({
+                  invitor: invitor,
+                  regionList: res.data
+                })
+              }
+            })
+          }
+          this.setData({
+            modal: true
+          })
+        }
+      })
+      
+    }
+  },
   onLoad: function (options) {
     wx.showShareMenu({
       withShareTicket:true
     })
-    var that=this
+    
+  },
+
+  onShow: function () {
+    var that = this
     var userInfo = wx.getStorageSync('wxuserInfo')
     var staffId = userInfo.staffId
-    
-    if (staffId != null || staffId.length != 0){
+    console.log(userInfo)
+    if (staffId) {
       that.setData({
         role: 1
       })
-      var invitor=this.data.invitor
+      var invitor = this.data.invitor
       invitor.name = userInfo.username
       invitor.phone = userInfo.phonenum
       invitor.company = userInfo.address
       wx.request({
-        url: getApp().globalData.server +'/Invitation/getRegions.do',
-        data: { staffId: staffId},
+        url: getApp().globalData.server + '/Invitation/getdevices.do',
+        data: { staffId: staffId },
         method: 'get',
-        success: function(res){
+        success: function (res) {
+          console.log(res)
           that.setData({
             invitor: invitor,
             regionList: res.data
           })
         }
       })
-    }  
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
+    }
   },
 
   /**
@@ -258,7 +345,7 @@ Page({
             visitorLinkmanName: that.data.vistorName,
             visitorLinkmanPhone: that.data.vistorPhone,
             reason: that.data.reason,
-            regionIds: that.data.regionIds
+            devIds: that.data.regionIds
           },
           method: 'post',
           success: function (res) {
@@ -304,7 +391,7 @@ Page({
             visitorLinkmanPhone: that.data.vistorPhone,
             reason: that.data.reason,
             invitationId: that.data.invitationId,
-            regionIds: that.data.regionIds
+            devIds: that.data.regionIds
           },
           method: 'post',
           success: function (res) {

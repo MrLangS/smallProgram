@@ -134,9 +134,10 @@ Page({
         url: getApp().globalData.server + '/SysWXUserAction/updateUserMsg.do',
         data: {
           wxOpenId: wx.getStorageSync("openid"),
+          staffId: wx.getStorageSync("wxuserInfo").staffId,
           username: this.data.name,
-          oldPhoneNO: wx.getStorageSync("oldPhone"),
-          newPhoneNO: this.data.phone,
+          // oldPhoneNO: wx.getStorageSync("oldPhone"),
+          phoneNum: this.data.phone,
           address: this.data.company
         },
         method: 'post',
@@ -203,14 +204,13 @@ Page({
    */
   onLoad: function (options) {
     var initdata = wx.getStorageSync('wxuserInfo')
-    
-    var imgArr = [initdata.photoURL]
-    if (initdata != null || initdata.length!=0){
+    if (typeof(initdata)!="undefined"){
+      var imgArr = [initdata.photoURL]
       this.setData({
-        name: initdata.username,
-        phone: initdata.phonenum,
-        company: initdata.address,
-        avatarUrl: initdata.photoURL,
+        name: initdata.username||'',
+        phone: initdata.phonenum||'',
+        company: initdata.address||'',
+        avatarUrl: initdata.photoURL||'',
         imgArr: imgArr
       })
     }

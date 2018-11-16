@@ -176,26 +176,30 @@ Page({
     }
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  test: function(){
+    console.log("转发测试")
+    console.log(this.data.registed)
+    console.log(typeof(this.data.registed))
+    console.log(this.data.status)
+  },
   onLoad: function (options) {
     var that = this
     //初始化页面的数据
-    if(options.dataset!=null){
-      if (wx.getStorageSync('wxuserInfo')==null){
-        //登录
-        util.login(that)
-      }else{
-        that.setData({
-          registed: 1
-        })
-      }
+    if (typeof (options.dataset) != 'undefined'){
+      //登录
+      util.login(that)
       util.inviteInfo(that, options.dataset, 0)
       that.setData({
+        // registed: wx.getStorageSync('registed'),
+        // registed: 0,
+        status:1,
         isPost: 1
       })
+      console.log('测试')
+      console.log(this.data.registed)
+      console.log(this.data.status)
     }else{
+      console.log('测试2')
       console.log(options.detail)
       util.inviteInfo(that, options.detail,1)
       that.setData({

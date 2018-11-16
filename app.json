@@ -1,15 +1,14 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/result/result",
     "pages/register/register",
+    "pages/dorecord/visDetail/visDetail",
+    "pages/result/result",
     "pages/perInfo/perInfo",
     "pages/dorecord/dorecord",
     "pages/invite/invite",
-    "pages/dorecord/invDetail/invDetail",
-    "pages/dorecord/visDetail/visDetail"
+    "pages/dorecord/invDetail/invDetail"
   ],
-  "workers": "workers",
   "tabBar":{
     "backgroundColor": "#eeeeee",
     "list": [

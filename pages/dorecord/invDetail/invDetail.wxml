@@ -21,7 +21,7 @@
       <label class='head-title'>结束时间</label> <label class='head-con'>{{endtime}}</label>
     </view>
     <view class='head-content'>
-      <label class='head-title'>地址</label> <label class='head-con'>{{address}}</label>
+      <label class='head-title'>通行设备</label> <label class='head-con'>{{address}}</label>
     </view>
     <view class='head-content'>
       <label class='head-title'>人数</label> <label class='head-con'>{{num}}</label>

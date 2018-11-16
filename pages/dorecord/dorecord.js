@@ -118,53 +118,56 @@ Page({
    */
   onShow: function () {
     var that = this
-    //获得邀请列表请求
-    if (that.data.role == 1){
+    if (wx.getStorageSync('wxuserInfo')){
+      //获得邀请列表请求
+      if (that.data.role == 1) {
+        wx.request({
+          url: getApp().globalData.server + '/Invitation/invitationList.do',
+          method: 'get',
+          data: {
+            staffId: wx.getStorageSync('wxuserInfo').staffId
+          },
+          success: function (res) {
+            console.log("获得邀请记录")
+            var inviteList = res.data
+            for (var inv of inviteList) {
+              var date = util.tranStamp(inv.visitorDay, 0)
+              inv.year = date[0]
+              inv.month = date[1]
+              inv.day = date[2]
+            }
+            that.setData({
+              inviteList: inviteList,
+              showInvList: inviteList.slice(0, 10 * that.data.loadInvCount)
+            })
+          }
+        })
+      }
+
+      //获得受邀列表请求
       wx.request({
-        url: getApp().globalData.server + '/Invitation/invitationList.do',
+        url: getApp().globalData.server + '/Invitation/invitedList.do',
         method: 'get',
         data: {
-          staffId: wx.getStorageSync('wxuserInfo').staffId
+          userId: wx.getStorageSync('wxuserInfo').id
         },
         success: function (res) {
-          console.log("获得邀请记录")
-          var inviteList = res.data
-          for (var inv of inviteList) {
-            var date = util.tranStamp(inv.visitorDay, 0)
-            inv.year = date[0]
-            inv.month = date[1]
-            inv.day = date[2]
+          console.log("获得受邀记录")
+          var visitList = res.data
+          for (var vis of visitList) {
+            var date = util.tranStamp(vis.visitorDay, 0)
+            vis.year = date[0]
+            vis.month = date[1]
+            vis.day = date[2]
           }
           that.setData({
-            inviteList: inviteList,
-            showInvList: inviteList.slice(0, 10 * that.data.loadInvCount)
+            visitList: visitList,
+            showVisList: visitList.slice(0, 10 * that.data.loadVisCount)
           })
         }
       })
     }
     
-    //获得受邀列表请求
-    wx.request({
-      url: getApp().globalData.server + '/Invitation/invitedList.do',
-      method: 'get',
-      data: {
-        userId: wx.getStorageSync('wxuserInfo').id
-      },
-      success: function (res) {
-        console.log("获得受邀记录")
-        var visitList = res.data
-        for (var vis of visitList){
-          var date = util.tranStamp(vis.visitorDay, 0)
-          vis.year = date[0]
-          vis.month = date[1]
-          vis.day = date[2]
-        }
-        that.setData({
-          visitList: visitList,
-          showVisList: visitList.slice(0, 10*that.data.loadVisCount)
-        })
-      }
-    })
   },
 
   /**

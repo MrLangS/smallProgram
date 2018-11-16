@@ -21,8 +21,8 @@
         <!-- <input class='content'  placeholder='选择时间' bindinput='getCompany' value='{{}}'/> -->
       </view>
       <view class='input-log'>
-      <label class='lab'>地址</label>
-        <input class='content'  placeholder='选择访问区域' bindtap='getAds' value='{{address}}' disabled='true'/> 
+      <label class='lab'>设备</label>
+        <input class='content'  placeholder='选择通行设备' bindtap='getAds' value='{{address}}' disabled='true'/> 
       </view>
       <view class='input-log'>
         <label class='lab'>人数</label>
@@ -73,7 +73,7 @@
         <label class='head-title'>结束时间</label> <label class='head-con'>{{endtime}}</label>
       </view>
       <view class='head-content'>
-        <label class='head-title'>地址</label> <label class='head-con'>{{address}}</label>
+        <label class='head-title'>通行设备</label> <label class='head-con'>{{address}}</label>
       </view>
       <view class='head-content'>
         <label class='head-title'>人数</label> <label class='head-con'>{{numArr[index]}}</label>
@@ -127,18 +127,33 @@
     </picker-view>
   </modal>
   <!-- 区域选择弹窗 -->
-  <modal hidden="{{modal_are}}" title="区域选择" confirm-text="确定" cancel-text="取消" bindconfirm="confirm_are"
+  <modal hidden="{{modal_are}}" title="设备选择" confirm-text="确定" cancel-text="取消" bindconfirm="confirm_are"
   bindcancel="cancel_are">
     <checkbox-group bindchange="checkboxChange">
       <label class="checkbox" wx:key wx:for="{{regionList}}">
-        <checkbox value="{{item.name}},{{item.id}}" checked="{{item.checked}}"/>{{item.name}}
+        <checkbox value="{{item.devName}},{{item.devId}}" checked="{{item.checked}}"/>{{item.devName}}
       </label>
     </checkbox-group>
   </modal>
+  
 </view>
 </block>  
 <block wx:else>
-  <view class='tip'>抱歉!非内部用户不能发起邀请</view>
+  <view class='newwarp'>
+    <view class='tip'>抱歉!非内部用户不能发起邀请</view>
+    <button type='primary' class='footer' bindtap='bindInterpeo'>绑定内部人员</button>
+  </view>
+  <!-- 内部人员选择弹窗 -->
+  <modal hidden="{{modal}}" title="内部人员选择" confirm-text="确定" cancel-text="取消" bindconfirm="confirm01"
+  bindcancel="cancel01">
+    <radio-group bindchange="radioChange">
+      <label class="checkrad" wx:key wx:for="{{list}}">
+        <view>
+          <radio value="{{item.id}}" checked="{{item.checked}}"/>{{item.personName}} | 创建时间·{{item.createTime}}
+        </view>
+      </label>
+    </radio-group>
+  </modal>
 </block>
 
 

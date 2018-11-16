@@ -172,3 +172,20 @@ page{
   position: absolute;
   bottom: 0rpx;
 }
+.newwarp{
+  min-height: 100vh;
+  /* background: #3281ff; */
+  padding: 0 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.footer{
+  width: 100%;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+.checkrad{
+  display: flex;
+  flex-direction: column;
+}

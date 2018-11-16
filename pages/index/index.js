@@ -10,7 +10,7 @@ Page({
     registed: 0,
   },
   registe:function(){
-    wx.redirectTo({
+    wx.navigateTo({
       url: '/pages/register/register',
     })
   },

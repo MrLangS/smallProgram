@@ -56,7 +56,7 @@ function login(that){
             wx.setStorageSync('registed', registed)
             console.log("registed:" + registed)
             that.setData({
-              registed: wx.getStorageSync('registed')
+              registed: parseInt(registed)
             })
             if (registed == '1') {
               // wx.redirectTo({ url: '/pages/index/index' })
@@ -69,33 +69,6 @@ function login(that){
                 success: function (res) {
                   console.log(res)
                   wx.setStorageSync('wxuserInfo', res.data);
-                  // that.globalData.wxuserInfo = res.data
-                  //关联内部员工
-                  if (wx.getStorageSync('wxuserInfo').staffId == null) {
-                    wx.request({
-                      url: getApp().globalData.server + '/Invitation/isInternalUser.do',
-                      data: {
-                        openId: wx.getStorageSync('openid'),
-                        phoneNO: wx.getStorageSync('wxuserInfo').phonenum
-                      },
-                      method: 'get',
-                      success: function (res) {
-                        console.log(res.data.msg)
-                        if (res.data.msg) {
-                          var userInfoUrl = getApp().globalData.server
-                          userInfoUrl = userInfoUrl + '/SysWXUserAction/getUserMsgByOpenId.do?openId='
-                          wx.request({
-                            url: userInfoUrl + wx.getStorageSync('openid'),
-                            method: 'post',
-                            success: function (res) {
-                              wx.setStorageSync('wxuserInfo', res.data);
-                            }
-                          })
-                        }
-                        // wx.setStorageSync(key, data)
-                      }
-                    })
-                  }
                 }
               })
             }
@@ -175,7 +148,7 @@ function inviteInfo(that,initData,tag){
       day: date[2],
       starttime: tranStamp(data.startTime, 1),
       endtime: tranStamp(data.endTime, 1),
-      address: data.regionNames,
+      address: data.devNames,
       num: data.visitorCount,
       invitor: invitor,
       vistorName: data.visitorLinkmanName,
@@ -319,6 +292,7 @@ function compareTime(that){
 //表单验证
 function checkForm(that){
   if (checkImage(that)&&checkName(that)&&checkPhone(that)&&checkCode(that)){
+  // if (checkImage(that) && checkName(that) && checkPhone(that)) {
     return true
   }else{
     return false
