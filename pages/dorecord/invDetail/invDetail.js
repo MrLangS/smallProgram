@@ -84,7 +84,7 @@ Page({
             url: getApp().globalData.server + '/Invitation/changeVisitorStatus.do',
             data: {
               invitationId: that.data.invitationId,
-              userId: wx.getStorageSync('wxuserInfo').id,
+              userId: that.data.memberList[that.data.hidenIndex].userId,
               status: 2
             },
             method: 'get',

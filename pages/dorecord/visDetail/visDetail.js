@@ -330,7 +330,7 @@ Page({
               } else {
                 wx.showToast({
                   title: '照片须为本人清晰头像',
-                  icon: 'loading',
+                  icon: 'none',
                   duration: 1500
                 })
               }
