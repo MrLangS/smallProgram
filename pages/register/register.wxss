@@ -15,7 +15,7 @@ page{
   width: 180rpx;
   height: 180rpx;
   margin: 20rpx;
-  border-radius: 50%;
+  /* border-radius: 50%; */
 }
 .changeInfo{
   display: flex;
@@ -89,4 +89,5 @@ page{
 .checkbox{
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }

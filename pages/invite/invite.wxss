@@ -9,6 +9,9 @@ page{
   width: 100%;
   text-align: center;
 }
+.none{
+  text-align: center;
+}
 .picker{
   background-color: #FFFFFF;
   display: flex;

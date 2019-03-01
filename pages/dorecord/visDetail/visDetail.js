@@ -5,6 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    authorizeTAG: false,
     invitationId: '',//邀请id
     invitor: { name: '', company: '', phone: '' },
     vistorName: '',
@@ -25,13 +26,14 @@ Page({
     winHeight: '',
     registed: 0,//1代表用户已注册
     // 访客部分信息
-    headpic: '',//头像
+    picId: 0,
     name: '',//姓名
     phone: '',//手机号
     visCompany: '',
     code: '',//验证码
     picManage: '添加头像',
     disabled: false,
+    disAccept: false,
     iscode: '',//用于存放验证码接口里获取到的code
     avatarUrl: "../../resource/images/default.png", //默认头像图片
     logIcon: "../../resource/images/logIcon.png",
@@ -83,6 +85,9 @@ Page({
       success: function (res) {
         console.log(res.confirm)
         if (res.confirm){
+          that.setData({
+            disAccept: true
+          })
           wx.request({
             url: getApp().globalData.server + '/Invitation/changeVisitorStatus.do',
             data: {
@@ -132,6 +137,9 @@ Page({
         success: function (res) {
           console.log(res.confirm)
           if (res.confirm) {
+            that.setData({
+              disAccept: true
+            })
             wx.request({
               url: getApp().globalData.server + '/Invitation/addVisitorAndRegisterUser.do',
               method: 'post',
@@ -141,9 +149,11 @@ Page({
                 address: that.data.visCompany,
                 phonenum: that.data.phone,
                 photoURL: that.data.avatarUrl,
+                picId: that.data.picId,
                 invitationId: that.data.invitationId,
               },
               success: function (res) {
+                console.log(res)
                 if (res.data.msg == 'ok') {
                   wx.setStorageSync('wxuserInfo', res.data.sysWXUser);
                   wx.setStorageSync('registed', 1)
@@ -184,37 +194,7 @@ Page({
   },
   onLoad: function (options) {
     var that = this
-    //初始化页面的数据
-    if (typeof (options.dataset) != 'undefined'){
-      //登录
-      util.login(that)
-      util.inviteInfo(that, options.dataset, 0)
-      that.setData({
-        // registed: wx.getStorageSync('registed'),
-        // registed: 0,
-        status:1,
-        isPost: 1
-      })
-      console.log('测试')
-      console.log(this.data.registed)
-      console.log(this.data.status)
-    }else{
-      console.log('测试2')
-      console.log(options.detail)
-      util.inviteInfo(that, options.detail,1)
-      that.setData({
-        registed: wx.getStorageSync('registed')
-      })
-    }
-    
-    if(util.compareTime(that)){
-      console.log("该邀请未过期")
-    }else{
-      console.log("该邀请已过期")
-      that.setData({
-        status: 4
-      })
-    }
+
     //获得手机屏幕信息
     wx.getSystemInfo({
       success: function (res) {
@@ -224,6 +204,56 @@ Page({
         });
       }
     });
+    //初始化页面的数据
+    if (typeof (options.dataset) != 'undefined') {
+      
+      util.inviteInfo(that, options.dataset, 0)
+      that.setData({
+        status: 1,
+        isPost: 1
+      })
+
+      // 查看是否授权
+      wx.getSetting({
+        success: function (res) {
+          console.log(res)
+          if (res.authSetting['scope.userInfo']) {
+            //登录
+            util.login(that)
+
+          } else {
+            wx.navigateTo({
+              url: '/pages/authorize/authorize?tag=1',
+            })
+          }
+        }
+      })
+
+    } else {
+      console.log(options.detail)
+      util.inviteInfo(that, options.detail, 1)
+      that.setData({
+        registed: wx.getStorageSync('registed')
+      })
+    }
+
+    if (util.compareTime(that)) {
+      console.log("该邀请未过期")
+    } else {
+      console.log("该邀请已过期")
+      that.setData({
+        status: 4
+      })
+    }
+    
+  },
+
+  onShow: function () {
+    var that=this
+    if(this.data.authorizeTAG){
+      //登录
+      util.login(that)
+    }
   },
   /**
  * 生命周期函数--监听页面初次渲染完成
@@ -277,24 +307,10 @@ Page({
       }
     }
   },
-  // 个人填写信息部分
-  //预览头像
-  preview: function (e) {
-    var that = this
-    var imgArr = this.data.imgArr
-    wx.previewImage({
-      urls: imgArr,
-      success: function (res) { },
-      fail: function (res) { },
-      complete: function (e) { }
-    })
-  },
+
   //添加头像
   onPicBtn: function () {
     var that = this
-    var imgArr = that.data.imgArr
-    var openIdValue = wx.getStorageSync('openid');
-    console.log(openIdValue)
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'],
@@ -302,50 +318,45 @@ Page({
       success: function (res) {
         var uploadUserUrl = getApp().globalData.server + "/SysWXUserAction/uploadPhoto.do"
         var tempFilePaths = res.tempFilePaths
-        if (tempFilePaths.length > 0) {
-          imgArr[0] = tempFilePaths[0]
-          wx.uploadFile({
-            url: uploadUserUrl,
-            filePath: tempFilePaths[0],
-            name: 'personPhoto',
-            header: { "Content-Type": "multipart/form-data" },
-            formData: {
-              openId: openIdValue
-            },
-            success: function (res) {
-              console.log('上传图片请求...')
-              var data = JSON.parse(res.data)
-              console.log(data)
-              if (data.quality == 0) {
-                that.setData({
-                  avatarUrl: data.photoURL,
-                  imgArr: imgArr,
-                  quality: 0,
-                })
-                wx.showToast({
-                  title: '上传成功',
-                  icon: 'success',
-                  duration: 1500
-                })
-              } else {
-                wx.showToast({
-                  title: '照片须为本人清晰头像',
-                  icon: 'none',
-                  duration: 1500
-                })
+        wx.getFileSystemManager().readFile({
+          filePath: res.tempFilePaths[0], //选择图片返回的相对路径
+          encoding: 'base64', //编码格式
+          success: res => { //成功的回调
+            // console.log('data:image/png;base64,' + res.data)
+            console.log(res)
+            wx.request({
+              url: uploadUserUrl,
+              method: 'post',
+              data: {
+                personPhoto: res.data
+              },
+              success: (res) => {
+                console.log('上传图片请求结果：')
+                console.log(res)
+                if (res.data.quality == 0) {
+                  that.setData({
+                    avatarUrl: res.data.photoURL,
+                    picId: res.data.picId,
+                    quality: 0,
+                  })
+                } else {
+                  wx.showToast({
+                    title: '上传失败,图片须为本人清晰头像',
+                    icon: 'none',
+                    duration: 1500
+                  })
+                }
               }
-            },
-            fail: function (res) {
-              console.log('上传失败...')
-              wx.showModal({
-                title: '提示',
-                content: '上传失败',
-                showCancel: false
-              })
-            },
-          })
-        }
-
+            })
+          },
+          fail: (res) => {
+            wx.showToast({
+              title: '网络开小差，请稍后再试',
+              icon: 'none',
+              duration: 1500
+            })
+          }
+        })
       },
     })
   },
@@ -395,40 +406,5 @@ Page({
   getVerificationCode() {
     util.getCode(this)
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  }
 
 })

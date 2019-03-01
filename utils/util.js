@@ -6,7 +6,7 @@ const formatTime = date => {
   const minute = date.getMinutes()
   const second = date.getSeconds()
 
-  return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
+  return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 
 const formatNumber = n => {
@@ -36,50 +36,70 @@ function tranStamp(timestamp,tag){
   
 }
 function login(that){
+  var encryptedData = null
+  var iv = null
   // 登录
   wx.login({
     success: res => {
       // 发送 res.code 到后台换取 openId, sessionKey, unionId
       var code = res.code
+      try {
+        wx.clearStorageSync()
+      } catch (e) {
+        console.log(e)
+      }
       if (code) {
         console.log('获取用户登录凭证：' + code);
-        var loginUrl = getApp().globalData.server + '/SysWXUserAction/onLogin.do?code=' + code;
-        // --------- 发送凭证 ------------------
-        wx.request({
-          url: loginUrl,
-          data: { code: code },
+        wx.getUserInfo({
           success: function (res) {
-            var openid = res.data.openid //返回openid
-            console.log("openid is: " + openid);
-            wx.setStorageSync('openid', openid);
-            var registed = res.data.registed
-            wx.setStorageSync('registed', registed)
-            console.log("registed:" + registed)
-            that.setData({
-              registed: parseInt(registed)
-            })
-            if (registed == '1') {
-              // wx.redirectTo({ url: '/pages/index/index' })
-              //获取用户信息的请求
-              var userInfoUrl = getApp().globalData.server + '/SysWXUserAction/getUserMsgByOpenId.do?openId='
-              wx.request({
-                url: userInfoUrl + wx.getStorageSync('openid'),
-                method: 'post',
-                // dataType: 'json',
-                success: function (res) {
-                  console.log(res)
-                  wx.setStorageSync('wxuserInfo', res.data);
+            encryptedData = res.encryptedData
+            iv = res.iv
+            var loginUrl = getApp().globalData.server + '/SysWXUserAction/onLogin.do';
+            // --------- 发送凭证 ------------------
+            wx.request({
+              url: loginUrl,
+              data: { 
+                code: code,
+                encryptedData: encryptedData,
+                iv: iv,
+                userType: '2'
+              },
+              method: 'post',
+              success: function (res) {
+                var openid = res.data.openid //返回openid
+                console.log("openid is: " + openid);
+                wx.setStorageSync('openid', openid);
+                var registed = res.data.registed
+                wx.setStorageSync('registed', registed)
+                console.log("registed:" + registed)
+                that.setData({
+                  registed: parseInt(registed)
+                })
+                if (registed == '1') {
+                  // wx.redirectTo({ url: '/pages/index/index' })
+                  //获取用户信息的请求
+                  var userInfoUrl = getApp().globalData.server + '/SysWXUserAction/getUserMsgByOpenId.do?openId='
+                  wx.request({
+                    url: userInfoUrl + wx.getStorageSync('openid'),
+                    method: 'post',
+                    // dataType: 'json',
+                    success: function (res) {
+                      console.log(res)
+                      wx.setStorageSync('wxuserInfo', res.data);
+                    }
+                  })
                 }
-              })
-            }
-            else {
-              // wx.redirectTo({ url: '/pages/invite/invite' })
-            }
-          },
-          fail: function () {
-            console.log("fail")
+                else {
+                  // wx.redirectTo({ url: '/pages/invite/invite' })
+                }
+              },
+              fail: function () {
+                console.log("fail")
+              }
+            })
           }
         })
+        
 
         // ------------------------------------
       } else {
@@ -289,9 +309,22 @@ function compareTime(that){
   return tag
 }
 
+//验证邀请时间是否过期
+function checkIsOver(that){
+  if (formatTimestamp(that, 0) > formatTime(new Date())) {
+    return true
+  } else {
+    wx.showToast({
+      title: '邀请时间不能早于当前时间',
+      icon: 'none',
+      duration: 2000
+    })
+  }
+}
+
 //表单验证
 function checkForm(that){
-  if (checkImage(that)&&checkName(that)&&checkPhone(that)&&checkCode(that)){
+  if (checkImage(that) && checkName(that) &&checkPhone(that)&&checkCode(that)){
   // if (checkImage(that) && checkName(that) && checkPhone(that)) {
     return true
   }else{
@@ -299,7 +332,7 @@ function checkForm(that){
   }
 }
 function checkInvitation(that){
-  if (checkTime(that)&&checkAddress(that) && checkVistorName(that) && checkVistorPhone(that) && checkReason(that)) {
+  if (checkIsOver(that)&&checkTime(that)&&checkAddress(that) && checkVistorName(that) && checkVistorPhone(that) && checkReason(that)) {
     return true
   } else {
     return false
@@ -343,7 +376,7 @@ function checkImage(that) {
 function checkAddress(that){
   if (that.data.address == "") {
     wx.showToast({
-      title: '地址不能为空',
+      title: '设备不能为空',
       icon: 'none',
       duration: 1000
     })

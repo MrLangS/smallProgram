@@ -19,6 +19,7 @@ Page({
     imgArr: ['D:/627wx1/wx_app/smallProgram/pages/resource/images/default.png'],
     codename: '获取验证码',
     list: [],
+    picId: 0,
     modal: true,
     staffId: 0,
   },
@@ -57,6 +58,7 @@ Page({
           phonenum: that.data.phone,
           photoURL: that.data.avatarUrl,
           staffId: parseInt(that.data.staffId), 
+          picId: that.data.picId,
         },
         method: 'post',
         header: {
@@ -93,7 +95,7 @@ Page({
     var flag = util.checkForm(this)//表单验证
     var uploadUserUrl = "" //getApp().globalData.server + 'UserApplyAction!uploadUserInfo.do' 
 
-    if(true){
+    if (flag){
       wx.request({
         url: getApp().globalData.server + '/SysWXUserAction/getPersonByPhoneNum.do?phoneNum=' + that.data.phone,
         method: 'post',
@@ -124,73 +126,66 @@ Page({
     }
   },
   //预览头像
-  preview: function (e) {
-    var that=this
-    var imgArr=this.data.imgArr
-    wx.previewImage({
-      urls: imgArr,
-      success: function(res) {},
-      fail: function(res){},
-      complete: function(e){}
-    })
-  },
-  //添加头像
+  // preview: function (e) {
+  //   var that=this
+  //   var imgArr=this.data.imgArr
+  //   wx.previewImage({
+  //     urls: imgArr,
+  //     success: function(res) {},
+  //     fail: function(res){},
+  //     complete: function(e){}
+  //   })
+  // },
+
+  //添加头像avatarUrl
   onPicBtn: function(){
-    var that=this
-    var imgArr = that.data.imgArr
-    var openIdValue = wx.getStorageSync('openid');
-    console.log(openIdValue)
+    var that = this
     wx.chooseImage({
       count: 1,
-      sizeType: ['original','compressed'],
-      sourceType: ['album','camera'],
-      success: function(res) {
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success: function (res) {
         var uploadUserUrl = getApp().globalData.server + "/SysWXUserAction/uploadPhoto.do"
-        var tempFilePaths=res.tempFilePaths
-        if(tempFilePaths.length>0){
-          imgArr[0] = tempFilePaths[0]
-          wx.uploadFile({
-            url: uploadUserUrl,
-            filePath: tempFilePaths[0],
-            name: 'personPhoto',
-            header: { "Content-Type": "multipart/form-data" },
-            formData: {
-              openId: openIdValue
-            },
-            success: function (res) {
-              console.log('上传图片请求...')
-              var data = JSON.parse(res.data)
-              console.log(data)
-              if (data.quality == 0) {
-                that.setData({
-                  avatarUrl: data.photoURL,
-                  imgArr: imgArr,
-                  quality: 0,
-                })
-                wx.showToast({
-                  title: '上传成功',
-                  icon: 'success',
-                  duration: 1500
-                })
-              } else {
-                wx.showToast({
-                  title: '照片须为本人清晰头像',
-                  icon: 'none',
-                  duration: 1500
-                })
+        var tempFilePaths = res.tempFilePaths
+        wx.getFileSystemManager().readFile({
+          filePath: res.tempFilePaths[0], //选择图片返回的相对路径
+          encoding: 'base64', //编码格式
+          success: res => { //成功的回调
+            // console.log('data:image/png;base64,' + res.data)
+            console.log(res)
+            wx.request({
+              url: uploadUserUrl,
+              method: 'post',
+              data: {
+                personPhoto: res.data
+              },
+              success: (res) => {
+                console.log('上传图片请求结果：')
+                console.log(res)
+                if (res.data.quality == 0) {
+                  that.setData({
+                    avatarUrl: res.data.photoURL,
+                    picId: res.data.picId,
+                    quality: 0,
+                  })
+                } else {
+                  wx.showToast({
+                    title: '上传失败,图片须为本人清晰头像',
+                    icon: 'none',
+                    duration: 1500
+                  })
+                }
               }
-            },
-            fail: function (res) {
-              console.log('上传失败...')
-              wx.showModal({
-                title: '提示',
-                content: '上传失败',
-                showCancel: false
-              })
-            },
-          })
-        }
-        
+            })
+          },
+          fail: (res) => {
+            wx.showToast({
+              title: '网络开小差，请稍后再试',
+              icon: 'none',
+              duration: 1500
+            })
+          }
+        })
       },
     })
   },

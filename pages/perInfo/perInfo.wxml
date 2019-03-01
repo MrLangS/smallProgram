@@ -1,5 +1,5 @@
 <view class="userinfo head">
-  <image class="userinfo-avatar" src="{{avatarUrl?avatarUrl:'/pages/resource/images/default.png'}}" bindtap='preview' background-size="cover"></image>
+  <image class="userinfo-avatar" src="{{avatarUrl?avatarUrl:'/pages/resource/images/default.png'}}"></image>
   <block wx:if="{{registed==1}}">
     <button class="picBtn head-margin" bindtap='onPicBtn'>{{picManage}}</button>
   </block>
@@ -14,10 +14,10 @@
         <input placeholder='暂无' name="name" bindinput='getNameValue' value='{{name}}' 
         focus='{{focus}}' disabled='{{inputTag}}'/> 
       </view>
-      <label class='title'>公司</label>
+      <label class='title'>单位</label>
       <view class='input-log'>
         <image class='userinfo-logIcon' src='{{companyIcon}}'></image>
-        <input placeholder='暂无' name="company" bindinput='getCompanyValue' value='{{company}}' disabled='{{inputTag}}'/>
+        <input placeholder='暂无' name="company" bindtap='getCompanyValue' value='{{company}}' disabled='disabled'/>
       </view>
       <label class='title'>手机</label>
       <view class='input-log'>

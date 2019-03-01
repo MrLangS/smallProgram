@@ -46,10 +46,10 @@
     </view>
     <block wx:if="{{hidenIndex==index&&hidenTag}}">
       <view class='item-content'>
-        <view class='item-phone'>到访时间:{{item.visitorEnterTime}}</view>
+        <view class='item-phone'>到访时间:{{item.visitorEnterTime||'暂无'}}</view>
       </view>
       <view class='item-content'>
-        <view class='item-phone'>离开时间:{{item.visitorLeaveTime}}</view>
+        <view class='item-phone'>离开时间:{{item.visitorLeaveTime||'暂无'}}</view>
       </view>
       <view class='item-content'>
         <view class='item-phone'>所属公司:{{item.visitorAddress}}</view>

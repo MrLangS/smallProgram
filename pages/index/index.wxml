@@ -1,12 +1,12 @@
-<!-- <view style="background-image:url('../resource/images/invited.png')" class="div"></view> -->
-<!-- <view class='imgbox'>
-  <image class='img' mode='scaleToFill' src='{{invPng}}'></image>
-</view> -->
-<view class='head' hidden='{{registed==1}}'>
-  <view>
+<view class='head'>
+  <view wx:if="{{registed!=1}}">
     <label bindtap='registe' class='head-txt'>还未拥有账号？点击注册</label>
   </view>
+  <view wx:else>
+    <label bindtap='logout' class='head-txt'>点此注销账号</label>
+  </view>
 </view>
+  
 <view class='imgbox'>
   <image class='img' bindtap='intoInfo' mode='scaleToFill' src='{{infoPng}}'></image>
 </view>

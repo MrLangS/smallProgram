@@ -1,6 +1,6 @@
 <block wx:if="{{role!=0}}">
 <view class='changeInfo'>
-  <form bindsubmit="invformSubmit">
+  <form bindsubmit="invformSubmit" report-submit="true">
     <!-- 填写邀请信息模版 -->
     <view class="area" hidden='{{hideTag}}'>
       <view class='input-log'>
@@ -37,7 +37,7 @@
       </view>
       <view class='input-log'>
         <label class='lab'>电话</label>
-        <input class='content' placeholder='填写代表成员手机号' bindinput='getVistorPhone' value='{{vistorPhone}}'/> 
+        <input class='content' placeholder='填写代表成员手机号' type='number' bindinput='getVistorPhone' value='{{vistorPhone}}'/> 
       </view>
       <view class='input-log'>
         <label class='lab'>事由</label>
@@ -53,7 +53,7 @@
         <label class='head-title'>邀请人</label> <label class='head-con'>{{invitor.name}}</label>
       </view>
       <view class='head-content'>
-        <label class='head-title'>所属公司</label> <label class='head-con'>{{invitor.company}}</label>
+        <label class='head-title'>所属单位</label> <label class='head-con'>{{invitor.company}}</label>
       </view>
       <view class='head-content'>
         <label class='head-title'>联系电话</label> <label class='head-con'>{{invitor.phone}}</label>
@@ -91,6 +91,7 @@
         <!-- <button form-type='submit' open-type="share" type='primary' size="default">发送邀请</button>  -->
         <button style="background-color:#0099FF;color:#fff" 
         bindtap='invite' size="default" hidden='{{hideTag}}'>确认</button>
+        <!-- <button style="background-color:#0099FF;color:#fff" form-type="submit" size="default" >测试</button> -->
       </view>
       <view class="btn01" hidden='{{!hideTag}}'>
         <!-- <button form-type='submit' open-type="share" type='primary' size="default">发送邀请</button>  -->
@@ -134,6 +135,7 @@
         <checkbox value="{{item.devName}},{{item.devId}}" checked="{{item.checked}}"/>{{item.devName}}
       </label>
     </checkbox-group>
+    <view class='none' wx:if="{{!regionList.length}}">尚未添加设备</view>
   </modal>
   
 </view>

@@ -1,8 +1,9 @@
 {
   "pages":[
     "pages/index/index",
-    "pages/register/register",
     "pages/dorecord/visDetail/visDetail",
+    "pages/authorize/authorize",
+    "pages/register/register",
     "pages/result/result",
     "pages/perInfo/perInfo",
     "pages/dorecord/dorecord",

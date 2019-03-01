@@ -1,6 +1,6 @@
 <view class='changeInfo'>
   <view class="userinfo">
-    <image class="userinfo-avatar" src="{{avatarUrl}}" bindtap='preview' background-size="cover"></image>
+    <image class="userinfo-avatar" src="{{avatarUrl}}" bindtap='preview'></image>
     <button class="picBtn" bindtap='onPicBtn'>{{picManage}}</button>
   </view>
   <form bindsubmit="formSubmit">
@@ -18,7 +18,7 @@
       <label class='title'>手机</label>
       <view class='input-log'>
         <image class="userinfo-logIcon"src="{{phoneIcon}}"></image>
-        <input placeholder='请输入手机号' bindinput='getPhoneValue' value='{{phone}}'/> 
+        <input placeholder='请输入手机号' type='number' bindinput='getPhoneValue' value='{{phone}}'/> 
         <button class='codeBtn' bindtap='getVerificationCode' disabled='{{disabled}}' >{{codename}}</button>
         <!-- <button class='codeBtn' open-type='getPhoneNumber' bindgetphonenumber='getPhoneNumber'>自动获取</button> -->
       </view>
@@ -42,7 +42,7 @@ bindcancel="cancel">
   <radio-group bindchange="radioChange">
     <label class="checkbox" wx:key wx:for="{{list}}">
       <view>
-        <radio value="{{item.id}}" checked="{{item.checked}}"/>{{item.personName}} | 创建时间·{{item.createTime}}
+        <radio value="{{item.id}}" checked="{{item.checked}}"/>{{item.personName}} | 所属公司·{{item.personCompany}}
       </view>
     </label>
   </radio-group>

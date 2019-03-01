@@ -1,4 +1,5 @@
 <!-- <view class='top' style='height:{{winHeight}}px;'> -->
+
 <view class='top'>
   <!-- 分隔栏 -->
   <block wx:if="{{status==3}}">
@@ -22,7 +23,7 @@
         <label class='head-title'>邀请人</label> <label class='head-con'>{{invitor.name}}</label>
       </view>
       <view class='head-content'>
-        <label class='head-title'>所属公司</label> <label class='head-con'>{{invitor.company}}</label>
+        <label class='head-title'>所属单位</label> <label class='head-con'>{{invitor.company}}</label>
       </view>
       <view class='head-content'>
         <label class='head-title'>联系电话</label> <label class='head-con'>{{invitor.phone}}</label>
@@ -56,7 +57,7 @@
     </view>
     <block wx:if="{{status!=4}}">
       <block wx:if="{{registed}}">
-        <button bindtap='accept01' hidden='{{status!=1}}' type='primary' class='post-btn'>接受邀请</button> 
+        <button bindtap='accept01' hidden='{{status!=1}}' type='primary' disabled='{{disAccept}}' class='post-btn'>接受邀请</button> 
       </block>
     </block>
     <button bindtap='back' hidden='{{!isPost}}' type='primary' class='back-btn'>回到首页</button> 
@@ -79,7 +80,7 @@
   <!-- 需要填写的个人信息 -->
   <view class='changeInfo' hidden='{{role=="admin"}}'>
     <view class="userinfo">
-      <image class="userinfo-avatar" src="{{avatarUrl}}" bindtap='preview' background-size="cover"></image>
+      <image class="userinfo-avatar" src="{{avatarUrl}}" bindtap='preview'></image>
       <button class="picBtn" bindtap='onPicBtn'>{{picManage}}</button>
     </view>
     <form bindsubmit="visformSubmit">
@@ -89,7 +90,7 @@
           <image class="userinfo-logIcon" src="{{logIcon}}"></image>
           <input placeholder='请输入姓名' bindinput='getNameValue' value='{{name}}'/> 
         </view>
-        <label class='title'>公司</label>
+        <label class='title'>单位</label>
         <view class='input-log'>
           <image class='userinfo-logIcon' src='{{companyIcon}}'></image>
           <input placeholder='请输入公司名称' bindinput='getCompany' value='{{visCompany}}'/>

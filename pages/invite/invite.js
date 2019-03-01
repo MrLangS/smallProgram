@@ -156,6 +156,13 @@ Page({
   //测试
   test: function(){
     console.log("test")
+    console.log(util.formatTimestamp(this,0))
+    console.log(util.formatTime(new Date()))
+    if (util.formatTimestamp(this, 0) > util.formatTime(new Date())){
+      console.log(true)
+    }else{
+      console.log(false)
+    }
   },
 
   bindInterpeo: function(){
@@ -232,7 +239,7 @@ Page({
             var invitor = that.data.invitor
             invitor.name = userInfo.username
             invitor.phone = userInfo.phonenum
-            invitor.company = userInfo.address
+            invitor.company = userInfo.company
             wx.request({
               url: getApp().globalData.server + '/Invitation/getdevices.do',
               data: { staffId: that.data.staffId },
@@ -273,12 +280,13 @@ Page({
       var invitor = this.data.invitor
       invitor.name = userInfo.username
       invitor.phone = userInfo.phonenum
-      invitor.company = userInfo.address
+      invitor.company = userInfo.company
       wx.request({
         url: getApp().globalData.server + '/Invitation/getdevices.do',
         data: { staffId: staffId },
         method: 'get',
         success: function (res) {
+          console.log("获取设备")
           console.log(res)
           that.setData({
             invitor: invitor,
@@ -341,7 +349,7 @@ Page({
             staffId: invitor.staffId,
             username: invitor.username,
             phonenum: invitor.phonenum,
-            address: invitor.address,
+            company: invitor.company,
             visitorLinkmanName: that.data.vistorName,
             visitorLinkmanPhone: that.data.vistorPhone,
             reason: that.data.reason,
@@ -385,7 +393,7 @@ Page({
             visitorCount: that.data.numArr[that.data.index],
             staffId: invitor.staffId,
             username: invitor.username,
-            address: invitor.address,
+            company: invitor.company,
             phonenum: invitor.phonenum,
             visitorLinkmanName: that.data.vistorName,
             visitorLinkmanPhone: that.data.vistorPhone,
@@ -477,69 +485,8 @@ Page({
   },
 
   //提交表单信息
-  invformSubmit: function () {
+  invformSubmit: function (e) {
     var invData= this.data
-    var openIdValue = wx.getStorageSync('openid');
-    console.log('get openid is: ' + openIdValue)
-    //var flag = util.checkForm(this)
-    var uploadUserUrl = "" //getApp().globalData.server + 'UserApplyAction!uploadUserInfo.do'
-    // if(true){
-    //   wx.request({
-    //     url: '',
-    //     method: 'post',
-    //     data:{
-    //       starttime: invData.starttime,
-    //       endtime: endtime,
-    //       address: address,
-    //       day: day,
-    //       invitor: invitor,
-    //       company: company,
-    //       phone: phone,
-    //       reason: reason
-    //     },
-    //     success: function(res){
-          
-    //     }
-    //   })
-    // }
-    // if (flag) {
-    //   wx.uploadFile({
-    //     url: uploadUserUrl,
-    //     filePath: that.data.avatarUrl,
-    //     name: 'file',
-    //     header: { "Content-Type": "multipart/form-data" },
-    //     formData: {
-    //       openId: openIdValue,
-    //       name: that.data.name,
-    //       company: that.data.company,
-    //       phone: that.data.phone,
-    //       formId: formIdValue
-    //     },
-    //     success: function (res) {
-    //       console.log('上传成功...')
-    //       var data = res.data
-
-    //       wx.showModal({
-    //         title: '提示',
-    //         content: '上传成功，请耐心等待审批',
-    //         showCancel: false
-
-    //       })
-
-    //       wx.redirectTo({
-    //         url: 'wait/wait',
-    //       })
-
-    //     },
-    //     fail: function (e) {
-    //       console.log('上传失败...')
-    //       wx.showModal({
-    //         title: '提示',
-    //         content: '上传失败',
-    //         showCancel: false
-    //       })
-    //     },
-    //   })
-    // }
+    console.log(e)
   },
 })
