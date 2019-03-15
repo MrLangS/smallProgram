@@ -53,6 +53,7 @@ Page({
         url: getApp().globalData.server + "/SysWXUserAction/registerWXUser.do",
         data: {
           wxOpenId: openIdValue,
+          miniproId: getApp().globalData.realOpenid,
           username: that.data.name,
           address: that.data.company,
           phonenum: that.data.phone,
