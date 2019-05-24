@@ -98,6 +98,7 @@ function login(that){
                   console.log('wxUser:')
                   console.log(wxUser)
                   app.globalData.sysWXUser = wxUser
+                  wx.setStorageSync('wxUserId', wxUser.id)
                   var userId = wx.getStorageSync('userId')
                   if (userId) {
                     wx.request({
@@ -113,9 +114,12 @@ function login(that){
 
                 } else{
                   console.log('未拥有微信用户')
-                  wx.reLaunch({
-                    url: '../regWxUser/regWxUser',
-                  })
+                  if(that){
+                    wx.reLaunch({
+                      url: '../regWxUser/regWxUser',
+                    })
+                  }
+                  
                 }
 
                 // console.log(res)

@@ -1,4 +1,5 @@
 var util = require('../../../utils/util.js')
+var app = getApp()
 Page({
 
   data: {
@@ -32,13 +33,13 @@ Page({
       success: function(res){
         if (res.confirm) {
           wx.request({
-            url: getApp().globalData.server + '/Invitation/changeVisitorStatus.do',
+            url: app.globalData.server + '/Invitation/changeVisitorStatus.do',
             data: {
               invitationId: that.data.invitationId,
               userId: that.data.memberList[that.data.hidenIndex].userId,
               status: 3,
               formId: e.detail.formId,
-              openId: getApp().globalData.realOpenid,
+              openId: app.globalData.realOpenid,
             },
             method: 'get',
             success: function (res) {
@@ -74,13 +75,13 @@ Page({
       success: function(res){
         if(res.confirm){
           wx.request({
-            url: getApp().globalData.server + '/Invitation/changeVisitorStatus.do',
+            url: app.globalData.server + '/Invitation/changeVisitorStatus.do',
             data: {
               invitationId: that.data.invitationId,
               userId: that.data.memberList[that.data.hidenIndex].userId,
               status: 2,
               formId: e.detail.formId,
-              openId: getApp().globalData.realOpenid,
+              openId: app.globalData.realOpenid,
             },
             method: 'get',
             success: function (res) {

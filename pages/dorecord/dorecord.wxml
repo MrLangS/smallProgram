@@ -31,7 +31,7 @@
       </block>
     </block>  
     <block wx:else>
-      <view class='tip'>抱歉!未绑定内部用户不能发起邀请</view>
+      <view class='tip'>抱歉!未绑定内部用户无法查看邀请记录</view>
     </block>
     
   </swiper-item>   

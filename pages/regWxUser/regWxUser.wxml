@@ -37,7 +37,10 @@
 
   </view>
   <view class='info_view'>
-    <Text class='info_text'>
+    <Text class='info_text' wx:if='{{fromInvitate}}'>
+      注册成功后下次接受邀请则不需要填写信息
+    </Text>
+    <Text class='info_text' wx:else>
       注册成功后会自动将人脸入库，之后可更改头像来进行更新
     </Text>
   </view>

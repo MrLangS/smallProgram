@@ -5,6 +5,7 @@ Page({
   data: {
     username: '',//姓名
     company: '',
+    avatar: '',
     code: '',
     iscode: '',//用于存放验证码接口里获取到的code
     codename: '发送验证码',
@@ -51,7 +52,7 @@ Page({
     }
   },
 
-  register() {
+  register(e) {
     var that = this
     
     if (util.checkForm(this, 0)) {
@@ -59,48 +60,107 @@ Page({
         regDisabled: true
       })
       console.log('注册微信用户')
-      wx.request({
-        url: app.globalData.server + "/SysWXUserAction/registerWXUser.do",
-        data: {
-          wxOpenId: app.globalData.openid,
-          miniproId: app.globalData.realOpenid,
-          username: this.data.username,
-          company: this.data.company,
-          address: this.data.company,
-          phonenum: this.data.phoneNumber,
-          photoURL: '',
-          picId: this.data.picId,
-        },
-        method: 'post',
-        header: {
-          'content-type': 'application/json' // 默认值
-        },
-        success: function (res) {
-          console.log(res)
-          if (res.data.msg == 'ok') {
-            app.globalData.sysWXUser = res.data.sysWXUser
-            wx.reLaunch({
-              url: '../index/index',
-            })
-            wx.showToast({
-              title: '注册成功',
-              icon: 'success',
-              duration: 1500
-            })
-          } else {
-            wx.showToast({
-              title: '注册失败',
-              icon: 'none',
-              duration: 1500
-            })
+      if(that.data.fromInvitate){
+        console.log('接受邀请')
+        wx.request({
+          url: getApp().globalData.server + '/Invitation/addVisitorAndRegisterUser.do',
+          method: 'post',
+          data: {
+            wxOpenId: app.globalData.openid,
+            username: that.data.username,
+            address: that.data.company,
+            phonenum: that.data.phoneNumber,
+            photoURL: that.data.avatarUrl,
+            picId: that.data.picId,
+            invitationId: parseInt(that.data.invitationId),
+            formId: e.detail.formId,
+            openId: app.globalData.realOpenid,
+            company: that.data.company
+          },
+          success: function (res) {
+            console.log(res)
+            if (res.data.msg == 'ok') {
+              app.globalData.sysWXUser = res.data.sysWXUser
+              wx.setStorageSync('wxUserId', res.data.sysWXUser.id)
+              wx.showToast({
+                title: '接受成功',
+                icon: 'success',
+                duration: 1500
+              })
+              wx.reLaunch({
+                url: '../dorecord/dorecord',
+              })
+            } else if (res.data.msg == 'confirmCountIsOverflow') {
+              wx.showToast({
+                title: '人数已满，接受失败',
+                icon: 'none',
+                duration: 1500
+              })
+            } else {
+              wx.showToast({
+                title: '出现异常，请重试',
+                icon: 'none',
+                duration: 1500
+              })
+            }
           }
-        },
-      })
+        })
+      }else{
+        wx.request({
+          url: app.globalData.server + "/SysWXUserAction/registerWXUser.do",
+          data: {
+            wxOpenId: app.globalData.openid,
+            miniproId: app.globalData.realOpenid,
+            username: this.data.username,
+            company: this.data.company,
+            address: this.data.company,
+            phonenum: this.data.phoneNumber,
+            photoURL: '',
+            picId: this.data.picId,
+          },
+          method: 'post',
+          header: {
+            'content-type': 'application/json' // 默认值
+          },
+          success: function (res) {
+            console.log(res)
+            if (res.data.msg == 'ok') {
+              app.globalData.sysWXUser = res.data.sysWXUser
+              wx.setStorageSync('wxUserId', res.data.sysWXUser.id)
+              wx.reLaunch({
+                url: '../index/index',
+              })
+              wx.showToast({
+                title: '注册成功',
+                icon: 'success',
+                duration: 1500
+              })
+            } else {
+              wx.showToast({
+                title: '注册失败',
+                icon: 'none',
+                duration: 1500
+              })
+            }
+          },
+        })
+      }
+      
     }
   },
 
   onLoad: function (options) {
-
+    if (options.invitationId){
+      this.setData({
+        invitationId: options.invitationId,
+        fromInvitate: true,
+      })
+      wx.showToast({
+        title: '接受邀请前需要注册用户',
+        icon: 'none',
+        duration: 2000
+      })
+    }
   },
 
   getUsername: function (e) {

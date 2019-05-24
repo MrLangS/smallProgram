@@ -3,6 +3,5 @@
     "navigationBarTextStyle": "ffffff",
     "navigationBarTitleText": "拜访记录",
     "backgroundColor": "#fff",
-    "enablePullDownRefresh": true,
     "backgroundTextStyle": "light"
 }

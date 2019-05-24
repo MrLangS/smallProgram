@@ -17,7 +17,7 @@
           <view class='box-shadow pro}}'>
             <view class='list'>
                 <view class='info'>
-                    <view class='infotitle'>{{user.company || '未知单位'}}</view>
+                    <view class='infotitle'>{{user.company || user.address || '未知单位'}}</view>
                 </view>
             </view>
           </view>
