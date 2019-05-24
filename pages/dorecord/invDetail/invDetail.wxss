@@ -1,13 +1,48 @@
-/* pages/dorecord/invDetail/invDetail.wxss */
 .area {
   background-color: #fff;
   text-align: left;
+}
+.time_slot{
+  /* width: 90%; */
+  height: 200rpx;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: auto;
+  padding: 0 50rpx;
+  border-bottom: 1px solid #ddd;
+}
+.start{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.tag{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.tag image{
+  width: 60rpx;
+  height: 60rpx;
+}
+.end{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .head{
   width: 100%;
   height: 60rpx;
   display: flex;
   direction: row;
+}
+.no-arrive{
+  color: red;
+  opacity: 0.5;
+}
+.arrive{
+  color: #16982b;
 }
 .tip{
   /* height: 300rpx; */
@@ -48,6 +83,7 @@
 .reason-content{
   width: 70%;
   margin: auto;
+  font-size: 50rpx;
   text-align: center;
   margin-bottom: 40rpx;
 }

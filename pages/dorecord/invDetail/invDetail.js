@@ -1,19 +1,10 @@
-// pages/dorecord/invDetail/invDetail.js
 var util = require('../../../utils/util.js')
 Page({
 
-  /**
-   * 页面的初始数据
-   */
   data: {
     invitationId: 0,//邀请id
     invitor: { name: '', company: '', phone: '' },
     reason:'',
-    year: '',
-    month:'',
-    day: '',
-    starttime: '',
-    endtime: '',
     address: '',
     num: 0,
     vistorName: '',
@@ -33,7 +24,7 @@ Page({
     })
   },
   //拒绝事件
-  reject: function(){
+  reject: function(e){
     var that=this
     wx.showModal({
       title: '提示',
@@ -45,7 +36,9 @@ Page({
             data: {
               invitationId: that.data.invitationId,
               userId: that.data.memberList[that.data.hidenIndex].userId,
-              status: 3
+              status: 3,
+              formId: e.detail.formId,
+              openId: getApp().globalData.realOpenid,
             },
             method: 'get',
             success: function (res) {
@@ -73,7 +66,7 @@ Page({
     
   },
   //接受事件
-  accept: function(){
+  accept: function(e){
     var that = this
     wx.showModal({
       title: '提示',
@@ -85,7 +78,9 @@ Page({
             data: {
               invitationId: that.data.invitationId,
               userId: that.data.memberList[that.data.hidenIndex].userId,
-              status: 2
+              status: 2,
+              formId: e.detail.formId,
+              openId: getApp().globalData.realOpenid,
             },
             method: 'get',
             success: function (res) {
@@ -135,9 +130,7 @@ Page({
       })
     }
   },
-  /**
-   * 生命周期函数--监听页面加载
-   */
+
   onLoad: function (options) {
     var that=this
     var detail=JSON.parse(options.detail)
@@ -150,6 +143,7 @@ Page({
       },
       success: function (res) {
         console.log("成员列表:" )
+        console.log(res)
         if(res.data!=null){
           that.setData({
             memberList: res.data
@@ -161,14 +155,11 @@ Page({
     invitor.name = detail.invitationManName
     invitor.phone = detail.invitationManPhone
     invitor.company = detail.invitationManAddress
-    var date = util.tranStamp(detail.visitorDay,0)
     that.setData({
+      status: detail.status,
       reason: detail.reason,
-      year: date[0],
-      month: date[1],
-      day: date[2],
-      starttime: util.tranStamp(detail.startTime, 1),
-      endtime: util.tranStamp(detail.endTime, 1),
+      startTimeArr: detail.startTime.split(' '),
+      endTimeArr: detail.endTime.split(' '),
       address: detail.devNames,
       num: detail.visitorCount,
       vistorName: detail.visitorLinkmanName,
@@ -186,51 +177,6 @@ Page({
     }
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
   onShareAppMessage: function (res) {
     var that = this
     if (res.from === 'button') {
@@ -244,16 +190,6 @@ Page({
         // 转发成功
         console.log("转发成功:" + JSON.stringify(res));
         var shareTickets = res.shareTickets;
-        // if (shareTickets.length == 0) {
-        //   return false;
-        // }
-        // //可以获取群组信息
-        // wx.getShareInfo({
-        //   shareTicket: shareTickets[0],
-        //   success: function (res) {
-        //     console.log(res)
-        //   }
-        // })
       },
       fail: function (res) {
         // 转发失败

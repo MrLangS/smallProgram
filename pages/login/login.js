@@ -1,122 +1,79 @@
 var util = require("../../utils/util.js");
-
+var app = getApp()
 Page({
   data: {
-    loginBtnTxt: "登录",
-    loginBtnBgBgColor: "#0099FF",
-    btnLoading: false,
-    disabled: false,
-    inputUserName: '',
-    inputPassword: '',
-    avatarUrl: "",
-    logIcon: "../resource/images/logIcon.png",
-    pwdIcon: "../resource/images/pwdIcon.png"
+    code: '',
+    iscode: '',//用于存放验证码接口里获取到的code
+    codename: '发送验证码',
+    phoneNumber: '',
+    isaPhoneNum: true,
+    disabled: false
   },
   onLoad: function (options) {
-    // 页面初始化 options为页面跳转所带来的参数
-
-  },
-  onReady: function () {
-    // 页面渲染完成
-
-  },
-  onShow: function () {
-    // 页面显示
-
-  },
-  onHide: function () {
-    // 页面隐藏
-
-  },
-  onUnload: function () {
-    // 页面关闭
-
-  },
-  formSubmit: function (e) {
-    var param = e.detail.value;
-    this.mysubmit(param);
-  },
-  mysubmit: function (param) {
-    var flag = this.checkUserName(param) && this.checkPassword(param)
-    if (flag) {
-      this.setLoginData1();
-      this.checkUserInfo(param);
-    }
-  },
-  setLoginData1: function () {
     this.setData({
-      loginBtnTxt: "登录中",
-      disabled: !this.data.disabled,
-      loginBtnBgBgColor: "#999",
-      btnLoading: !this.data.btnLoading
-    });
-  },
-  setLoginData2: function () {
-    this.setData({
-      loginBtnTxt: "登录",
-      disabled: !this.data.disabled,
-      loginBtnBgBgColor: "#0099FF",
-      btnLoading: !this.data.btnLoading
-    });
-  },
-  checkUserName: function (param) {
-    var email = util.regexConfig().email;
-    var phone = util.regexConfig().phone;
-    var inputUserName = param.username.trim();
-    if (email.test(inputUserName) || phone.test(inputUserName)) {
-      return true;
-    } else {
-      wx.showModal({
-        title: '提示',
-        showCancel: false,
-        content: '请输入正确的邮箱或者手机号码'
-      });
-      return false;
-    }
-  },
-  checkPassword: function (param) {
-    var userName = param.username.trim();
-    var password = param.password.trim();
-    if (password.length <= 0) {
-      wx.showModal({
-        title: '提示',
-        showCancel: false,
-        content: '请输入密码'
-      });
-      return false;
-    } else {
-      return true;
-    }
-  },
-  checkUserInfo: function (param) {
-    var username = param.username.trim();
-    var password = param.password.trim();
-    var that = this;
-    if ((username == 'admin@163.com' || username == '13888888881') && password == 'admin') {
-      setTimeout(function () {
-        wx.showToast({
-          title: '成功',
-          icon: 'success',
-          duration: 1500
-        });
-        that.setLoginData2();
-        that.redirectTo(param);
-      }, 2000);
-    } else {
-      wx.showModal({
-        title: '提示',
-        showCancel: false,
-        content: '用户名或密码有误，请重新输入'
-      });
-      this.setLoginData2();
-    }
-  },
-  redirectTo: function (param) {
-    //需要将param转换为字符串
-    param = JSON.stringify(param);
-    wx.redirectTo({
-      url: '../main/index?param=' + param//参数只能是字符串形式，不能为json对象
+      phoneNumber: app.globalData.sysWXUser.phonenum
     })
-  }
+  },
+
+  login(){
+    if (util.checkForm(this, 999)){
+      //根据手机号获得内部人员信息，type为2即为普通人员
+      wx.request({
+        url: getApp().globalData.server + '/SysWXUserAction/getUserByPhoneNum.do?phoneNum=' + this.data.phoneNumber + '&type=' + 2,
+        method: 'post',
+        success: (res) => {
+            if (res.data.persons && res.data.persons.length > 0) {
+              app.globalData.userSet = res.data.persons
+              wx.navigateTo({
+                url: '../account/account',
+              })
+            } else {
+              wx.showToast({
+                title: '该手机号未绑定内部人员',
+                icon: 'none',
+                duration: 2000
+              })
+            }
+
+        }
+      })
+    }
+  },
+
+  //获取验证码
+  getVerificationCode() {
+    util.getCode(this)
+  },
+  getPhoneValue: function (e) {
+    this.setData({
+      phoneNumber: e.detail.value
+    })
+    if (this.bindPhoneChange(e.detail.value)) {
+      this.setData({
+        isaPhoneNum: true
+      })
+    } else {
+      this.setData({
+        isaPhoneNum: false
+      })
+    }
+  },
+
+  getCodeValue: function (e) {
+    this.setData({
+      code: e.detail.value
+    })
+  },
+
+  bindPhoneChange(num) {
+    var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
+    if (num == "") {
+      return false;
+    } else if (!myreg.test(num)) {
+      return false;
+    } else {
+      return true
+    }
+  },
 
 })

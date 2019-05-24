@@ -8,30 +8,30 @@ Page({
   data: {
     winWidth: 0,
     winHeight: 0,
-    height:120*10,
+    height: 120 * 10,
     // tab切换
     currentTab: 1,
-    showInvList:[],//显示列表
+    showInvList: [],//显示列表
     showVisList: [],//显示列表
     loadInvCount: 1,
     loadVisCount: 1,
     inviteList: [],
     visitList: [],
-    role:0,//用户角色
+    role: 0,//用户角色
     isHideLoadMore: true,
-    tip:'正在加载'
+    tip: '正在加载'
   },
   //点击列表项查看邀请详细内容
-  clickInvite: function(e){
+  clickInvite: function (e) {
     var index = e.currentTarget.dataset.index
-    console.log("查看第"+(index+1)+"项")
-    
+    console.log("查看第" + (index + 1) + "项")
+
     var detail = JSON.stringify(this.data.inviteList[index])
     wx.navigateTo({
-      url: './invDetail/invDetail?detail='+detail,
-      success: function(res) {},
-      fail: function(res) {},
-      complete: function(res) {},
+      url: './invDetail/invDetail?detail=' + detail,
+      success: function (res) { },
+      fail: function (res) { },
+      complete: function (res) { },
     })
   },
   //点击列表项查看受邀详细内容
@@ -47,18 +47,18 @@ Page({
     })
   },
   //滑动切换tab
-  bindChange: function(e){
-    var that=this
+  bindChange: function (e) {
+    var that = this
     that.setData({ currentTab: e.detail.current })
-    var inv=that.data.showInvList.length
-    var vis=that.data.showVisList.length
-    if (e.detail.current==0){
-      if(inv>10){
-      that.setData({ height: 120 * inv })
-      }else{
+    var inv = that.data.showInvList.length
+    var vis = that.data.showVisList.length
+    if (e.detail.current == 0) {
+      if (inv > 10) {
+        that.setData({ height: 120 * inv })
+      } else {
         that.setData({ height: 120 * 10 })
       }
-    }else{
+    } else {
       if (vis > 10) {
         that.setData({ height: 120 * vis })
       } else {
@@ -67,12 +67,12 @@ Page({
     }
   },
   //点击tab切换
-  swichNav: function(e){
-    var that=this
+  swichNav: function (e) {
+    var that = this
     var current = e.target.dataset.current
-    if (this.data.currentTab === current){
+    if (this.data.currentTab === current) {
       return false
-    }else{
+    } else {
       that.setData({
         currentTab: e.target.dataset.current
       })
@@ -88,21 +88,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that=this
+    var that = this
     var staffId = wx.getStorageSync('wxuserInfo').staffId
     // || staffId.length != 0
-    if (staffId != null){
+    if (staffId != null) {
       that.setData({
         role: 1,
-      }); 
+      });
     }
-    wx.getSystemInfo({ 
-      success: function (res) { 
-        that.setData({ 
-          winWidth: res.windowWidth, 
-          winHeight: res.windowHeight 
-        }); 
-      } 
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          winWidth: res.windowWidth,
+          winHeight: res.windowHeight
+        });
+      }
     });
   },
 
@@ -110,7 +110,7 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-    
+
   },
 
   /**
@@ -118,7 +118,7 @@ Page({
    */
   onShow: function () {
     var that = this
-    if (wx.getStorageSync('wxuserInfo')){
+    if (wx.getStorageSync('wxuserInfo')) {
       //获得邀请列表请求
       if (that.data.role == 1) {
         wx.request({
@@ -167,7 +167,7 @@ Page({
         }
       })
     }
-    
+
   },
 
   /**
@@ -201,8 +201,8 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    var that=this
-    setTimeout(()=>{
+    var that = this
+    setTimeout(() => {
       this.setData({
         isHideLoadMore: false,
       })
@@ -258,13 +258,13 @@ Page({
           })
         }
       }
-      setTimeout(function(){
+      setTimeout(function () {
         that.setData({
           isHideLoadMore: true,
         })
-      },500)
-    },300)
-    
+      }, 500)
+    }, 300)
+
     // setTimeout(function () {
     //   wx.hideLoading()
     // }, 500)

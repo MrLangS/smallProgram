@@ -1,6 +1,6 @@
 {
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#3281ff",
+    "navigationBarTextStyle": "ffffff",
     "navigationBarTitleText": "邀请记录",
     "backgroundColor": "#fff",
     "enablePullDownRefresh": true,

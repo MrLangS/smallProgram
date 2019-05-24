@@ -11,11 +11,8 @@ Page({
     vistorName: '',
     vistorPhone: '',
     reason: '',
-    year: '',
-    month: '',
-    day: '',
-    starttime: '',
-    endtime: '',
+    // starttime: '',
+    // endtime: '',
     address: '',
     num: 1,
     status:1,
@@ -77,13 +74,13 @@ Page({
   },
   //接受邀请
   //已注册的接受
-  accept01: function(){
+  accept01: function(e){
+    console.log(e.detail.formId)
     var that=this
     wx.showModal({
       title: '提示',
       content: '确认接受邀请吗？',
       success: function (res) {
-        console.log(res.confirm)
         if (res.confirm){
           that.setData({
             disAccept: true
@@ -92,7 +89,9 @@ Page({
             url: getApp().globalData.server + '/Invitation/changeVisitorStatus.do',
             data: {
               invitationId: that.data.invitationId,
-              userId: wx.getStorageSync('wxuserInfo').id,
+              userId: getApp().globalData.sysWXUser.id,
+              formId: e.detail.formId,
+              openId: getApp().globalData.realOpenid,
               status: 2
             },
             method: 'get',
@@ -127,8 +126,8 @@ Page({
       }
     })
   },
-  //未注册的接受
-  accept02: function () {
+  //未注册的接受   (不再使用)
+  accept02: function (e) {
     var that=this
     if (util.checkForm(that)){
       wx.showModal({
@@ -144,13 +143,15 @@ Page({
               url: getApp().globalData.server + '/Invitation/addVisitorAndRegisterUser.do',
               method: 'post',
               data: {
-                wxOpenId: wx.getStorageSync('openid'),
+                wxOpenId: getApp().globalData.openid,
                 username: that.data.name,
                 address: that.data.visCompany,
                 phonenum: that.data.phone,
                 photoURL: that.data.avatarUrl,
                 picId: that.data.picId,
                 invitationId: that.data.invitationId,
+                formId: e.detail.formId,
+                openId: getApp().globalData.realOpenid,
               },
               success: function (res) {
                 console.log(res)
@@ -186,12 +187,6 @@ Page({
     }
   },
 
-  test: function(){
-    console.log("转发测试")
-    console.log(this.data.registed)
-    console.log(typeof(this.data.registed))
-    console.log(this.data.status)
-  },
   onLoad: function (options) {
     var that = this
 
@@ -255,21 +250,19 @@ Page({
       util.login(that)
     }
   },
-  /**
- * 生命周期函数--监听页面初次渲染完成
- */
+
   onReady: function () {
     //为邀请函添加访客
-    if (this.data.isPost==1&&wx.getStorageSync('wxuserInfo').id!=null){
+    if (this.data.isPost == 1 && getApp().globalData.sysWXUser.id){
       wx.request({
         url: getApp().globalData.server + '/Invitation/addVisitor.do',
         method: 'get',
         data: {
           invitationId: this.data.invitationId,
-          userId: wx.getStorageSync('wxuserInfo').id
+          userId: getApp().globalData.sysWXUser.id
         },
         success: function (res) {
-          console.log(res.data)
+
         }
       })
     }
@@ -290,16 +283,7 @@ Page({
         // 转发成功
         console.log("转发成功:" + JSON.stringify(res));
         var shareTickets = res.shareTickets;
-        // if (shareTickets.length == 0) {
-        //   return false;
-        // }
-        // //可以获取群组信息
-        // wx.getShareInfo({
-        //   shareTicket: shareTickets[0],
-        //   success: function (res) {
-        //     console.log(res)
-        //   }
-        // })
+
       },
       fail: function (res) {
         // 转发失败

@@ -2,16 +2,11 @@ var util=require('../../utils/util.js')
 var year=util.getPicker('year')
 var month=util.getPicker('month')
 var day=util.getPicker('day')
-//缓存 日期选择器 改变前的日期
-function buff(that) {
-  year = that.data.year
-  month = that.data.month
-  day = that.data.day
-}
+var app = getApp()
+
 Page({
   data: {
-    starttime: '09:00',
-    endtime: '14:00',
+    bcgImg: '../resource/images/2.jpg',
     address: '',
     regionList: [],
     regionIds: [],
@@ -21,18 +16,9 @@ Page({
     index: 0,
     hiddenmodal: true,
     modal_are: true,
-    years: util.getPickerList('years'),
-    year: year,
-    months: util.getPickerList('months'),
-    month: month,
-    days: util.getPickerList('days'),
-    day: day,
-    // date: [year, month, day],
     currentDay: {year : util.getPicker('year'), month : util.getPicker('month'), day : util.getPicker('day')},
     value: util.getPicker('arr'),
     invitor: {name: '',company: '',phone: ''},
-    role: 0,//判断角色，0为普通用户
-    registed: 0,
     reason: '',  
     vistorName: '',//代表成员姓名
     vistorPhone: '',//代表成员手机号
@@ -41,6 +27,49 @@ Page({
     list: [],
     modal: true,
     staffId: 0,
+    //时间选择器
+    isPickerRender: false,
+    isPickerShow: false,
+    startTimeArr: util.getTimeAfter(10).split(' '),
+    endTimeArr: util.getLastTime().split(" "),
+    pickerConfig: {
+      endDate: true,
+      column: "minute",
+      dateLimit: true,
+      initStartTime: util.getTimeAfter(10),
+      initEndTime: util.getLastTime(),
+      limitStartTime: "2015-05-06 12:32:44",
+      limitEndTime: "2055-05-06 12:32:44"
+    }
+  },
+
+  pickerShow: function () {
+    this.setData({
+      isPickerShow: true,
+      isPickerRender: true,
+      chartHide: true
+    });
+  },
+  pickerHide: function () {
+    this.setData({
+      isPickerShow: false,
+      chartHide: false
+    });
+  },
+
+  bindPickerChange: function (e) {
+    this.getData(this.data.sensorList[e.detail.value].id);
+    this.setData({
+      index: e.detail.value,
+      sensorId: this.data.sensorList[e.detail.value].id
+    });
+  },
+  setPickerTime: function (val) {
+    let data = val.detail;
+    this.setData({
+      startTimeArr: data.startTime.split(" "),
+      endTimeArr: data.endTime.split(" ")
+    });
   },
   //新增空白邀请
   newInv: function () {
@@ -63,34 +92,22 @@ Page({
   },
   //时间选择器事件
   startTimeChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       starttime: e.detail.value
     })
   },
   endTimeChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       endtime: e.detail.value
     })
   },
   //人数选择器事件
   bindNumChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       index: e.detail.value
     })
   },
-  //日期选择器事件
-  bindChange: function (e) {
-    const val = e.detail.value
-    console.log(val)  
-    this.setData({
-      year: this.data.years[val[0]],
-      month: this.data.months[val[1]],
-      day: this.data.days[val[2]]
-    })
-  },
+
   //转换邀请页面
   switchChange: function(){
     this.setData({
@@ -99,7 +116,6 @@ Page({
   },
   //区域多选事件
   checkboxChange: function(e){
-    console.log('checkbox发生change事件，携带value值为：', e.detail.value)
     var text=[]
     var ids=[]
     for(var i=0;i<e.detail.value.length;i++){
@@ -114,21 +130,11 @@ Page({
   },
   //获取区域的值
   getAds: function () {
-    // this.setData({
-    //   address: e.detail.value
-    // })
     this.setData({
       modal_are: !this.data.modal_are
     })
   },
-  //弹出框
-  chooseDay: function () {
-    buff(this)
-    console.log("改变前日期为:"+year+"/"+month+"/"+day)
-    this.setData({
-      hiddenmodal: !this.data.hiddenmodal
-    })
-  },
+
   cancel: function () {
     this.setData({
       hiddenmodal: true,
@@ -153,114 +159,6 @@ Page({
     })
   },
   
-  //测试
-  test: function(){
-    console.log("test")
-    console.log(util.formatTimestamp(this,0))
-    console.log(util.formatTime(new Date()))
-    if (util.formatTimestamp(this, 0) > util.formatTime(new Date())){
-      console.log(true)
-    }else{
-      console.log(false)
-    }
-  },
-
-  bindInterpeo: function(){
-    var that=this
-    if (typeof (wx.getStorageSync('wxuserInfo').phonenum)!="undefined"){
-      var phonenum = wx.getStorageSync('wxuserInfo').phonenum
-      wx.request({
-        url: getApp().globalData.server + '/SysWXUserAction/getPersonByPhoneNum.do?phoneNum=' + phonenum,
-        method: 'post',
-        success: (res) => {
-          console.log(res)
-          var list = res.data
-          if (list.length == 0) {
-            console.log('不是内部用户手机号')
-            wx.showToast({
-              title: '抱歉，您非内部用户，不能绑定',
-              icon: 'none',
-              duration: 2000,
-            })
-          } else {
-            for (let i in list) {
-              list[i].createTime = list[i].createTime.substr(0, 10)
-            }
-            that.setData({
-              list: list
-            })
-            this.setData({
-              modal: !this.data.modal
-            })
-          }
-        }
-      })
-    }else{
-      wx.showToast({
-        title: '抱歉！您当前尚未注册',
-        icon: 'none',
-        duration: 2000
-      })
-    }
-  },
-  radioChange: function (e) {
-    console.log('radio发生change事件，携带value值为：', e.detail.value)
-    this.setData({
-      staffId: e.detail.value
-    })
-  },
-  cancel01: function () {
-    this.setData({
-      modal: true,
-    });
-  },
-  confirm01: function () {
-    var that = this
-    if (this.data.staffId == 0) {
-      wx.showToast({
-        title: '请选择对应的内部人员',
-        icon: 'none',
-        duration: 1500,
-      })
-    } else {
-      var openid = wx.getStorageSync('openid')
-      wx.request({
-        url: getApp().globalData.server + '/SysWXUserAction/relevanceInnerPerson.do?openId=' + openid +'&staffId='+that.data.staffId,
-        method: 'post',
-        success: (res)=>{
-          console.log(res)
-          if (res.data.staffId){
-            that.setData({
-              role: 1
-            })
-            var userInfo = wx.getStorageSync('wxuserInfo')
-            userInfo.staffId = that.data.staffId
-            wx.setStorageSync('wxuserInfo', userInfo)
-            var invitor = that.data.invitor
-            invitor.name = userInfo.username
-            invitor.phone = userInfo.phonenum
-            invitor.company = userInfo.company
-            wx.request({
-              url: getApp().globalData.server + '/Invitation/getdevices.do',
-              data: { staffId: that.data.staffId },
-              method: 'get',
-              success: function (res) {
-                console.log(res)
-                that.setData({
-                  invitor: invitor,
-                  regionList: res.data
-                })
-              }
-            })
-          }
-          this.setData({
-            modal: true
-          })
-        }
-      })
-      
-    }
-  },
   onLoad: function (options) {
     wx.showShareMenu({
       withShareTicket:true
@@ -270,20 +168,15 @@ Page({
 
   onShow: function () {
     var that = this
-    var userInfo = wx.getStorageSync('wxuserInfo')
-    var staffId = userInfo.staffId
-    console.log(userInfo)
-    if (staffId) {
-      that.setData({
-        role: 1
-      })
+    var staff = app.globalData.staff
+    if (staff.id) {
       var invitor = this.data.invitor
-      invitor.name = userInfo.username
-      invitor.phone = userInfo.phonenum
-      invitor.company = userInfo.company
+      invitor.name = staff.personName
+      invitor.phone = staff.phoneNo
+      invitor.company = staff.personCompany
       wx.request({
         url: getApp().globalData.server + '/Invitation/getdevices.do',
-        data: { staffId: staffId },
+        data: { staffId: staff.id },
         method: 'get',
         success: function (res) {
           console.log("获取设备")
@@ -297,63 +190,30 @@ Page({
     }
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击分享
-   */
   //确认邀请函
-  invite: function(){
+  invite: function(e){
     var that = this
-    console.log(that.data.count)
     if (util.checkInvitation(this)){
       if (that.data.count == 0) {
         /*发起邀请请求*/
-        var date = util.formatDay(that)
-        var starttime = util.formatTimestamp(that, 0)
-        var endtime = util.formatTimestamp(that, 1)
-        var invitor = wx.getStorageSync("wxuserInfo")
+        var invitor = app.globalData.staff
+        
         wx.request({
           url: getApp().globalData.server + "/Invitation/sponsorInvitation.do",
           data: {
-            visitorDay: date,
-            startTime: starttime,
-            endTime: endtime,
+            startTime: that.data.startTimeArr.join("\ "),
+            endTime: that.data.endTimeArr.join("\ "),
             visitorCount: that.data.numArr[that.data.index],
-            staffId: invitor.staffId,
-            username: invitor.username,
-            phonenum: invitor.phonenum,
-            company: invitor.company,
+            staffId: invitor.id,
+            username: invitor.personName,
+            phonenum: invitor.phoneNo,
+            company: invitor.personCompany,
             visitorLinkmanName: that.data.vistorName,
             visitorLinkmanPhone: that.data.vistorPhone,
             reason: that.data.reason,
-            devIds: that.data.regionIds
+            devIds: that.data.regionIds,
+            formId: e.detail.formId,
+            openId: getApp().globalData.realOpenid,
           },
           method: 'post',
           success: function (res) {
@@ -380,21 +240,17 @@ Page({
         })
       } else {
         /*修改邀请请求*/
-        var date = util.formatDay(that)
-        var starttime = util.formatTimestamp(that, 0)
-        var endtime = util.formatTimestamp(that, 1)
-        var invitor = wx.getStorageSync("wxuserInfo")
+        var invitor = app.globalData.staff
         wx.request({
           url: getApp().globalData.server + "/Invitation/updateInvitation.do",
           data: {
-            visitorDay: date,
-            startTime: starttime,
-            endTime: endtime,
+            startTime: that.data.startTimeArr.join("\ "),
+            endTime: that.data.endTimeArr.join("\ "),
             visitorCount: that.data.numArr[that.data.index],
-            staffId: invitor.staffId,
-            username: invitor.username,
-            company: invitor.company,
-            phonenum: invitor.phonenum,
+            staffId: invitor.id,
+            username: invitor.personName,
+            phonenum: invitor.phoneNo,
+            company: invitor.personCompany,
             visitorLinkmanName: that.data.vistorName,
             visitorLinkmanPhone: that.data.vistorPhone,
             reason: that.data.reason,
@@ -428,33 +284,17 @@ Page({
   },
   onShareAppMessage: function () {
     var that=this
-    // if (res.from === 'button') {
-    //   console.log(res.target)
-    // }
     //转发部分
     return {
       title: '邀请函',
       path: 'pages/dorecord/visDetail/visDetail?dataset=' + util.tran(that, "inv"),
       imageUrl: '../resource/images/inv.jpg',
       success: function (res) {
-        // 转发成功
-        //提交邀请表单
-        //that.invformSubmit()
         that.setData({
           hideTag01: false
         })
         console.log("转发成功:" + JSON.stringify(res));
         var shareTickets = res.shareTickets;
-        // if (shareTickets.length == 0) {
-        //   return false;
-        // }
-        // //可以获取群组信息
-        // wx.getShareInfo({
-        //   shareTicket: shareTickets[0],
-        //   success: function (res) {
-        //     console.log(res)
-        //   }
-        // })
       },
       fail: function (res) {
         // 转发失败
@@ -484,9 +324,4 @@ Page({
     })
   },
 
-  //提交表单信息
-  invformSubmit: function (e) {
-    var invData= this.data
-    console.log(e)
-  },
 })

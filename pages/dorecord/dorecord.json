@@ -1,6 +1,6 @@
 {
-  "navigationBarBackgroundColor": "#eeeeee",
-  "navigationBarTextStyle": "black",
+  "navigationBarBackgroundColor": "#3281ff",
+  "navigationBarTextStyle": "ffffff",
   "navigationBarTitleText": "记录",
   "backgroundColor": "#eeeeee",
   "enablePullDownRefresh": true

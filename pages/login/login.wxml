@@ -1,24 +1,31 @@
-<view class="content">
-    <view  bindtap="bindViewTap" class="userinfo">
-         <label class="login-font">登录</label>
+<view class='content'>
+  <view class='logo_bg green_bcg'>
+    <image mode='aspectFit' class='logo' src='/images/rat.png' />
+  </view>
+  <view class='login_content'>
+    <view class='switch_view'>
+      <view class="stf_selected_title" bindtap='switchToPhone'>
+        内部人员
+      </view>
+      
     </view>
-    <form bindsubmit="formSubmit">
-        <view class="input-area">
-          <view class="input-log">  
-            <image class="userinfo-logIcon" src="{{logIcon}}"></image>  
-            <input id="username" name="username" maxlength='40' type="text" placeholder="手机号" />
-          </view>
-          <view class="input-log">
-            <image class="userinfo-logIcon" src="{{pwdIcon}}"></image>  
-            <input id="password" name="password" maxlength='20' type="password" placeholder="密码" />
-          </view>
-        </view>
-        <view class="btn-area">
-            <button  disabled="{{disabled}}" style="background-color:{{loginBtnBgBgColor}}"   formType="submit"  loading="{{btnLoading}}"> {{loginBtnTxt}} </button>
-            <view class="txt-area">
-                <navigator redirect url="../forgetpwd/index"><text class="forgot-password">忘记密码？</text></navigator>
-                <navigator navigate url="../register/register"><text class="register">注册账号</text></navigator> 
-            </view>
-        </view>
-    </form>
+    <view class='input_view'>
+      <view class='label_input'>
+        <label class='headlabel'>手机号：</label>
+        <input class='input_bar' type='number' name='phoneNumber' 
+          bindinput='getPhoneValue' placeholder='请输入手机号' value='{{phoneNumber}}' />
+      </view>
+      <view class='label_input'>
+        <label class='headlabel'>验证码：</label>
+        <button class='codeBtn {{isaPhoneNum?  (isAdmin ? "blueBtn" : "greenBtn"): ""}}' bindtap='getVerificationCode' hover-class='hover-class' disabled='{{disabled}}'>{{codename}}</button>
+        <input class='input_bar' type='number' name='code' 
+          bindinput='getCodeValue' placeholder='请输入验证码' />
+      </view>
+    </view>
+
+    <view class='login_button {{isAdmin?"blue_bcg" : "green_bcg"}}' bindtap='login'>
+      确认
+    </view>
+  </view>
+
 </view>

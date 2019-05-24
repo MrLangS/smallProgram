@@ -1,16 +1,7 @@
 <view class='head'>
-  <view wx:if="{{registed!=1}}">
-    <label bindtap='registe' class='head-txt'>还未拥有账号？点击注册</label>
+  <image class='bcg' wx:if='{{bcgImg}}' src='{{bcgImg}}' mode='aspectFill'></image>
+  <view class="up box-shadow-index {{activeBtn? 'active' : ''}}" bindtap='go2inv' >
+    <image src=''></image>
   </view>
-  <view wx:else>
-    <label bindtap='logout' class='head-txt'>点此注销账号</label>
-  </view>
-</view>
-  
-<view class='imgbox'>
-  <image class='img' bindtap='intoInfo' mode='scaleToFill' src='{{infoPng}}'></image>
-</view>
-<view class='imgbox'>
-  <image class='img opa' bindtap='intoInv' mode='scaleToFill' src='{{invPng}}'></image>
 </view>
 

@@ -3,7 +3,9 @@
 <view class='changeInfo'>
   <view class='area'>
     <view class='head'>
-      <view>邀请函</view>
+      <view>
+        <view class='{{status==2? "arrive" : "no-arrive"}}'>{{status==2? "已访" : "未访"}}</view>
+      </view>
       <button open-type="share" class='shareBtn' hidden='{{ddl}}'>转发邀请</button>
     </view>
     <!-- 事由 -->
@@ -11,14 +13,18 @@
     <view class='reason'>
       <view class='reason-content'>{{reason}}</view>
     </view>
-    <view class='head-content'>
-      <label class='head-title'>日期</label> <label class='head-con'>{{year}}年{{month}}月{{day}}日</label>
-    </view>
-    <view class='head-content'>
-      <label class='head-title'>开始时间</label> <label class='head-con'>{{starttime}}</label>
-    </view>
-    <view class='head-content'>
-      <label class='head-title'>结束时间</label> <label class='head-con'>{{endtime}}</label>
+    <view class='time_slot up'>
+      <view class='start'>
+        <view>开始</view>
+        <view>{{startTimeArr[0]}}</view>
+        <view>{{startTimeArr[1]}}</view>
+      </view>
+      <view class='tag'><image src='../../resource/images/right.png'></image></view>
+      <view class='end'>
+        <view>结束</view>
+        <view>{{endTimeArr[0]}}</view>
+        <view>{{endTimeArr[1]}}</view>
+      </view>
     </view>
     <view class='head-content'>
       <label class='head-title'>通行设备</label> <label class='head-con'>{{address}}</label>
@@ -59,10 +65,14 @@
         <view class='item-name'>手机号:{{item.visitorPhoneNo}}</view>
         <block wx:if="{{!ddl}}">
           <block wx:if="{{item.visitorStatus==2}}">
-            <button class='btn' bindtap='reject' size='mini' type='warn'>拒绝</button>
+          <form bindsubmit="reject" report-submit='true'>
+            <button class='btn' form-type='submit' size='mini' type='warn'>拒绝</button>
+          </form>
           </block>
           <block wx:else>
-            <button class='btn' bindtap='accept' size='mini' type='primary'>接受</button>
+          <form bindsubmit="accept" report-submit='true'>
+            <button class='btn' form-type='submit' size='mini' type='primary'>接受</button>
+          </form>
           </block>
         </block>
       </view>

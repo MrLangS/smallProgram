@@ -1,7 +1,4 @@
 {
-  "navigationBarBackgroundColor": "#fff",
-  "navigationBarTextStyle": "black",
-  "navigationBarTitleText": "登录",
-  "backgroundColor": "#fff",
-  "backgroundTextStyle": "light"
+  "navigationBarTitleText": "绑定内部人员",
+  "navigationBarBackgroundColor": "#36c8c3"
 }

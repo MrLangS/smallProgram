@@ -48,7 +48,7 @@ Page({
         modal: true
       })
       //添加人员
-      var openIdValue = wx.getStorageSync('openid');
+      var openIdValue = getApp().globalData.openid;
       wx.request({
         url: getApp().globalData.server + "/SysWXUserAction/registerWXUser.do",
         data: {

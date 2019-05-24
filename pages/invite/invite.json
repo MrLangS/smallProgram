@@ -1,7 +1,10 @@
 {
-  "navigationBarBackgroundColor": "#fff",
-  "navigationBarTextStyle": "black",
+  "navigationBarBackgroundColor": "#0e122b",
+  "navigationBarTextStyle": "ffffff",
   "navigationBarTitleText": "邀请",
   "backgroundColor": "#fff",
-  "backgroundTextStyle": "light"
+  "backgroundTextStyle": "light",
+  "usingComponents": {
+    "timePicker": "../../components/timePicker/timePicker"
+  }
 }

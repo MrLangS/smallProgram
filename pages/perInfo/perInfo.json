@@ -1,6 +1,3 @@
 {
-    "navigationBarBackgroundColor": "#eeeeee",
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "个人信息",
-    "backgroundColor": "#fff"
+    "navigationBarTitleText": "个人信息"
 }

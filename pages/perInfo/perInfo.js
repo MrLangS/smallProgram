@@ -1,327 +1,116 @@
 // pages/perInfo/perInfo.js
 var util = require('../../utils/util.js')
+var app=getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    quality: 1,//头像是否合格
-    name: '',//姓名
-    phone: '',//手机号
-    company: '',
-    picManage: '更换头像',
-    code: '',//验证码
-    disabled: false,
-    iscode: '',//用于存放验证码接口里获取到的code
-    avatarUrl: "../resource/images/default.png", //默认头像图片
-    logIcon: "../resource/images/logIcon.png",
-    phoneIcon: "../resource/images/phone.png",
-    pwdIcon: "../resource/images/pwdIcon.png",
-    verifiIcon: "../resource/images/verifiIcon.png",
-    companyIcon: "../resource/images/company.png",
-    imgArr: [],
-    registed: 0,
-    changeBtn: true,
-    inputTag: true,
-    focus: false,
-    codeTag: true,//验证码区域显示标签
-    codename: '获取验证码'
+    remind: '加载中',
+    angle: 0,
+    avatar: '',
+    quality: 1,
+    picId: 0,
+    user: {},
   },
-  //修改手机号
-  modifyPhone: function(){
-    this.setData({
-      codeTag: false
+  gotoSet(){
+    wx.navigateTo({
+      url: '../setting/setting',
+
     })
   },
-  //获取验证码
-  getVerificationCode() {
-    util.getCode(this)
-  },
-  cancelModify:function(){
-    this.setData({
-      phone: wx.getStorageSync('oldPhone'),
-      codeTag: true,
-    })
-  },
-  //预览头像
-  // preview: function (e) {
-  //   var that = this
-  //   var imgArr = that.data.imgArr
-  //   wx.previewImage({
-  //     urls: imgArr,
-  //     success: function (res) { },
-  //     fail: function (res) { },
-  //     complete: function (e) { }
-  //   })
-  // },
+  
   //更换头像
   onPicBtn: function () {
     var that = this
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-        
-        var tempFilePaths = res.tempFilePaths
-        wx.getFileSystemManager().readFile({
-          filePath: res.tempFilePaths[0], //选择图片返回的相对路径
-          encoding: 'base64', //编码格式
-          success: res => { //成功的回调
-            // console.log('data:image/png;base64,' + res.data)
-            console.log(res)
-            var uploadUserUrl = getApp().globalData.server + "/SysWXUserAction/uploadPhoto.do"
-            wx.request({
-              url: uploadUserUrl,
-              method: 'post',
-              data: {
-                photoId: wx.getStorageSync("wxuserInfo").picId,
-                personPhoto: res.data
-              },
-              success: (res) => {
-                console.log('上传图片请求结果：')
-                console.log(res)
-                if (res.data.quality == 0) {
-                  that.setData({
-                    avatarUrl: res.data.photoURL,
-                  })
-                } else {
-                  wx.showToast({
-                    title: '上传失败,图片须为本人清晰头像',
-                    icon: 'none',
-                    duration: 1500
-                  })
+    if(this.data.registed==1){
+      wx.chooseImage({
+        count: 1,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success: function (res) {
+
+          var tempFilePaths = res.tempFilePaths
+          wx.getFileSystemManager().readFile({
+            filePath: res.tempFilePaths[0], //选择图片返回的相对路径
+            encoding: 'base64', //编码格式
+            success: res => { //成功的回调
+              // console.log('data:image/png;base64,' + res.data)
+              console.log(res)
+              var uploadUserUrl = getApp().globalData.server + "/SysWXUserAction/uploadPhoto.do"
+              wx.request({
+                url: uploadUserUrl,
+                method: 'post',
+                data: {
+                  photoId: wx.getStorageSync("wxuserInfo").picId,
+                  personPhoto: res.data
+                },
+                success: (res) => {
+                  console.log('上传图片请求结果：')
+                  console.log(res)
+                  if (res.data.quality == 0) {
+                    that.setData({
+                      avatarUrl: res.data.photoURL,
+                    })
+                  } else {
+                    wx.showToast({
+                      title: '上传失败,图片须为本人清晰头像',
+                      icon: 'none',
+                      duration: 1500
+                    })
+                  }
                 }
-              }
-            })
-          },
-          fail: (res) => {
-            wx.showToast({
-              title: '网络开小差，请稍后再试',
-              icon: 'none',
-              duration: 1500
-            })
-          }
-        })
-      },
-    })
-    // var that = this
-    // var imgArr = that.data.imgArr
-    // var openIdValue = wx.getStorageSync('openid');
-    // wx.chooseImage({
-    //   count: 1,
-    //   sizeType: ['original', 'compressed'],
-    //   sourceType: ['album', 'camera'],
-    //   success: function (res) {
-    //     var uploadUserUrl = getApp().globalData.server + "/SysWXUserAction/uploadPhoto.do"
-    //     var tempFilePaths = res.tempFilePaths
-    //     if (tempFilePaths.length > 0) {
-    //       imgArr[0] = tempFilePaths[0]
-    //       console.log(imgArr)
-    //       wx.uploadFile({
-    //         url: uploadUserUrl,
-    //         filePath: tempFilePaths[0],
-    //         name: 'personPhoto',
-    //         header: { "Content-Type": "multipart/form-data" },
-    //         formData: {
-    //           openId: openIdValue,
-    //           photoId: wx.getStorageSync("wxuserInfo").picId
-    //         },
-    //         success: function (res) {
-    //           console.log('上传图片请求...')
-    //           console.log(res)
-    //           var data = JSON.parse(res.data)
-    //           console.log(data)
-    //           if (data.quality == 0) {
-    //             that.setData({
-    //               avatarUrl: data.photoURL,
-    //               imgArr: imgArr,
-    //               quality: 0,
-    //             })
-    //             wx.showToast({
-    //               title: '更换成功',
-    //               icon: 'success',
-    //               duration: 1500
-    //             })
-    //           } else {
-    //             wx.showToast({
-    //               title: '照片须为本人清晰头像',
-    //               icon: 'loading',
-    //               duration: 1500
-    //             })
-    //           }
-    //         },
-    //         fail: function (res) {
-    //           console.log('失败...')
-    //           wx.showModal({
-    //             title: '提示',
-    //             content: '上传失败',
-    //             showCancel: false
-    //           })
-    //         },
-    //       })
-    //     }
-    //   },
-    // })
-  },
-  //修改个人信息
-  modify: function(){
-    wx.setStorageSync("oldPhone", this.data.phone)
-    this.setData({
-      changeBtn: false,
-      inputTag: false,
-      focus: true
-    })
-  },
-  //修改确认
-  formSubmit: function(e){
-    var that=this
-    console.log('form发生了submit事件，携带数据为：', e.detail.value)
-    if (util.checkPerInfo(this)){
-      wx.request({
-        url: getApp().globalData.server + '/SysWXUserAction/updateUserMsg.do',
-        data: {
-          wxOpenId: wx.getStorageSync("openid"),
-          staffId: wx.getStorageSync("wxuserInfo").staffId,
-          username: this.data.name,
-          // oldPhoneNO: wx.getStorageSync("oldPhone"),
-          phoneNum: this.data.phone,
-          company: this.data.company
+              })
+            },
+            fail: (res) => {
+              wx.showToast({
+                title: '网络开小差，请稍后再试',
+                icon: 'none',
+                duration: 1500
+              })
+            }
+          })
         },
-        method: 'post',
-        success: function(res){
-          console.log(res)
-          var user = res.data.sysWXUser
-          wx.setStorageSync("wxuserInfo", user)
-          that.setData({
-            name: user.username||'',
-            company: user.company||'',
-            phone: user.phonenum||'',
-            changeBtn: true,
-            inputTag: true,
-            focus: false,
-            codeTag: true
-          })
-          wx.showToast({
-            title: '修改成功',
-            icon: 'success',
-            duration: 1000
-          })
-        }
       })
-      
-    }
-  },
-  //修改取消
-  cancel: function(){
-    var initdata = wx.getStorageSync("wxuserInfo")
-    this.setData({
-      name: initdata.username,
-      phone: initdata.phonenum,
-      company: initdata.company,
-      changeBtn: true,
-      inputTag: true,
-      focus: false,
-      codeTag: true
-    })
-  },
-  //获取input输入框的值
-  getNameValue: function (e) {
-    this.setData({
-      name: e.detail.value
-    })
-  },
-  getCompanyValue: function (e) {
-    // this.setData({
-    //   company: e.detail.value
-    // })
-    if (!this.data.inputTag){
+    }else{
       wx.showToast({
-        title: '抱歉，公司名称只能在人人门禁小程序中修改',
+        title: '请您先注册用户',
         icon: 'none',
         duration: 1500
       })
     }
     
-
   },
-  getPhoneValue: function (e) {
-    this.setData({
-      phone: e.detail.value
-    })
-  },
-  getCodeValue: function (e) {
-    this.setData({
-      code: e.detail.value
-    })
-  },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
+ 
   onLoad: function (options) {
-    var initdata = wx.getStorageSync('wxuserInfo')
-    if (typeof(initdata)!="undefined"){
-      var imgArr = [initdata.photoURL]
-      this.setData({
-        name: initdata.username||'',
-        phone: initdata.phonenum||'',
-        company: initdata.company||'',
-        avatarUrl: initdata.photoURL||'',
-        imgArr: imgArr
-      })
-    }
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
     this.setData({
-      registed: wx.getStorageSync('registed')
+      user: app.globalData.sysWXUser
     })
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
+  onReady: function () {
+    var that = this;
+    setTimeout(function () {
+      that.setData({
+        remind: ''
+      });
+    }, 300);
+    wx.onAccelerometerChange(function (res) {
+      var angle = -(res.x * 30).toFixed(1);
+      if (angle > 14) { angle = 14; }
+      else if (angle < -14) { angle = -14; }
+      if (that.data.angle !== angle) {
+        that.setData({
+          angle: angle
+        });
+      }
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
+  
 
+  onShow: function () {
+    
   },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })

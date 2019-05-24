@@ -1,49 +1,50 @@
 {
   "pages":[
     "pages/index/index",
+    "pages/regWxUser/regWxUser",
+    "pages/account/account",
+    "pages/login/login",
+    "pages/perInfo/perInfo",
+    "pages/setting/setting",
     "pages/dorecord/visDetail/visDetail",
     "pages/authorize/authorize",
     "pages/register/register",
     "pages/result/result",
-    "pages/perInfo/perInfo",
     "pages/dorecord/dorecord",
     "pages/invite/invite",
     "pages/dorecord/invDetail/invDetail"
   ],
   "tabBar":{
-    "backgroundColor": "#eeeeee",
+    "color": "#abb4bf",
+    "selectedColor": "#3281ff",
+    "borderStyle": "white",
+    "backgroundColor": "#fff",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "pages/resource/images/homeGray.png",
-        "selectedIconPath": "pages/resource/images/homeWhite.png"
-      },
-      {
-        "pagePath": "pages/invite/invite",
         "text": "邀请",
-        "iconPath": "pages/resource/images/applyGray.png",
-        "selectedIconPath": "pages/resource/images/applyWhite.png"
+        "iconPath": "pages/resource/images/nom_1.png",
+        "selectedIconPath": "pages/resource/images/blue_1.png"
       },
       {
         "pagePath": "pages/dorecord/dorecord",
         "text": "记录",
-        "iconPath": "pages/resource/images/recordGray.png",
-        "selectedIconPath": "pages/resource/images/recordWhite.png"
+        "iconPath": "pages/resource/images/tab_record_normal.png",
+        "selectedIconPath": "pages/resource/images/tab_record.png"
       },
       {
         "pagePath": "pages/perInfo/perInfo",
         "text": "我",
-        "iconPath": "pages/resource/images/meGary.png",
-        "selectedIconPath": "pages/resource/images/meWhite.png"
+        "iconPath": "pages/resource/images/my.png",
+        "selectedIconPath": "pages/resource/images/my_blue.png"
       }
       
     ]
   },
   "window":{
-    "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle":"black"
+    "backgroundTextStyle":"dark",
+    "navigationBarBackgroundColor": "#3281ff",
+    "navigationBarTitleText": "访客",
+    "navigationBarTextStyle":"light"
   }
 }

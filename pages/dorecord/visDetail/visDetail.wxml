@@ -1,72 +1,81 @@
 <!-- <view class='top' style='height:{{winHeight}}px;'> -->
 
-<view class='top'>
-  <!-- 分隔栏 -->
-  <block wx:if="{{status==3}}">
-    <view class='dev'>很遗憾!您已被拒绝</view>
-  </block>
-  <block wx:elif="{{status==2}}">
-    <view class='dev'>请您记得按时赴约!</view>
-  </block>
-  <block wx:elif="{{status==1}}">
-    <view class='dev' bindtap='test'>未接受邀请!</view>
-  </block>
-  <block wx:elif="{{status==4}}">
-    <view class='dev'>抱歉!该邀请已过期</view>
-  </block>
-  <!-- 邀请函模版 -->
-  <view class='changeInfo'>
-    <image class="call-icon" src="{{callIcon}}" bindtap='makecall' background-size="cover"></image>
-    <view class='area'>
-      <view class='head'>邀请函</view>
-      <view class='head-content'>
-        <label class='head-title'>邀请人</label> <label class='head-con'>{{invitor.name}}</label>
+<view class='head'>
+  <!-- <image class='bcg01' style='width:{{winWidth}}px;height:{{winHeight}}px' src='../../resource/images/1.jpg' mode='aspectFill'></image> -->
+  <view class='upup'>
+    <!-- 分隔栏 -->
+    <block wx:if="{{status==3}}">
+      <view class='dev'>很遗憾!您已被拒绝</view>
+    </block>
+    <block wx:elif="{{status==2}}">
+      <view class='dev'>请您记得按时赴约!</view>
+    </block>
+    <block wx:elif="{{status==1}}">
+      <view class='dev' bindtap='test'>未接受邀请!</view>
+    </block>
+    <block wx:elif="{{status==4}}">
+      <view class='dev'>抱歉!该邀请已过期</view>
+    </block>
+    <!-- 邀请函模版 -->
+    <view class='changeInfo'>
+      <image class="call-icon" src="{{callIcon}}" bindtap='makecall' background-size="cover"></image>
+      <view class='area'>
+        <view class='head'>邀请函</view>
+        <view class='head-content'>
+          <label class='head-title'>邀请人</label> <label class='head-con'>{{invitor.name}}</label>
+        </view>
+        <view class='head-content'>
+          <label class='head-title'>所属单位</label> <label class='head-con'>{{invitor.company}}</label>
+        </view>
+        <view class='head-content'>
+          <label class='head-title'>联系电话</label> <label class='head-con'>{{invitor.phone}}</label>
+        </view>
+        <!-- 事由 -->
+        <view class='reason-title'>邀请事由</view>
+        <view class='reason'>
+          <view class='reason-content'>{{reason}}</view>
+        </view>
+        <view class='time_slot up'>
+          <view class='start'>
+            <view>开始</view>
+            <view>{{startTimeArr[0]}}</view>
+            <view>{{startTimeArr[1]}}</view>
+          </view>
+          <view class='tag'><image src='../../resource/images/right.png'></image></view>
+          <view class='end'>
+            <view>结束</view>
+            <view>{{endTimeArr[0]}}</view>
+            <view>{{endTimeArr[1]}}</view>
+          </view>
+        </view>
+        <view class='head-content'>
+          <label class='head-title'>通行设备</label> <label class='head-con'>{{address}}</label>
+        </view>
+        <view class='head-content'>
+          <label class='head-title'>人数</label> <label class='head-con'>{{num}}</label>
+        </view>
+        <view class='head-content'>
+          <label class='head-title'>代表成员</label> <label class='head-con'>{{vistorName}}</label>
+        </view>
+        <view class='head-content'>
+          <label class='head-title'>成员手机号</label> <label class='head-con'>{{vistorPhone}}</label>
+        </view>
       </view>
-      <view class='head-content'>
-        <label class='head-title'>所属单位</label> <label class='head-con'>{{invitor.company}}</label>
-      </view>
-      <view class='head-content'>
-        <label class='head-title'>联系电话</label> <label class='head-con'>{{invitor.phone}}</label>
-      </view>
-      <!-- 事由 -->
-      <view class='reason-title'>邀请事由</view>
-      <view class='reason'>
-        <view class='reason-content'>{{reason}}</view>
-      </view>
-      <view class='head-content'>
-        <label class='head-title'>日期</label> <label class='head-con'>{{year}}年{{month}}月{{day}}日</label>
-      </view>
-      <view class='head-content'>
-        <label class='head-title'>开始时间</label> <label class='head-con'>{{starttime}}</label>
-      </view>
-      <view class='head-content'>
-        <label class='head-title'>结束时间</label> <label class='head-con'>{{endtime}}</label>
-      </view>
-      <view class='head-content'>
-        <label class='head-title'>通行设备</label> <label class='head-con'>{{address}}</label>
-      </view>
-      <view class='head-content'>
-        <label class='head-title'>人数</label> <label class='head-con'>{{num}}</label>
-      </view>
-      <view class='head-content'>
-        <label class='head-title'>代表成员</label> <label class='head-con'>{{vistorName}}</label>
-      </view>
-      <view class='head-content'>
-        <label class='head-title'>成员手机号</label> <label class='head-con'>{{vistorPhone}}</label>
-      </view>
+      <block wx:if="{{status!=4}}">
+        <block wx:if="{{registed}}">
+        <form report-submit='true' bindsubmit='accept01'>
+          <button form-type='submit' hidden='{{status!=1}}' type='primary' disabled='{{disAccept}}' class='post-btn'>接受邀请</button> 
+        </form>
+        </block>
+      </block>
+      <button bindtap='back' hidden='{{!isPost}}' type='primary' class='back-btn'>回到首页</button> 
+      <block wx:if="{{status!=4}}">
+        <block wx:if="{{status!=3}}">
+          <button open-type="share" class='post-btn' size="default">转发邀请</button>
+        </block>
+      </block>
+      <!-- <view>邀请id:{{invitationId}}</view> -->
     </view>
-    <block wx:if="{{status!=4}}">
-      <block wx:if="{{registed}}">
-        <button bindtap='accept01' hidden='{{status!=1}}' type='primary' disabled='{{disAccept}}' class='post-btn'>接受邀请</button> 
-      </block>
-    </block>
-    <button bindtap='back' hidden='{{!isPost}}' type='primary' class='back-btn'>回到首页</button> 
-    <block wx:if="{{status!=4}}">
-      <block wx:if="{{status!=3}}">
-        <button open-type="share" class='post-btn' size="default">转发邀请</button>
-      </block>
-    </block>
-    <!-- <view>邀请id:{{invitationId}}</view> -->
   </view>
 </view>
 <!-- ============================================================================================== -->
@@ -83,7 +92,7 @@
       <image class="userinfo-avatar" src="{{avatarUrl}}" bindtap='preview'></image>
       <button class="picBtn" bindtap='onPicBtn'>{{picManage}}</button>
     </view>
-    <form bindsubmit="visformSubmit">
+    <form bindsubmit="accept02" report-submit='true'>
       <view class="input-area">
         <label class='title'>姓名</label>
         <view class='input-log'>
@@ -109,7 +118,7 @@
       </view>
       <view class="btn-area">
         <view class="btn">
-          <button bindtap='accept02' type='primary' size="default">接受邀请</button> 
+          <button form-type='submit' type='primary' size="default">接受邀请</button> 
         </view>
           <!-- <button  disabled="{{disabled}}" style="background-color:{{loginBtnBgBgColor}}"   formType="submit"  loading="{{btnLoading}}"> {{loginBtnTxt}} </button> -->
       </view>

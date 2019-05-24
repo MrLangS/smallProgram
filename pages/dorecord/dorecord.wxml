@@ -1,12 +1,7 @@
 
 <view class="swiper-tab">    
-  <!-- <block wx:if="{{role!=0}}"> -->
-    <view class="swiper-tab-list {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">邀请记录</view>    
-    <view class="swiper-tab-list {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">拜访记录</view> 
-  <!-- </block>    -->
-  <!-- <block wx:else>
-    <view class="swiper-tab-li {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">拜访记录</view> 
-  </block> -->
+  <view class="swiper-tab-list {{currentTab==0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">邀请记录</view>    
+  <view class="swiper-tab-list {{currentTab==1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">拜访记录</view> 
 </view>   
 <swiper current="{{currentTab}}" duration="300" style="height:{{height}}rpx" bindchange="bindChange">
   <!-- 邀请记录 -->    
@@ -16,12 +11,14 @@
       <block wx:if="{{showInvList.length!=0}}">
         <view wx:for="{{showInvList}}" wx:key="id" data-index="{{index}}" bindtap='clickInvite'>
           <view class='item'>
-            <view class='item-head'>
+            <view class='item-head {{item.status==2? "green-bcg":"gray-bcg"}}'>
               <view class=''>{{item.year}}</view>
               <view class='item-bot'>{{item.month}}-{{item.day}}</view>
             </view>
             <view class='' hover-class='click'>
-              <view class='item-top'>{{item.reason}}</view>
+              <view class='item-top'>
+                <view>{{item.reason}}</view>
+              </view>
               <view class='item-bottom'>
                 <text space='nbsp'>{{item.visitorLinkmanName}}      {{item.visitorLinkmanPhone}}      约定人数:{{item.visitorCount}}</text>
               </view>
@@ -34,7 +31,7 @@
       </block>
     </block>  
     <block wx:else>
-      <view class='tip'>抱歉!非内部用户不能发起邀请</view>
+      <view class='tip'>抱歉!未绑定内部用户不能发起邀请</view>
     </block>
     
   </swiper-item>   
@@ -45,7 +42,7 @@
     <block wx:if="{{showVisList.length!=0}}">
       <view wx:for="{{showVisList}}" wx:key="id" data-index="{{index}}" bindtap='clickVisit'>
         <view class='item'>
-          <view class='item-head'>
+          <view class='item-head gray-bcg'>
             <view class=''>{{item.year}}</view>
             <view class='item-bot'>{{item.month}}-{{item.day}}</view>
           </view>

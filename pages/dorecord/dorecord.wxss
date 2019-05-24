@@ -9,10 +9,10 @@
   line-height: 80rpx;
   background-color: #888888;
 }
-/* .abs{
-  position: relative;
-  margin-top: 90rpx;
-} */
+.green-bcg{
+  background: #16982b;
+  color: #fff;
+}
 .swiper-tab-list{  
   font-size: 30rpx;    
   display: inline-block;
@@ -69,12 +69,18 @@
   height: 120rpx;
   text-align: center;
   align-self: center;
-  /* border-right: 1rpx solid #b2b2b2; */
-  background-color: #eeeeee;
   opacity: 0.6
 }
+.gray-bcg{
+  background: #eeeeee;
+}
 .item-top{
+  width: 100%;
   margin-left: 40rpx;
+  /* background: red; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .item-bot{
   opacity: 0.6;

@@ -1,0 +1,26 @@
+
+<view class='box-shadow items'>
+  <!-- bindtap='jump2visit' -->
+  <view class='item' hover-class='hover-class'>
+    <view class='left-row'>
+      <view>账号与安全</view>
+    </view>
+    <view style='width:20rpx'><image  mode='aspectFit' class='more-icon' src='{{"/images/profile_arrow.png" }}' /></view>
+    
+  </view>
+</view>
+
+<view class='box-shadow items'>
+  <!-- bindtap='jump2visit' -->
+  <view class='item' bindtap='switchAccount' hover-class='hover-class'>
+    <view class='left-row'>
+      <view>绑定内部人员账号</view>
+    </view>
+    <view style='width:20rpx'><image  mode='aspectFit' class='more-icon' src='{{"/images/profile_arrow.png" }}' /></view>
+    
+  </view>
+  
+</view>
+<view class='tip'>
+  <text>唯有绑定内部人员账号的情况下才能发起邀请！</text>
+</view>

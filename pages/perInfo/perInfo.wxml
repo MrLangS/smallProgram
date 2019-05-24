@@ -1,54 +1,67 @@
-<view class="userinfo head">
-  <image class="userinfo-avatar" src="{{avatarUrl?avatarUrl:'/pages/resource/images/default.png'}}"></image>
-  <block wx:if="{{registed==1}}">
-    <button class="picBtn head-margin" bindtap='onPicBtn'>{{picManage}}</button>
+<!--start.wxml-->
+<view class="container">
+  <view class="remind-box" wx:if="{{remind}}">
+    <image class="remind-img" src="/images/more/loading.gif"></image>
+  </view>
+  <block wx:else>
+    <image class="title" src="/images/more/title8.png"></image>
+    <view class="content">
+      <view class="hd" style="transform:rotateZ({{angle}}deg);">
+        <image class="logo" src='{{company.clientLogoURL?company.clientLogoURL:"/images/cmpany.png"}}'></image>
+        <image class="wave" src="/images/more/wave.png" mode="aspectFill"></image>
+        <image class="wave wave-bg" src="/images/more/wave.png" mode="aspectFill"></image>
+      </view>
+      <view class="bd">
+         <!-- 信息部分 -->
+        <view class='wrapper'>
+          <view class='box-shadow pro}}'>
+            <view class='list'>
+                <view class='info'>
+                    <view class='infotitle'>{{user.company || '未知单位'}}</view>
+                </view>
+            </view>
+          </view>
+
+          <view class='profile {{isTouchMove ? "touch-move-active" : ""}}'data-index='1'>
+            <view class='profileitem'>
+              <view class='info'>
+                <image class='avatar' bindtap='chooseImg' src='{{user.photoURL?user.photoURL:"/images/user_background.png"}}'></image>
+                <view class='username'>{{user.username || '未知'}}</view>
+              </view>
+              
+            </view>
+
+          </view>
+
+          <view class='box-shadow items'>
+            
+            <view class='item'>
+              <view class='infotitle'>
+                <view>手机号</view>
+              </view>
+              <view class='count'>{{ user.phonenum|| '未知'}}</view>
+            </view>
+          </view>
+
+          <view class='box-shadow items'>
+            <!-- bindtap='jump2visit' -->
+            <view class='item' bindtap='gotoSet' hover-class='hover-class'>
+              <view class='left-row'>
+                <view>
+                  <image  mode='aspectFit' src='{{"/images/setting.png" }}' />
+                </view>
+                <view>设置</view>
+              </view>
+              <view style='width:20rpx'><image  mode='aspectFit' class='more-icon' src='{{"/images/profile_arrow.png" }}' /></view>
+              
+            </view>
+          </view>
+
+        </view>
+        
+        <text class="copyright">FaceOS</text>
+      </view>
+    </view>
   </block>
 </view>
-<view class='changeInfo'>
-  <form bindsubmit="formSubmit">
-    <input hidden='true' name="avatarUrl" value='{{avatarUrl}}'></input>
-    <view class="input-area">
-      <label class='title'>姓名</label>
-      <view class='input-log'>
-        <image class="userinfo-logIcon" src="{{logIcon}}"></image>
-        <input placeholder='暂无' name="name" bindinput='getNameValue' value='{{name}}' 
-        focus='{{focus}}' disabled='{{inputTag}}'/> 
-      </view>
-      <label class='title'>单位</label>
-      <view class='input-log'>
-        <image class='userinfo-logIcon' src='{{companyIcon}}'></image>
-        <input placeholder='暂无' name="company" bindtap='getCompanyValue' value='{{company}}' disabled='disabled'/>
-      </view>
-      <label class='title'>手机</label>
-      <view class='input-log'>
-        <image class="userinfo-logIcon"src="{{phoneIcon}}"></image>
-        <input placeholder='暂无' name="phone" bindinput='getPhoneValue' value='{{phone}}' disabled='{{inputTag}}'/> 
-        <button class='codeBtn' bindtap='modifyPhone' hidden='{{!inputTag?(codeTag?false:true):true}}'>更改绑定</button>
-        <button class='codeBtn' bindtap='cancelModify' hidden='{{codeTag}}'>取消更改</button>
-      </view>
-      <view class='input-log' hidden='{{codeTag}}'>
-        <image class="userinfo-logIcon" src="{{verifiIcon}}"></image>
-        <input placeholder='请输入验证码' bindinput='getCodeValue' value='{{code}}'/> 
-        <button class='codeBtn' bindtap='getVerificationCode' disabled='{{disabled}}' >{{codename}}</button>
-      </view>
-      
-    </view>
-    <view class="btn-area">
-      <view class="btn">
-      <block wx:if="{{registed==1}}">
-        <block wx:if="{{changeBtn}}">
-          <button bindtap='modify' style="background-color:#0099FF; color:white" size="default">编辑</button> 
-          <view class='footer'>点击"编辑"按钮可修改个人信息</view>
-        </block>
-        <block wx:else>
-          <button form-type='submit' type='primary' size="default">确认</button> 
-          <!-- <button bindtap='confirm' type='primary' size="default">确认</button> -->
-          <button bindtap='cancel' class='cancel-btn' size="default">取消</button> 
-        </block>
-      </block>
-      </view>
-    </view>
-  </form>
-</view>
-
 

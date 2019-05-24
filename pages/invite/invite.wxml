@@ -1,25 +1,22 @@
-<block wx:if="{{role!=0}}">
+
+<view class='time_slot up' bindtap="pickerShow" hidden='{{hideTag}}'>
+  <view class='start'>
+    <view>开始</view>
+    <view>{{startTimeArr[0]}}</view>
+    <view>{{startTimeArr[1]}}</view>
+  </view>
+  <view class='tag'><image src='../resource/images/right.png'></image></view>
+  <view class='end'>
+    <view>结束</view>
+    <view>{{endTimeArr[0]}}</view>
+    <view>{{endTimeArr[1]}}</view>
+  </view>
+</view>
 <view class='changeInfo'>
-  <form bindsubmit="invformSubmit" report-submit="true">
+  <form bindsubmit="invite" report-submit="true">
     <!-- 填写邀请信息模版 -->
     <view class="area" hidden='{{hideTag}}'>
-      <view class='input-log'>
-        <label class='lab'>日期</label>
-        <label class='content' bindtap='chooseDay'>{{year}}年{{month}}月{{day}}日</label>
-      </view>
-      <view class='input-log'>
-        <label class='lab'>时间</label>
-        <picker mode="time" value="09:00" start="06:00" end="24:00" bindchange="startTimeChange">
-          <label class='picker'>{{starttime}}</label>
-          <!-- <input class='picker'  placeholder='选择时间' value='{{starttime}}'/> -->
-        </picker>
-        <view class='middle'>至</view>
-        <picker mode="time" value="14:00" start="06:00" end="24:00" bindchange="endTimeChange">
-          <label class='pickerr'>{{endtime}}</label>
-          <!-- <input class='pickerr'  placeholder='选择时间' value='{{endtime}}'/> -->
-        </picker>
-        <!-- <input class='content'  placeholder='选择时间' bindinput='getCompany' value='{{}}'/> -->
-      </view>
+      
       <view class='input-log'>
       <label class='lab'>设备</label>
         <input class='content'  placeholder='选择通行设备' bindtap='getAds' value='{{address}}' disabled='true'/> 
@@ -41,7 +38,6 @@
       </view>
       <view class='input-log'>
         <label class='lab'>事由</label>
-        <!-- <textarea class='area-content' placeholder='填写邀请事由' placeholder-class='holder' ></textarea> -->
         <input class='content' placeholder='填写邀请事由' bindinput='getReason' value='{{reason}}'/> 
       </view>
     </view>
@@ -63,14 +59,18 @@
       <view class='reason'>
         <view class='reason-content'>{{reason}}</view>
       </view>
-      <view class='head-content'>
-        <label class='head-title'>日期</label> <label class='head-con'>{{year}}年{{month}}月{{day}}日</label>
-      </view>
-      <view class='head-content'>
-        <label class='head-title'>开始时间</label> <label class='head-con'>{{starttime}}</label>
-      </view>
-      <view class='head-content'>
-        <label class='head-title'>结束时间</label> <label class='head-con'>{{endtime}}</label>
+      <view class='time_slot up'>
+        <view class='start'>
+          <view>开始</view>
+          <view>{{startTimeArr[0]}}</view>
+          <view>{{startTimeArr[1]}}</view>
+        </view>
+        <view class='tag'><image src='../resource/images/right.png'></image></view>
+        <view class='end'>
+          <view>结束</view>
+          <view>{{endTimeArr[0]}}</view>
+          <view>{{endTimeArr[1]}}</view>
+        </view>
       </view>
       <view class='head-content'>
         <label class='head-title'>通行设备</label> <label class='head-con'>{{address}}</label>
@@ -90,8 +90,7 @@
       <view class="btn">
         <!-- <button form-type='submit' open-type="share" type='primary' size="default">发送邀请</button>  -->
         <button style="background-color:#0099FF;color:#fff" 
-        bindtap='invite' size="default" hidden='{{hideTag}}'>确认</button>
-        <!-- <button style="background-color:#0099FF;color:#fff" form-type="submit" size="default" >测试</button> -->
+         form-type="submit" size="default" hidden='{{hideTag}}'>确认</button>
       </view>
       <view class="btn01" hidden='{{!hideTag}}'>
         <!-- <button form-type='submit' open-type="share" type='primary' size="default">发送邀请</button>  -->
@@ -139,23 +138,8 @@
   </modal>
   
 </view>
-</block>  
-<block wx:else>
-  <view class='newwarp'>
-    <view class='tip'>抱歉!非内部用户不能发起邀请</view>
-    <button type='primary' class='footer' bindtap='bindInterpeo'>绑定内部人员</button>
-  </view>
-  <!-- 内部人员选择弹窗 -->
-  <modal hidden="{{modal}}" title="内部人员选择" confirm-text="确定" cancel-text="取消" bindconfirm="confirm01"
-  bindcancel="cancel01">
-    <radio-group bindchange="radioChange">
-      <label class="checkrad" wx:key wx:for="{{list}}">
-        <view>
-          <radio value="{{item.id}}" checked="{{item.checked}}"/>{{item.personName}} | 创建时间·{{item.createTime}}
-        </view>
-      </label>
-    </radio-group>
-  </modal>
-</block>
+
+<timePicker pickerShow="{{isPickerShow}}" id="picker" wx:if="{{isPickerRender}}" bind:hidePicker="pickerHide" bind:setPickerTime="setPickerTime"
+  config="{{pickerConfig}}"></timePicker>
 
 
