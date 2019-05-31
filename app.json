@@ -34,7 +34,7 @@
       },
       {
         "pagePath": "pages/perInfo/perInfo",
-        "text": "我",
+        "text": "我的",
         "iconPath": "pages/resource/images/my.png",
         "selectedIconPath": "pages/resource/images/my_blue.png"
       }
