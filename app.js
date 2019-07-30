@@ -12,8 +12,8 @@ App({
     userSet: [],
     // server: 'http://192.168.0.251:8080/FaceMonitorWeb',
     // server: 'http://192.168.0.161:8080/ebank',
-    server: 'http://doortest.faceos.com',
-    // server: 'https://doorcontrol.faceos.com',
+    // server: 'http://doortest.faceos.com',
+    server: 'https://doorcontrol.faceos.com',
     wxuserInfo: null
   }
 })

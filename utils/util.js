@@ -450,7 +450,7 @@ function checkReason(that) {
   }
 }
 function checkVistorPhone(that) {
-  var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
+  var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9]|19[0-9])\d{8}$$/;
   if (that.data.vistorPhone == "") {
     wx.showToast({
       title: '手机号不能为空',
@@ -482,7 +482,7 @@ function checkCompname(that) {
   }
 }
 function checkPhone(that) {
-  var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$$/;
+  var myreg = /^(14[0-9]|13[0-9]|15[0-9]|17[0-9]|18[0-9]|19[0-9])\d{8}$$/;
   if (that.data.phoneNumber == "") {
     wx.showToast({
       title: '手机号不能为空',

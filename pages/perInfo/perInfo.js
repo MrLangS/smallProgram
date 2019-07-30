@@ -84,8 +84,20 @@ Page({
   },
  
   onLoad: function (options) {
+    var that = this
     this.setData({
-      user: app.globalData.sysWXUser
+      user: app.globalData.staff
+    })
+    //获取人员头像
+    wx.request({
+      url: app.globalData.server + '/CompareListAction!getById.do?id=' + app.globalData.staff.picId,
+      method: 'post',
+      success: res => {
+        console.log(res)
+        that.setData({
+          photoUrl: res.data.photoURL
+        })
+      }
     })
   },
 
