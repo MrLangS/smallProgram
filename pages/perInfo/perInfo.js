@@ -24,7 +24,8 @@ Page({
   //更换头像
   onPicBtn: function () {
     var that = this
-    if(this.data.registed==1){
+    let wxUser = app.globalData.sysWXUser
+    if (wxUser){
       wx.chooseImage({
         count: 1,
         sizeType: ['original', 'compressed'],
@@ -37,21 +38,20 @@ Page({
             encoding: 'base64', //编码格式
             success: res => { //成功的回调
               // console.log('data:image/png;base64,' + res.data)
-              console.log(res)
               var uploadUserUrl = getApp().globalData.server + "/SysWXUserAction/uploadPhoto.do"
               wx.request({
                 url: uploadUserUrl,
                 method: 'post',
                 data: {
-                  photoId: wx.getStorageSync("wxuserInfo").picId,
+                  photoId: wxUser.picId,
                   personPhoto: res.data
                 },
                 success: (res) => {
-                  console.log('上传图片请求结果：')
-                  console.log(res)
                   if (res.data.quality == 0) {
+                    wxUser.photoURL = res.data.photoURL
+                    app.globalData.sysWXUser = wxUser
                     that.setData({
-                      avatarUrl: res.data.photoURL,
+                      wxUser: wxUser
                     })
                   } else {
                     wx.showToast({
@@ -75,7 +75,7 @@ Page({
       })
     }else{
       wx.showToast({
-        title: '请您先注册用户',
+        title: '请您先绑定用户',
         icon: 'none',
         duration: 1500
       })
@@ -85,20 +85,24 @@ Page({
  
   onLoad: function (options) {
     var that = this
+    let staff = app.globalData.staff
     this.setData({
-      user: app.globalData.staff
+      user: staff,
+      wxUser: app.globalData.sysWXUser
     })
-    //获取人员头像
-    wx.request({
-      url: app.globalData.server + '/CompareListAction!getById.do?id=' + app.globalData.staff.picId,
-      method: 'post',
-      success: res => {
-        console.log(res)
-        that.setData({
-          photoUrl: res.data.photoURL
-        })
-      }
-    })
+    if (staff){
+      //获取人员头像
+      wx.request({
+        url: app.globalData.server + '/CompareListAction!getById.do?id=' + staff.picId,
+        method: 'post',
+        success: res => {
+          that.setData({
+            photoUrl: res.data.photoURL
+          })
+        }
+      })
+    }
+    
   },
 
   onReady: function () {

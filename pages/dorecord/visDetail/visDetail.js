@@ -193,8 +193,7 @@ Page({
           console.log(res)
           if (res.authSetting['scope.userInfo']) {
             //登录
-            util.login()
-
+            that.getWxUser()
           } else {
             wx.navigateTo({
               url: '/pages/authorize/authorize?tag=1',
@@ -222,22 +221,87 @@ Page({
     var that=this
     if(this.data.authorizeTAG){
       //登录
-      util.login()
+      that.getWxUser()
     }
   },
 
-  onReady: function () {
+  getWxUser: function() {
+    var that = this
+    var encryptedData = null
+    var iv = null
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        var code = res.code
+        if (code) {
+          console.log('获取用户登录凭证：' + code);
+          wx.getUserInfo({
+            success: function (res) {
+              encryptedData = res.encryptedData
+              iv = res.iv
+              var loginUrl = getApp().globalData.server + '/SysWXUserAction/onLogin.do';
+              // --------- 发送凭证 ------------------
+              wx.request({
+                url: loginUrl,
+                data: {
+                  code: code,
+                  encryptedData: encryptedData,
+                  iv: iv,
+                  userType: '2'
+                },
+                method: 'post',
+                success: function (res) {
+                  var openid = res.data.openid //返回openid
+                  console.log("openid is: " + openid);
+                  console.log("realopenid is: " + res.data.miniproId);
+                  app.globalData.openid = openid
+                  app.globalData.realOpenid = res.data.miniproId
+                  var wxUser = res.data.sysWXUser
+                  if (wxUser) {
+                    console.log('wxUser:')
+                    console.log(wxUser)
+                    app.globalData.sysWXUser = wxUser
+                    wx.setStorageSync('wxUserId', wxUser.id)
+                    that.bindInvitation()
+                    var userId = wx.getStorageSync('userId')
+                    if (userId) {
+                      wx.request({
+                        url: getApp().globalData.server + '/SysWXUserAction/checkPersonStatus.do?id=' + userId + '&type=' + 2,
+                        method: 'post',
+                        success: res => {
+                          console.log('User:')
+                          console.log(res)
+                          app.globalData.staff = res.data.person
+                        }
+                      })
+                    }
+                  }
+
+                },
+                fail: function () {
+                  console.log("fail")
+                }
+              })
+            }
+          })
+        } else {
+          console.log('获取用户登录态失败：' + res.errMsg);
+        }
+      }
+    })
+  },
+
+  bindInvitation: function() {
     //为邀请函添加访客
     var that = this
-    
-    if (this.data.isPost == 1 && wx.getStorageSync('wxUserId')){
+    if (this.data.isPost == 1 && wx.getStorageSync('wxUserId')) {
       console.log('userId:' + wx.getStorageSync('wxUserId'))
       var invIdArr = wx.getStorageSync('invIdArr')
       console.log('invIdArr:')
       console.log(invIdArr)
       var idArr = invIdArr ? invIdArr : []
-      if (idArr.indexOf(that.data.invitationId) == -1){
-        console.log('未关联邀请')
+      if (idArr.indexOf(that.data.invitationId) == -1) {
+        console.log('关联邀请')
         wx.request({
           url: app.globalData.server + '/Invitation/addVisitor.do',
           method: 'get',
@@ -250,14 +314,18 @@ Page({
             wx.setStorageSync('invIdArr', idArr)
           }
         })
-      }else{
+      } else {
         console.log('已关联邀请')
         this.setData({
           accepted: true,
-          status: 2
+          status: 5
         })
       }
     }
+  },
+
+  onReady: function () {
+    //为邀请函添加访客
   },
   /**
    * 转发

@@ -17,7 +17,7 @@
           <view class='box-shadow pro}}'>
             <view class='list'>
                 <view class='info'>
-                    <view class='infotitle'>{{user.personCompany || user.address || '未知单位'}}</view>
+                    <view class='infotitle'>{{user.personCompany || user.address ||wxUser.company || '未知单位'}}</view>
                 </view>
             </view>
           </view>
@@ -25,8 +25,8 @@
           <view class='profile {{isTouchMove ? "touch-move-active" : ""}}'data-index='1'>
             <view class='profileitem'>
               <view class='info'>
-                <image class='avatar' bindtap='chooseImg' src='{{photoUrl?photoUrl:"/images/user_background.png"}}'></image>
-                <view class='username'>{{user.personName || '未知'}}</view>
+                <image class='avatar' bindtap='onPicBtn' src='{{wxUser.photoURL?wxUser.photoURL:"/images/user_background.png"}}'></image>
+                <view class='username'>{{user.personName ||wxUser.username|| '未知'}}</view>
               </view>
               
             </view>
@@ -39,7 +39,7 @@
               <view class='infotitle'>
                 <view>手机号</view>
               </view>
-              <view class='count'>{{ user.phoneNo|| '未知'}}</view>
+              <view class='count'>{{ user.phoneNo||wxUser.phonenum|| '未知'}}</view>
             </view>
           </view>
 

@@ -121,28 +121,6 @@ function login(that){
                   }
                   
                 }
-
-                // console.log(res)
-                // var openid = res.data.openid //返回openid
-                // getApp().globalData.realOpenid = res.data.miniproId
-                // wx.setStorageSync('openid', openid);
-                // var registed = res.data.registed
-                // wx.setStorageSync('registed', registed)
-
-                // if (registed == '1') {
-                //   // wx.redirectTo({ url: '/pages/index/index' })
-                //   //获取用户信息的请求
-                //   var userInfoUrl = getApp().globalData.server + '/SysWXUserAction/getUserMsgByOpenId.do?openId='
-                //   wx.request({
-                //     url: userInfoUrl + wx.getStorageSync('openid'),
-                //     method: 'post',
-                //     // dataType: 'json',
-                //     success: function (res) {
-                //       console.log(res)
-                //       wx.setStorageSync('wxuserInfo', res.data);
-                //     }
-                //   })
-                // }
               },
               fail: function () {
                 console.log("fail")
